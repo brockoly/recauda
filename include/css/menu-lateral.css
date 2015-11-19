@@ -1,0 +1,57 @@
+@font-face {
+    font-family: Raleway;
+}
+.horizontal{
+	width:90%;
+	margin:0 auto;
+	height:106px;   
+}
+.header {   
+	float:left;
+}
+.title {
+	font-family: 'Raleway', sans-serif;
+	color: #444;
+	margin: 0;
+	font-size: 45px;
+	letter-spacing: -2px;
+	float:right; 
+}
+.agrupa_vertical{
+/*	height:120px; 
+*/}
+.agrupa_derecha{
+	height:100%;
+	float:right;
+	
+}
+.usuario{
+	font-family: 'Raleway', sans-serif;
+	color: #0784BA;
+	margin: 0;
+ 	font-size: 16px;
+	font-weight: bold;
+	text-transform:capitalize; 
+	width:500px; 
+}
+.btn_logout{
+	font-family: 'Raleway', sans-serif;
+	color: #0784BA;
+	margin: 0;
+ 	font-size: 12px;
+	text-transform:capitalize; 
+	width:100px; 
+}
+
+
+
+.subtitle {
+	font-family: 'Raleway', sans-serif;
+	font-size: 18px;
+	line-height: 17px;
+	 
+	letter-spacing: 2px;
+	font-weight: bold;
+	width:100%;  
+	float:right;	
+}

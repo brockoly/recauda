@@ -1,0 +1,449 @@
+function cargarContenidoInstalacion(url,parametros,contenedor){//FUNCION AJAX ENVIAPETICION A SERVIDOR Y CARGA CONTENIDO HTML EN CONTENEDOR(NORMALMENTE ELEMENTO DIV)
+	$(contenedor).html();
+	
+//	setTimeout(function(){
+		/***/
+		$(contenedor).fadeOut(250, function(){
+			$.ajax({
+				type: "POST",
+				url:url,
+				data:parametros,
+				success: function(datos){
+					$('.validity-tooltip').remove();
+					//$.unblockUI(); 
+					$(contenedor).html(datos);
+				}
+			});
+			$(contenedor).fadeIn();
+		});
+		
+		/***/
+//	},5000);
+//FIN FUNCION AJAX
+}
+function cargarContenido(url,parametros,contenedor){
+//FUNCION AJAX ENVIAPETICION A SERVIDOR Y CARGA CONTENIDO HTML EN CONTENEDOR(NORMALMENTE ELEMENTO DIV)
+	$(contenedor).html('<div style="position: absolute;top: 50%; left: 40%;"><img src="./include/img/cargando.gif"/></div>');
+	
+//	setTimeout(function(){
+		/***/
+		$(contenedor).fadeOut(300, function(){
+			$.ajax({
+				type: "POST",
+				url:url,
+				data:parametros,
+				success: function(datos){
+					$('.validity-tooltip').remove();
+					//$.unblockUI(); 
+					$(contenedor).html(datos);
+				}
+			});
+			$(contenedor).fadeIn();
+		});
+		
+		/***/
+//	},5000);
+//FIN FUNCION AJAX
+}
+function cargarContenidoSlow(url,parametros,contenedor){
+//FUNCION AJAX ENVIAPETICION A SERVIDOR Y CARGA CONTENIDO HTML EN CONTENEDOR(NORMALMENTE ELEMENTO DIV)
+	$(contenedor).html('<div style="position: absolute;top: 50%; left: 40%;"><img src="./include/img/cargando.gif"/></div>');
+	
+//	setTimeout(function(){
+		/***/
+		$(contenedor).fadeOut(2500, function(){
+			$.ajax({
+				type: "POST",
+				url:url,
+				data:parametros,
+				success: function(datos){
+					$('.validity-tooltip').remove();
+					//$.unblockUI(); 
+					$(contenedor).html(datos);
+				}
+			});
+			$(contenedor).fadeIn();
+		});
+		
+		/***/
+//	},5000);
+//FIN FUNCION AJAX
+}
+//FUNCION QUE ENVIA PETICION AJAX AL SERVIDOR Y ESPERA UN VALOR DE RETORNO
+function validarProcesos(url,parametros){
+	var valor;
+	$.ajax({   
+		type: "POST",
+		url:url,
+		async: false,
+		data: parametros,	
+		success: function(retorno){
+			valor = retorno;
+		}
+	});
+	return valor;
+}
+
+function retornarJson(url,parametros){
+	var valor;
+	$.ajax({   
+		type: "POST",
+		dataType: "json",
+		url:url,
+		async: false,
+		data: parametros,
+		success: function(retorno){
+			valor = retorno;
+		}
+	});
+	return valor;
+}
+function cargarComboAjax(url,parametros,combo){
+	var miselect = $(combo);
+	$(combo).find('option').remove().end().append('<option value="">Cargando...</option>').val('');
+	$.ajax({   
+		type: "POST",
+		dataType: "json",
+		url:url,
+		async: false,
+		data: parametros,
+		success: function(data){
+			$(combo).empty();
+			$(combo).append('<option value="0">Seleccione...</option>').val('');
+			for (var i=0; i<data.length; i++) {
+				$(combo).append('<option value="' + data[i].id + '">' + data[i].valor + '</option>');
+			}
+		}
+	});
+}
+//FUNCION QUE ENVIA PETICION AJAX AL SERVIDOR DE FORMA SINCRONICA
+function ejecutarProcedimiento(url,parametros){
+	$.ajax({   
+		type: "POST",
+		url:url,
+		//async: false,
+		data: parametros,
+		success: function(retorno){
+			//$.unblockUI();
+			return false;
+		}
+	});
+}
+function pruebaVariables(url,parametros){
+	var tag = $("<div id='agendar_main'></div>");
+	$.ajax({
+	type: "POST",
+	url: url,
+	data: parametros,
+	success: function(data) {
+		tag.html(data).dialog({
+			title: 'PRUEBA DE RECEPCION DE VARIABLES', 
+			width: 800,
+			height: 600,
+			modal: true, 
+			draggable: true, 
+			resizable: false,
+			close: function(event, ui){
+				tag.dialog('destroy').remove(); 
+				$('.validity-tooltip').remove();
+			}
+		}).dialog('open');
+	}
+	});
+}
+function mensajeUsuario(clase,titulo,cuerpo){
+	var newDiv = $(document.createElement('div'));
+	$(newDiv).attr('id','mensaje');
+	$(newDiv).html('<div class="'+clase+'">'+cuerpo+'</div>');
+	$(newDiv).dialog({
+		dialogClass: clase,
+		title: titulo,
+		resizable: false,
+		modal: true,
+		width: 'auto',
+		height: 'auto',
+		async: false,
+		buttons:[{
+			id: 'ok',
+			text: 'Aceptar',
+			click: function(event){
+				$('#mensaje').dialog('destroy').remove();
+			}
+		}]
+	});			
+}
+function mensajeUsuarioPaciente(clase,titulo,cuerpo,url,tituloUrl){
+	var newDiv = $(document.createElement('div'));
+	$(newDiv).attr('id','mensaje');
+	$(newDiv).html('<div class="'+clase+'">'+cuerpo+'</div>');
+	$(newDiv).dialog({
+		dialogClass: clase,
+		title: titulo,
+		resizable: false,
+		modal: true,
+		width: 'auto',
+		height: 'auto',
+		async: false,
+		buttons:[
+			{ 
+				text: 'Si', 
+				id: 'Aceptar', 
+				click: function(){
+					ventanaModal(url,'','auto','auto',tituloUrl,'mensaje');
+					$('#mensaje').dialog('destroy').remove();
+				}  
+				
+			},
+			{ 
+				text: 'No', 
+				id: 'Cancelar', 
+				click: function(){ 
+					$('#mensaje').dialog('destroy').remove();
+				} 
+			}
+		]
+
+	});			
+}
+
+function mensajeUsuarioConProcedimiento(clase,titulo,cuerpo,url,parametros,urlContenido,parametrosContenido,div,idModalCerrar){
+	var newDiv = $(document.createElement('div'));
+	$(newDiv).attr('id','mensaje');
+	$(newDiv).html('<div class="'+clase+'">'+cuerpo+'</div>');
+	$(newDiv).dialog({
+		dialogClass: clase,
+		title: titulo,
+		resizable: false,
+		modal: true,
+		width: 'auto',
+		height: 'auto',
+		async: false,
+		buttons:[
+			{ 
+				text: 'Si', 
+				id: 'Aceptar', 
+				click: function(){
+					var proc = validarProcesos(url,parametros);
+					mensajeUsuario('successMensaje','Accion realizada',proc)
+					cargarContenido(urlContenido,parametrosContenido,div);
+					$('#mensaje').dialog('destroy').remove();
+					$('#'+idModalCerrar).dialog('destroy').remove();
+				}  
+				
+			},
+			{ 
+				text: 'No', 
+				id: 'Cancelar', 
+				click: function(){ 
+					$('#mensaje').dialog('destroy').remove();
+				} 
+			}
+		]
+
+	});			
+}
+
+function mensajeConfirmacion(clase,titulo,cuerpo,urlContenido,parametrosContenido,div){
+	var newDiv = $(document.createElement('div'));
+	$(newDiv).attr('id','mensaje');
+	$(newDiv).html('<div class="'+clase+'">'+cuerpo+'</div>');
+	$(newDiv).dialog({
+		dialogClass: clase,
+		title: titulo,
+		resizable: false,
+		modal: true,
+		width: 'auto',
+		height: 'auto',
+		async: false,
+		buttons:[
+			{ 
+				text: 'Si', 
+				id: 'Aceptar', 
+				click: function(){
+					cargarContenido(urlContenido,parametrosContenido,div);
+					$('#mensaje').dialog('destroy').remove();
+				}  
+				
+			},
+			{ 
+				text: 'No', 
+				id: 'Cancelar', 
+				click: function(){ 
+					$('#mensaje').dialog('destroy').remove();
+				} 
+			}
+		]
+
+	});			
+}
+
+function ventanaModal(url,parametros,alto,ancho,titulo,div){
+		var tag = $("<div id='"+div+"'></div>");
+		$("div#"+div+"").remove();
+		tag.html('<div ><img src="./include/img/cargando.gif"/></div>');
+		$.ajax({
+		type: "POST",
+		url: url,
+		data: parametros,
+		success: function(data) {
+			tag.html(data).dialog({
+				title: titulo, 
+				width: ancho, 
+				height: alto,
+				modal: true, 
+				draggable: true,
+				resizable: true,
+				show: {
+					effect: 'fade',
+					duration: 100
+				},
+				hide: {
+					effect: 'fade',
+					duration: 100
+				},
+				buttons: [],
+				close: function(event, ui){
+					tag.dialog('destroy').remove(); 
+					$('.validity-tooltip').remove();
+				}
+			}).dialog('open');
+		}
+	  });
+	  //return tag;
+}
+
+function ventanaModalConBotones(url,parametros,alto,ancho,titulo,div,botones){
+		var tag = $("<div id='"+div+"'></div>");
+		$("div#"+div+"").remove();
+		tag.html('<div style="position: absolute;top: 50%; left: 50%;"><img src="./include/img/cargando.gif"/></div>');
+		$.ajax({
+		type: "POST",
+		url: url,
+		data: parametros,
+		success: function(data) {
+			tag.html(data).dialog({
+				title: titulo, 
+				width: ancho, 
+				height: alto,
+				modal: true, 
+				draggable: true,
+				resizable: true,
+				show: {
+					effect: 'fade',
+					duration: 100
+				},
+				hide: {
+					effect: 'fade',
+					duration: 100
+				},
+				buttons: botones,
+				close: function(event, ui){
+					tag.dialog('destroy').remove(); 
+					$('.validity-tooltip').remove();
+				}
+			}).dialog('open');
+		}
+	  });
+	  //$("#"+div).dialog(botones);
+	  //return tag;
+}
+function inicio(){
+	window.scrollTo(0,0);
+}
+function tabla(id){
+	$('#'+id+'').DataTable({
+	"sPaginationType": "full_numbers",
+		"language": {
+			"lengthMenu": "Mostrar _MENU_ Resultados por pagina.",
+			"zeroRecords": "0 resultados de busqueda.",
+			"info": "Mostrando pagina _PAGE_ de _PAGES_",
+			"infoEmpty": "Sin resultados disponibles",
+			"infoFiltered": "(Filtrando en  _MAX_  registros)",
+			"search": "Buscar",
+			"searchPlaceholder": "Buscar...",
+			"paginate": {
+			  "first": "Primera Pagina",
+			  "last":  "Ultima pagina",
+			  "previous": "Atras",
+			  "next": "Siguiente"
+			}
+		}														
+	});
+}
+function muestraError(div, mensaje){
+	$('#'+div).tooltip();
+	$('#'+div).attr("title", mensaje).show('500');
+}
+function validaEmail( email ) {
+    expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	if ( !expr.test(email) ){// INCORRECTO , ENTRA
+		return false;
+	}else{
+		return true;
+	}
+}
+function calendario(div, maxFecha){
+
+	jQuery(function($){
+			$.datepicker.regional['es'] = {
+			closeText: 'Cerrar',
+			prevText: 'Atras',
+			nextText: 'Siguiente',
+			currentText: 'Hoy',
+			changeYear: true,
+			constrainInput: true,
+			monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+			'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+			monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+			'Jul','Ago','Sep','Oct','Nov','Dic'],
+			dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
+			dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+			dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+			weekHeader: 'Sm',
+			dateFormat: 'dd/mm/yy',
+			firstDay: 1,
+			isRTL: false,
+			maxDate: maxFecha,
+			showMonthAfterYear: false,
+			yearSuffix: ''};
+			$.datepicker.setDefaults($.datepicker.regional['es']);
+	})
+	$("#"+div).datepicker({
+		onSelect: function(){
+		}
+
+	});
+}
+
+function validar(id, atributo,tipo){
+	
+	if(atributo=='name'){
+		switch(tipo){
+			case 'rut' 		: 	$('[name="'+id+'"]').validCampoFranz('0123456789-k'); 
+								break;
+			case 'numero' 	: 	$('[name="'+id+'"]').validCampoFranz('0123456789');
+								break;
+			case 'letras' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ ');
+								break;
+			case 'todo' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ0123456789 ');
+								break;
+			case 'correo' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
+								break;
+		}
+
+	}else if(atributo=='id'){
+		switch(tipo){
+			case 'rut' 		: 	$('#'+id).validCampoFranz('0123456789-k'); 
+								break;
+			case 'numero' 	: 	$('#'+id).validCampoFranz('0123456789');
+								break;
+			case 'letras' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ ');
+								break;
+			case 'todo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ0123456789 ');
+								break;
+			case 'correo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
+								break;
+		}
+	}
+	
+}
