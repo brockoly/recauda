@@ -7,15 +7,17 @@
           <td align="center">
               <select name="opcionesGestion" id="opcionesGestion">
                   <optgroup label="Tipos de Busqueda">
+                    <option value="0">Seleccione</option>
                     <option value="CtaCorriente">Buscar Cuenta Corriente</option>
                     <option value="Paciente">Buscar Paciente</option>
                   </optgroup>
               </select>
           </td>
-          <td align="center">
-              <input type="text" id="filtroBusqueda">
+          <td align="center" hidden="true" class="tdOcultos">
+              <input type="text" id="filtroBusquedaCta" hidden="true">
+              <input type="text" id="filtroBusquedaPac" hidden="true">
           </td>
-          <td align="center">
+          <td align="center" hidden="true" class="tdOcultos">
               <img src="./include/img/buscar.png" id="btnBusqueda" width="28" height="28" />
           </td>
       </tr>
