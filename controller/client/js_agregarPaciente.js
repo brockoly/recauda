@@ -1,15 +1,7 @@
 $(document).ready(function(){
-
 	validar('txtNombres', 'id','letras');
-	//Variables Banderas
-	var a=0, b=0, c=0, d=0, e=0, f=0, rut = 0, id = 0; //BANDERAS GLOBALES
+	var a=0, b=0, c=0, d=0, e=0, f=0,g=0, rut = 0, id = 0; /*BANDERAS GLOBALES*/
 	calendario('txtFechaNac');
-	/*$("#probar").button().click(function(){
-		alert(rut+" - "+id)
-		var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
-		alert(resPac);
-	});
-*/
 	$("#btnAgregarPacienteModal").button().click(function(){
 		if( $("#txtFechaNac").val()==""){
 			$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -19,13 +11,10 @@ $(document).ready(function(){
 			$(this).removeClass("cajamala" );
 			e=1;
 		}
-		//alert("a="+a+"b="+b+"c="+c+"d="+d+"e="+e+"f="+f);
-		if(a==1 && b==1 && c==1 && d==1 && e==1/* && f==1*/){
+		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && g==1){
 			var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
-			alert(resPac);
 			if(resPac ==0){
 				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rut='+rut);
-				//alert(cont);
 				if(cont ='bien'){ 
 					mensajeUsuario('successMensaje','Exito','Paciente creado exitosamente');
 					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
@@ -39,32 +28,18 @@ $(document).ready(function(){
 		}else{
 			$("#txtApellidoPat").blur();
 			$("#txtApellidoMat").blur();
+			$("#cmbPais").blur();
+			$("#cmbPrevision").blur();
+			$("#cmbInstitucion").blur();
+			mensajeUsuario('alertMensaje','Advertencia','Complete los campos solicitados');
 		}
-		
 	});
 	$('#cmbPais').change(function(){
-		//alert($("#cmbPais option:selected").text());
 		if($("#cmbPais option:selected").text() == 'Chile'){
 			$('#trIdentificador').show();
 			$('#tdRut').remove();
 			$('#tdIdentificador').remove();
-			//$('#txtIdentificadorG').prop("id", "txtRut");
 			$('<td id="tdRut">&nbsp;&nbsp;&nbsp;<input type="text" id="txtRut" name="txtRut" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
-			$('#txtRut').blur(function(){
-				//alert('rut');
-					if( $(this).val()==""){
-						$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-						muestraError('errRut','Rellene los campos');
-						a=0;			
-					}else{				
-						$(this).removeClass("cajamala" );
-						a=1;
-					}
-			});
-			$("#txtRut").focus(function(){
-				$(this).removeClass("cajabuena cajamala");	
-				$('#errRut').attr("title", "").hide("slow");				
-			});
 			$('#txtRut').Rut({
 			   	on_error: function(){  
 							$("#txtRut").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -78,7 +53,29 @@ $(document).ready(function(){
 							},
 	  			format_on: 'keyup'
 			});
-
+			$('#txtRut').blur(function(){
+				if( $(this).val()==""){
+					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+					muestraError('errRut','Rellene los campos');
+					a=0;			
+				}else{
+					if(a==1){
+						var resPac2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
+						if(resPac2!=0){
+							$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+							muestraError('errRut','Identificador ya existente');
+							a=0;			
+						}else{
+							$(this).removeClass("cajamala" );
+							a=1;
+						}
+					}
+				}
+			});
+			$("#txtRut").focus(function(){
+				$(this).removeClass("cajabuena cajamala");	
+				$('#errRut').attr("title", "").hide("slow");				
+			});
 		}else if ($("#cmbPais option:selected").val() > 1){
 			$('#trIdentificador').show();
 			$('#tdIdentificador').remove();
@@ -101,7 +98,6 @@ $(document).ready(function(){
 			});
 		}
 	});
-
 	$('#cmbPrevision').change(function(){
 		if($("#cmbPrevision option:selected").val() == 0){
 			$('#trInstitucion').hide();
@@ -111,9 +107,37 @@ $(document).ready(function(){
 			cargarComboAjax('controller/server/controlador_parametros.php','op=cmbInstitucion'+'&pre_id='+prevision,'#cmbInstitucion');
 		}
 	});
-
-	// VALIDACIONES ONBLUR ------------
-	
+	/*VALIDACIONES ONBLUR ------------*/
+	$("#cmbPais").blur(function(){
+		if( $(this).val()==0){
+			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+			muestraError('errcmbPais','Seleccione país');
+			a=0;			
+		}else{
+			$(this).removeClass("cajamala" );
+			a=1;
+		}
+	});
+	$("#cmbInstitucion").blur(function(){
+		if( $(this).val()==0){
+			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+			muestraError('errcmbInstitucion','Seleccione institucón');
+			g=0;			
+		}else{
+			$(this).removeClass("cajamala" );
+			g=1;
+		}
+	});
+	$("#cmbPrevision").blur(function(){
+		if( $(this).val()==0){
+			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+			muestraError('errcmbPrevision','Seleccione previsión');
+			f=0;			
+		}else{
+			$(this).removeClass("cajamala" );
+			f=1;
+		}
+	});
 	$("#txtNombres").blur(function(){
 		if( $(this).val()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
@@ -158,57 +182,11 @@ $(document).ready(function(){
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errApellidoMat','Mínimo 4 caracteres, Máximo 15 caracteres');
-
 				d=0;
 			}
 		}
 	});
-	/*$("#txtFechaNac").blur(function(){
-		if( $(this).val()==""){
-			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-			muestraError('errFechaNac','Rellene los campos');
-			e=0;			
-		}else{				
-			$(this).removeClass("cajamala" );
-			e=1;
-		}
-	});*/
-	/*$("#txtTelefono").blur(function(){
-		if( $(this).val()==""){
-			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-			muestraError('errTelefono','Rellene los campos');
-			f=0;			
-		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
-				$(this).removeClass("cajamala" );
-				f=1;
-			}else{
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errTelefono','Mínimo 4 caracteres, Máximo 15 caracteres');
-				f=0;
-			}
-		}
-	});*/
-
-	/*$("#txtRut").blur(function(){
-		if( $(this).val()==""){
-			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-			muestraError('errRut','Rellene los campos');
-			a=0;			
-		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
-				$(this).removeClass("cajamala" );
-				a=1;
-			}else{
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errRut','Mínimo 4 caracteres, Máximo 15 caracteres');
-				a=0;
-			}
-		}
-	});*/
-
-	// VALIDACIONES ONFOCUS ------------------------------
-
+	/*VALIDACIONES ONFOCUS ------------------------------*/
 	$("#txtNombres").focus(function(){
 		$(this).removeClass("cajabuena cajamala");	
 		$('#errNombres').attr("title", "").hide("slow");				
@@ -228,5 +206,17 @@ $(document).ready(function(){
 	$("#txtTelefono").focus(function(){
 		$(this).removeClass("cajabuena cajamala");	
 		$('#errTelefono').attr("title", "").hide("slow");				
+	});
+	$("#cmbPais").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errcmbPais').attr("title", "").hide("slow");				
+	});
+	$("#cmbInstitucion").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errcmbInstitucion').attr("title", "").hide("slow");				
+	});
+	$("#cmbPrevision").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errcmbPrevision').attr("title", "").hide("slow");				
 	});
 });

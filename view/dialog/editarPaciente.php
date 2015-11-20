@@ -1,5 +1,5 @@
 <?php
-	//LLAMADA DE CLASES
+	/*LLAMADA DE CLASES*/
 	session_start();
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 	require_once('../../class/Paciente.class.php'); $objPac = new Paciente(); 
@@ -7,15 +7,13 @@
 	require_once('../../class/Prevision.class.php'); $objPrev = new Prevision();
 	require_once('../../class/Nacionalidad.class.php'); $objNac = new Nacionalidad();
 	require_once('../../class/Institucion.class.php'); $objIns = new Institucion();
-	
-	//LLAMADA DE METODOS.
+	/*LLAMADA DE METODOS.*/
 	$objCon->db_connect();
 	$objPac->setPaciente($_POST['pac_id']);
 	$datos = $objPac->getInformacionPaciente($objCon);
 	$nacionalidades = $objNac->obtenerNacionalidades($objCon);
 	$previsiones = $objPrev->obtenerPrevisiones($objCon);
 	$instituciones = $objIns->obtenerInstituciones($objCon);
-	//highlight_string(print_r($datos,true));
 	$objCon=null;
 	$fecha = date("d-m-Y");
 ?>
@@ -47,20 +45,6 @@
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtTelefono"  name="txtTelefono" value="<?=$datos[0]['per_telefono']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
 				</tr>
 				<tr>
-				<td>País:</td>
-					<td>&nbsp;&nbsp;
-						<select id="cmbPais" name="cmbPais">
-							<option>Seleccione País</option>
-						<?
-						for($i=0; $i<count($nacionalidades); $i++){ ?>
-								<option value="<?= $nacionalidades[$i]['nac_id']?>" <? if($datos[0]['nac_id']==$nacionalidades[$i]['nac_id']) {echo "selected";} ?> ><?= $nacionalidades[$i]['nac_nombre']?></option>
-						<?
-							} 
-						?>
-							
-						</select>&nbsp;&nbsp;<img src="./include/img/Information.png" id="errcmbPais" hidden="true"  />
-					</td>
-				</tr>
 				<tr>
 					<td>Previsión:</td>
 					<td>&nbsp;&nbsp;
@@ -72,7 +56,6 @@
 						<?
 							} 
 						?>
-							
 						</select>
 					&nbsp;&nbsp;<img src="./include/img/Information.png" id="errcmbPrevision" hidden="true"  />
 					</td>
@@ -98,5 +81,3 @@
 		</br>
 		<center><input type="button" id="btnEditarPaciente" value="Modificar Paciente"/></center>
 </form>
-
-

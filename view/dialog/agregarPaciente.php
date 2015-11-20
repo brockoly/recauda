@@ -43,7 +43,7 @@
 			<td>País *</td>
 			<td>&nbsp;&nbsp;
 				<select id="cmbPais" name="cmbPais">
-					<option>Seleccione País</option>
+					<option value="0">Seleccione País</option>
 				<?
 				for($i=0; $i<count($nacionalidades); $i++){ ?>
 						<option value="<?= $nacionalidades[$i]['nac_id']?>"><?= $nacionalidades[$i]['nac_nombre']?></option>

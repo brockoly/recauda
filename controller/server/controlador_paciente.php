@@ -7,9 +7,6 @@
 	require_once('../../class/Prevision.class.php'); 
 	require_once('../../class/Institucion.class.php'); 
 	require_once('../../class/Nacionalidad.class.php'); 
-
-
-
 	switch($_POST['op']) {
 		case 'agregarPaciente': // Agrega paciente y sus datos personales asociados
 								$objCon = new Conectar();
@@ -20,30 +17,25 @@
 								$objInst = new Institucion;
 								$objNac = new Nacionalidad;
 								$objCon->db_connect();
-
 								if($_POST['cmbPais']==1){
 									$per_id	= $objUti->valida_rut($_POST['rut']);
 								}else{
 									$per_id	= $_POST['txtIdentificador'];
 								}
-								
 								$per_nombre	= $_POST['txtNombres'];
 								$per_apellidoPaterno	= $_POST['txtApellidoPat'];
 								$per_apellidoMaterno	= $_POST['txtApellidoMat'];
 								$per_fechaNacimiento	= $objUti->cambiarfecha_mysql($_POST['txtFechaNac']);
-
 								if($_POST['txtTelefono'] ==""){
 									$per_telefono = 0;
 								}else{
 									$per_telefono = $_POST['txtTelefono'];
 								}
-
 								$per_procedencia = $_POST['cmbPais'];
 								$pac_id = $objPac->nuevoPac_id($objCon);
 								$pre_id = $_POST['cmbPrevision']; 
 								$ins_id = $_POST['cmbInstitucion'];
 								$nac_id = $_POST['cmbPais'];
-
 								try{
 							 		$objCon->beginTransaction();
 									$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia);
@@ -68,26 +60,21 @@
 								$objInst = new Institucion;
 								$objNac = new Nacionalidad;
 								$objCon->db_connect();
-
-															
 								$per_nombre	= $_POST['txtNombres'];
 								$per_apellidoPaterno	= $_POST['txtApellidoPat'];
 								$per_apellidoMaterno	= $_POST['txtApellidoMat'];
 								$per_fechaNacimiento	= $objUti->cambiarfecha_mysql($_POST['txtFechaNac']);
-
 								if($_POST['txtTelefono'] ==0){
 									$per_telefono = 0;
 								}else{
 									$per_telefono = $_POST['txtTelefono'];
 								}
-
 								$per_procedencia = $_POST['cmbPais'];
 								$per_id = $_POST['per_id'];
 								//$pac_id = $objPac->nuevoPac_id($objCon);
 								$pre_id = $_POST['cmbPrevision']; 
 								$ins_id = $_POST['cmbInstitucion'];
 								$nac_id = $_POST['cmbPais'];
-
 								try{
 								 		$objCon->beginTransaction();
 										$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia);
@@ -116,6 +103,20 @@
 									$per_id = $txtIdentificador;
 								}
 								echo $res = $objPac->buscarPaciente($objCon, $per_id);
+								break;
+		case "eliminarPaciente": 
+								$objCon = new Conectar();
+								$objPac= new Paciente();
+								$objCon->db_connect();
+								try{
+							 		$objCon->beginTransaction();
+							 		$objPac->eliminarPaciente($objCon, $_POST['pac_id']);
+							 		$objCon->commit();
+							 		echo "<b>Paciente eliminado con exito</b>";					 		
+							 	} catch (PDOException $e){
+						 			$objCon->rollBack(); 
+						 			$e->getMessage();
+							 	}
 								break;
 	}
 ?>

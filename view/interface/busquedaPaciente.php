@@ -30,16 +30,19 @@
             </thead>
             	<?
             		for ($i=0; $i<count($pacientes); $i++) { ?> 
-            			<tr>
-			              <td><?= $objUtil->formatRut($pacientes[$i]['Identificador'])?></td>
-			              <td><?= $pacientes[$i]['Nombre']?></td>
-			              <td><?= $pacientes[$i]['Apellido_Paterno']?></td>
-			              <td><?= $pacientes[$i]['Apellido_Materno']?></td>
-			              <td><?= $objUtil->cambiarfecha_mysql_a_normal($pacientes[$i]['fecha_nac'])?></td>
-			              <td><?= $pacientes[$i]['Nacionalidad']?></td>
-			              <td><img name="btnEditar" title="Editar Nacionalidad" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarPaciente.php','pac_id=<?=$pacientes[$i]['pac_id']?>','auto','auto','Editar Paciente','modalEditarPaciente')" style="cursor: pointer;"/>
-							&nbsp;&nbsp;&nbsp;</td>
-			            </tr>
+					<tr>
+						<td><? if($pacientes[$i]['Nacionalidad']=='Chile'){echo $objUtil->formatRut($pacientes[$i]['Identificador']);}else{echo $pacientes[$i]['Identificador'];}?></td>
+						<td><?= $pacientes[$i]['Nombre']?></td>
+						<td><?= $pacientes[$i]['Apellido_Paterno']?></td>
+						<td><?= $pacientes[$i]['Apellido_Materno']?></td>
+						<td><?= $objUtil->cambiarfecha_mysql_a_normal($pacientes[$i]['fecha_nac'])?></td>
+						<td><?= $pacientes[$i]['Nacionalidad']?></td>
+						<td>
+						<img name="btnEditar" title="Editar Nacionalidad" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarPaciente.php','pac_id=<?=$pacientes[$i]['pac_id']?>','auto','auto','Editar Paciente','modalEditarPaciente')" style="cursor: pointer;"/>
+						<img title="Eliminar Paciente" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a eliminar al paciente, ¿Desea continuar?','./controller/server/controlador_paciente.php','pac_id=<?=$pacientes[$i]['pac_id']?>&op=eliminarPaciente','view/interface/busquedaPaciente.php','','#contenidoCargado')" style="cursor: pointer;"/>
+						&nbsp;&nbsp;&nbsp;
+						</td>
+					</tr>
             		<? }
             	?>
             
