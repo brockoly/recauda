@@ -61,8 +61,8 @@
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
-			INNER JOIN nacionalidad_persona ON persona.per_id = nacionalidad_persona.per_id
-			INNER JOIN nacionalidad ON nacionalidad_persona.nac_id = nacionalidad.nac_id";
+			INNER JOIN nacionalidad ON persona.per_procedencia = nacionalidad.nac_id
+			WHERE paciente.pacEstado = '0'";
 		$datos = array();
 		$i = 0;
 		foreach ($objCon->consultaSQL($sql,'Error desplegarPacientes') as $v) {
@@ -128,5 +128,12 @@
 				}
 	 	return $datos;
 	 }
+	function eliminarPaciente($objCon,$pac_id){
+		$sql="UPDATE paciente
+		  SET paciente.pacEstado=1
+		  WHERE paciente.pac_id='$pac_id'";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarPaciente');
+		return $rs;
+	}
 }
 ?>
