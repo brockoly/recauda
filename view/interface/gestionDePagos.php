@@ -10,15 +10,15 @@
                     <option value="0">Seleccione</option>
                     <option value="CtaCorriente">Buscar Cuenta Corriente</option>
                     <option value="Paciente">Buscar Paciente</option>
+                    <option value="Identificador">N° Identificador</option>
                   </optgroup>
               </select>
           </td>
           <td align="center" hidden="true" class="tdOcultos">
-              <input type="text" id="filtroBusquedaCta" hidden="true">
-              <input type="text" id="filtroBusquedaPac" hidden="true">
+              <div class="inputs"></div><center><div class="divOcultos"><input type="checkbox" id="extranjero" value="1">Extranjero</div></center>
           </td>
           <td align="center" hidden="true" class="tdOcultos">
-              <img src="./include/img/buscar.png" id="btnBusqueda" width="28" height="28" />
+              <img src="./include/img/buscar.png" id="btnBusqueda" width="32" height="32" />
           </td>
       </tr>
 </table>
