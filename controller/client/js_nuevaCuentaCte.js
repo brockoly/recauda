@@ -3,9 +3,11 @@ $(document).ready(function(){
 	extranjero="";
 	identificador=0;
 	bandera=0;
+	buscar=0;
 	
 	$("#extranjero").on( 'change', function() {
-	    if($(this).is(':checked')) {	       
+	    if($(this).is(':checked')) {
+	    	$("#filtroBusquedaIde").removeClass("cajamala" );       
 	       	$( "#filtroBusquedaIde").off();
 	       	rut=$('#filtroBusquedaIde').val(); 
 	       	$('#filtroBusquedaIde').val("");
@@ -18,13 +20,14 @@ $(document).ready(function(){
 	    	extranjero=$('#filtroBusquedaIde').val(); 
 	    	$('#filtroBusquedaIde').Rut({
 			   	on_error: function(){  
-							//$("#filtroBusquedaIde").removeClass("cajabuena" ).addClass( "cajamala" );
+							$("#filtroBusquedaIde").removeClass("cajabuena" ).addClass( "cajamala" );
 							//muestraError('errRut','El rut ingresado es incorrecto');
 							//a=0;
 							//rut=0;
 							bandera=0;
 						  },
 	  			on_success: function(){
+	  						$("#filtroBusquedaIde").removeClass("cajamala" );
 	  						rut=$("#filtroBusquedaIde").val();
 							identificador=$.Rut.quitarFormato($("#filtroBusquedaIde").val());
 							bandera=1;
@@ -39,25 +42,25 @@ $(document).ready(function(){
 	  change: function( event, ui ) {
 	  	switch($("#opcionesCuenta").val()){
 	 		case "Paciente":
-	 				$('<input type="text" id="filtroBusquedaPac" name="filtroBusquedaPac" />').appendTo('.inputs');
-	 				$(".tdOcultos").show('slow');
-	 				$("#filtroBusquedaCta").remove();
+	 				$("#filtroBusquedaPac").remove();
 	 				$("#filtroBusquedaIde").remove();
+	 				$('<input type="text" placeholder="Mínimo 3 Caracteres" class="inputValidar" id="filtroBusquedaPac" name="filtroBusquedaPac" />').appendTo('.inputs');
+	 				$(".tdOcultos").show('slow');	 				
 	 				$(".divOcultos").hide();
 	 				$("#extranjero").prop('checked', false);
 	 				validar('filtroBusquedaPac', 'id','letras');		
 	 			break;
 	 		case "Identificador":
-	 				$('<input type="text" value="'+rut+'" id="filtroBusquedaIde" name="filtroBusquedaIde" style="margin-top: 20px;"/>').appendTo('.inputs');
+	 				$("#filtroBusquedaPac").remove();
+	 				$("#filtroBusquedaIde").remove();
+	 				$('<input type="text" placeholder="Ej: xx.xxx.xxx-x" class="inputValidar" value="'+rut+'" id="filtroBusquedaIde" name="filtroBusquedaIde" style="margin-top: 20px;"/>').appendTo('.inputs');
 	 				$(".divOcultos").show('slow');
 	 				$(".tdOcultos").show('slow');
-	 				$("#filtroBusquedaCta").remove();
-	 				$("#filtroBusquedaPac").remove();
 	 				$("#extranjero").prop('checked', false);
 	 				validar('filtroBusquedaIde', 'id','rut');
 					$('#filtroBusquedaIde').Rut({
 							   	on_error: function(){  
-											//$("#filtroBusquedaIde").removeClass("cajabuena" ).addClass( "cajamala" );
+											$("#filtroBusquedaIde").removeClass("cajabuena" ).addClass( "cajamala" );
 											//muestraError('errRut','El rut ingresado es incorrecto');
 											//a=0;
 											//rut=0;
@@ -67,6 +70,7 @@ $(document).ready(function(){
 					  						rut=$("#filtroBusquedaIde").val();
 											identificador=$.Rut.quitarFormato($("#filtroBusquedaIde").val());
 											bandera=1;
+											$("#filtroBusquedaIde").removeClass("cajamala" );
 											//a=1;
 											},
 					  			format_on: 'keyup'
@@ -80,24 +84,30 @@ $(document).ready(function(){
 	 				$(".divOcultos").hide();
 	 				$("#extranjero").prop('checked', false);
 	 			break;
-	 	}	  	
+	 	}
+	 			  	
 	  }
 	});
 
 	$("#btnBusqueda").button().click(function(){
-	 	switch($("#opcionesCuenta").val()){
-	 		case "Paciente":
-	 				cargarContenido('view/interface/busquedaNuevaCtaCorriente.php','Paciente='+$("#filtroBusquedaPac").val(),'#contenidoBuscado');
-	 			break;
-	 		case "Identificador":
-	 				if(bandera==1){
-	 					cargarContenido('view/interface/busquedaNuevaCtaCorriente.php','Identificador='+identificador,'#contenidoBuscado');
-	 				}else{
-	 					cargarContenido('view/interface/busquedaNuevaCtaCorriente.php','Identificador='+$("#filtroBusquedaIde").val(),'#contenidoBuscado');	 					
-	 				}	 				
-	 			break;
-	 	}		
+		if($(".inputValidar").val().length>2){
+		 	switch($("#opcionesCuenta").val()){
+		 		case "Paciente":
+		 				cargarContenido('view/interface/busquedaNuevaCtaCorriente.php','Paciente='+$("#filtroBusquedaPac").val(),'#contenidoBuscado');
+						$(".inputValidar").removeClass("cajamala" );
+		 			break;
+		 		case "Identificador":
+		 				if(bandera==1){
+		 					cargarContenido('view/interface/busquedaNuevaCtaCorriente.php','Identificador='+identificador,'#contenidoBuscado');
+		 				} 				
+		 			break;
+		 	}
+		}else{
+			$(".inputValidar").removeClass("cajabuena" ).addClass( "cajamala" );
+ 		}		
 	});	
+
+	
 });
 
 	

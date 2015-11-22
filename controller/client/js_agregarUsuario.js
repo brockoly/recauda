@@ -22,7 +22,7 @@ $(document).ready(function(){
 			f=1;
 		}	
 		
-		alert("a="+a+"b="+b+"c="+c+"d="+d+"e="+e+"f="+f+"o="+o+"z="+z)
+		//alert("a="+a+"b="+b+"c="+c+"d="+d+"e="+e+"f="+f+"o="+o+"z="+z)
 		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && o==1 && z==1){
 			var res = retornarJson('./controller/server/controlador_usuario.php',$("#frmAgregarUsuario").serialize()+"&op=agregarUsuario&rut="+rut);
 			//alert(res);
@@ -90,7 +90,12 @@ $(document).ready(function(){
 						mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, El usuario ingresado ya existe pero en estado desactivado, ¿Desea Activarlo Nuevamente?','./controller/server/controlador_usuario.php','usu_nombre='+$("#txtUsuario").val()+'&op=restaurarUsuario','view/interface/busquedaUsuario.php','','#contenidoCargado','modalAgregarUsuario');
 						muestraError('errUsuario',"El usuario ingresado ya existe pero está desactivado, vaya al mantenedor y activelo nuevamente.");
 					}else{ 
-						if(res!=""){ muestraError('errUsuario',res);}else{a=1;}
+						if(res!=""){ 
+							muestraError('errUsuario',res);
+							$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+						}else{
+							a=1;
+						}
 					}
 					
 				}else{
