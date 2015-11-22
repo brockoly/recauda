@@ -6,6 +6,10 @@
 	$objCon->db_connect();
 	$productos = $objPro->tipoProducto($objCon);
 	$objCon=null;
+	if(count($productos) ==0){ ?>
+		<label style="color: red; border-color: 1px solid black;">No hay tipos de productos, porfavor agregue uno para comenzar</label>
+		<br/>
+	<? }else{
 ?>
 <script type="text/javascript" src="controller/client/js_agregarProducto.js"></script>
 <fieldset style="width: 400px;"><legend>Datos Producto</legend>
@@ -92,6 +96,7 @@
 		</tr>
 </table>
 </center><br><br>
-<center><input type="button" id="btnAgregarProducto" value="Agregar Producto"/></center>
+<center><input type="button" id="btnAddProducto" value="Agregar Producto"/></center>
 <br><br>
 </fieldset>
+<? }?>

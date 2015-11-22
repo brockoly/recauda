@@ -1,7 +1,5 @@
 $(document).ready(function(){
-
-	$("#btnBuscar").button().click(function(){
-
-		
-	})
+	$('#btnAgregarProducto').button();
+	$('#btnAgregarTipoProducto').button();
+	tabla('tblProductos');
 });

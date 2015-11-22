@@ -4,13 +4,6 @@
 	$usuario = new Usuario();
 ?>
 <script type="text/javascript" src="controller/client/js_busqudaProducto.js"></script>
-<script>
-$(document).ready(function(){
-	$("#tabs").tabs();
-	$("#btnAgregarProducto").button();	
-	tabla('caca');
-});  
-</script>
 <center><h3>Listado de producto</h3></center>
 <!--
 <fieldset style="width:300px;"><legend>Busqueda de Usuario</legend>
@@ -19,10 +12,11 @@ $(document).ready(function(){
 </table>
 </fieldset><br><br>
 -->
-<div id="btnAgregarProducto" onclick="ventanaModal('./view/dialog/agregarProducto','','auto','auto','Registro de Producto','modalAgregarProducto')"><img src="./include/img/mas.png" width="25" height="25" id="btnAgregarProducto" onclick="ventanaModal('./view/dialog/agregarProducto','','auto','auto','Registro de Producto','modalAgregarProducto')"> Agregar Producto</div>
+<div id="btnAgregarTipoProducto" onclick="ventanaModal('./view/dialog/agregarTipoProducto','','auto','auto','Registro De Tipo De Producto','modalAgregarProducto')"><img src="./include/img/tipo_producto.png" width="25" height="25"> Tipo</div>
+<div id="btnAgregarProducto" onclick="ventanaModal('./view/dialog/agregarProducto','','auto','auto','Registro De Producto','modalAgregarProducto')"><img src="./include/img/mas.png" width="25" height="25"> Producto</div>
 <br><br>
 <center>
-	<table class="display" width="100%" id="caca">
+	<table class="display" width="100%" id="tblProductos">
             <thead>
 	            <tr>
 	              <th width="10%">N°</th>
