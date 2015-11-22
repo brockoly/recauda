@@ -2,7 +2,7 @@
 	class Paciente{
 
 	private $pac_id;
-	private $id;
+	private $pac_estado;
 
 	 function setPaciente($pac_id){
 	 		$this->pac_id=$pac_id;
