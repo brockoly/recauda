@@ -58,7 +58,6 @@
 								$objPac= new Paciente();
 								$objPrev = new Prevision;
 								$objInst = new Institucion;
-								$objNac = new Nacionalidad;
 								$objCon->db_connect();
 								$per_nombre	= $_POST['txtNombres'];
 								$per_apellidoPaterno	= $_POST['txtApellidoPat'];
@@ -74,15 +73,12 @@
 								//$pac_id = $objPac->nuevoPac_id($objCon);
 								$pre_id = $_POST['cmbPrevision']; 
 								$ins_id = $_POST['cmbInstitucion'];
-								$nac_id = $_POST['cmbPais'];
 								try{
 								 		$objCon->beginTransaction();
 										$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia);
 										$objPac->setPaciente($pac_id);		
-										$objNac->setNacionalidad($nac_id,'');
 										$objPer->modificarPersona($objCon);
 										$objPac->actualizarPaciente($objCon, $pre_id, $per_id, $ins_id);
-										$objNac->actualizarNacionalidad($objCon, $per_id);
 								 		$objCon->commit();
 								 		echo "bien";						 		
 								 	} catch (PDOException $e){
@@ -113,6 +109,20 @@
 							 		$objPac->eliminarPaciente($objCon, $_POST['pac_id']);
 							 		$objCon->commit();
 							 		echo "<b>Paciente eliminado con exito</b>";					 		
+							 	} catch (PDOException $e){
+						 			$objCon->rollBack(); 
+						 			$e->getMessage();
+							 	}
+								break;
+		case "restaurarPaciente": 
+								$objCon = new Conectar();
+								$objPac= new Paciente();
+								$objCon->db_connect();
+								try{
+							 		$objCon->beginTransaction();
+							 		$objPac->restaurarPaciente($objCon, $_POST['pac_id']);
+							 		$objCon->commit();
+							 		echo "<b>Paciente restaurado con exito</b>";					 		
 							 	} catch (PDOException $e){
 						 			$objCon->rollBack(); 
 						 			$e->getMessage();

@@ -49,8 +49,8 @@
 		}
 		return $datos;
 	}
-	 function desplegarPacientes($objCon){
-	 	$sql="SELECT
+	function desplegarPacientes($objCon){
+		$sql="SELECT
 			persona.per_id AS Identificador,
 			persona.per_nombre AS Nombre,
 			persona.per_apellidoPaterno AS Apellido_Paterno,
@@ -76,7 +76,35 @@
 			$i++;
 		}
 		return $datos;
-	 }
+	}
+	function desplegarPacientesEliminados($objCon){
+		$sql="SELECT
+			persona.per_id AS Identificador,
+			persona.per_nombre AS Nombre,
+			persona.per_apellidoPaterno AS Apellido_Paterno,
+			persona.per_apellidoMaterno AS Apellido_Materno,
+			persona.per_fechaNacimiento AS fecha_nac,
+			nacionalidad.nac_nombre AS Nacionalidad,
+			paciente.pac_id
+			FROM
+			persona
+			INNER JOIN paciente ON persona.per_id = paciente.per_id
+			INNER JOIN nacionalidad ON persona.per_procedencia = nacionalidad.nac_id
+			WHERE paciente.pacEstado = '1'";
+		$datos = array();
+		$i = 0;
+		foreach ($objCon->consultaSQL($sql,'Error desplegarPacientes') as $v) {
+			$datos[$i][Identificador]= $v['Identificador'];
+			$datos[$i][Nombre]= $v['Nombre'];
+			$datos[$i][Apellido_Paterno]= $v['Apellido_Paterno'];
+			$datos[$i][Apellido_Materno]= $v['Apellido_Materno'];
+			$datos[$i][fecha_nac]= $v['fecha_nac'];
+			$datos[$i][Nacionalidad]= $v['Nacionalidad'];
+			$datos[$i][pac_id]= $v['pac_id'];
+			$i++;
+		}
+		return $datos;
+	}
 	 function nuevoPac_id($objCon){
 	 	$sql="SELECT
 			COUNT(paciente.pac_id)+1 AS MAX
@@ -133,6 +161,13 @@
 		  SET paciente.pacEstado=1
 		  WHERE paciente.pac_id='$pac_id'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarPaciente');
+		return $rs;
+	}
+	function restaurarPaciente($objCon,$pac_id){
+		$sql="UPDATE paciente
+		  SET paciente.pacEstado=0
+		  WHERE paciente.pac_id='$pac_id'";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarPaciente');
 		return $rs;
 	}
 }
