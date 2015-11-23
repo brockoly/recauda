@@ -34,5 +34,48 @@ class Cuenta_Corriente{
 		    }
 			return $datos;		 	
 		}
+
+		function buscarCuentaSola($objCon, $pac_nombre, $cuenta_id, $pac_id, $per_id){
+		 	$datos = array();
+			$i=0;
+			$sql =" SELECT
+						cuenta_corriente.cue_id,
+						persona.per_id,
+						persona.per_nombre,
+						persona.per_apellidoPaterno,
+						persona.per_apellidoMaterno,
+						nacionalidad.nac_nombre
+					FROM cuenta_corriente
+					LEFT JOIN paciente ON cuenta_corriente.pac_id = paciente.pac_id
+					LEFT JOIN persona ON paciente.per_id = persona.per_id
+					LEFT JOIN nacionalidad_persona ON nacionalidad_persona.per_id = persona.per_id
+					LEFT JOIN nacionalidad ON nacionalidad_persona.nac_id = nacionalidad.nac_id
+			";
+			if(empty($cuenta_id)==false){
+				$sql.=" WHERE cuenta_corriente.cue_id = '$cuenta_id'";
+			}else{ 
+				if(empty($pac_nombre)==false){ 
+					$sql.=" WHERE CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ', per_apellidoMaterno) LIKE REPLACE('%$pac_nombre%', ' ', '%')";
+				}else{ 
+					if(empty($pac_id)==false){
+						$sql.=" WHERE paciente.pac_id = '$pac_id'";
+					}else{
+						$sql.=" WHERE persona.per_id = '$per_id'";
+					}
+				 	
+				}
+			}
+				
+		 	foreach($objCon->consultaSQL($sql, 'ERROR buscarCuentaSola') as $v) {
+					$datos[$i]['cue_id']=$v['cue_id'];
+					$datos[$i]['per_id']=$v['per_id'];
+					$datos[$i]['per_nombre']=$v['per_nombre'];
+					$datos[$i]['per_apellidoPaterno']=$v['per_apellidoPaterno'];
+					$datos[$i]['per_apellidoMaterno']=$v['per_apellidoMaterno'];
+					$datos[$i]['Nacionalidad']=$v['nac_nombre'];
+					$i++;
+			}
+		 	return $datos;
+		 }
 }
 ?>

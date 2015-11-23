@@ -425,6 +425,8 @@ function validar(id, atributo,tipo){
 								break;
 			case 'letras' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ ');
 								break;
+			case 'letrasUsuario' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ');
+								break;
 			case 'todo' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ0123456789 ');
 								break;
 			case 'correo' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
@@ -438,6 +440,8 @@ function validar(id, atributo,tipo){
 			case 'numero' 	: 	$('#'+id).validCampoFranz('0123456789');
 								break;
 			case 'letras' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ ');
+								break;
+			case 'letrasUsuario' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ');
 								break;
 			case 'todo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ0123456789 ');
 								break;

@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	//Variables Banderas	
 	var a=0,b=0,c=0,d=0,e=0,f=0,g=0, o=0, z=0, rut=0; //BANDERAS GLOBALES
-	validar('txtUsuario', 'id' ,'letras');
+	validar('txtUsuario', 'id' ,'letrasUsuario');
 	validar('txtCorreo', 'id' ,'correo');
 	validar('txtIdentificador', 'id' ,'rut');
 	validar('txtNombre', 'id' ,'letras');

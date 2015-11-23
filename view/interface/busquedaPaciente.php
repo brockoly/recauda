@@ -31,7 +31,8 @@
             	<?
             		for ($i=0; $i<count($pacientes); $i++) { ?> 
             			<tr>
-			              <td><?= $objUtil->formatRut($pacientes[$i]['Identificador'])?></td>
+            			
+			              <td><? if($pacientes[$i]['Nacionalidad']=='Chile'){echo $objUtil->formatRut($pacientes[$i]['Identificador']);}else{echo $pacientes[$i]['Identificador'];}?></td>
 			              <td><?= $pacientes[$i]['Nombre']?></td>
 			              <td><?= $pacientes[$i]['Apellido_Paterno']?></td>
 			              <td><?= $pacientes[$i]['Apellido_Materno']?></td>

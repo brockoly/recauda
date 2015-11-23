@@ -7,10 +7,10 @@
 	$objPac = new Paciente(); 
 	$objCon->db_connect();	
 	if(isset($_POST['Paciente']) && $_POST['Paciente']!=""){
-		$datos=$objPac->getInformacionPaciente($objCon,'',$_POST['Paciente']);
+		$datos=$objPac->getInformacionPaciente($objCon,'',$_POST['Paciente'],'');
 	}	
 	if(isset($_POST['Identificador']) && $_POST['Identificador']!=""){
-		$datos=$objPac->getInformacionPaciente($objCon,$objUtil->valida_rut($_POST['Identificador']),'');
+		$datos=$objPac->getInformacionPaciente($objCon,$objUtil->valida_rut($_POST['Identificador']),'','');
 	}
 	$objCon=null;
 ?>

@@ -11,7 +11,7 @@
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
 	$objPac->setPaciente($_POST['pac_id']);
-	$datos = $objPac->getInformacionPaciente($objCon,"","");
+	$datos = $objPac->getInformacionPaciente($objCon,"","", "");
 	$nacionalidades = $objNac->obtenerNacionalidades($objCon);
 	$previsiones = $objPrev->obtenerPrevisiones($objCon);
 	$instituciones = $objIns->obtenerInstituciones($objCon);

@@ -11,7 +11,7 @@
 						try{
 								$objCon->db_connect();
 								$objPac->setPaciente($_SESSION['pac_id']);
-								$paciente = $objPac->getInformacionPaciente($objCon, "", "");								
+								$paciente = $objPac->getInformacionPaciente($objCon, "", "", "");								
 						 		$objCon->beginTransaction();
 						 		$cue_id=$objCta->buscarMaximoId($objCon);
 								$objCta->setCuenta_Corriente($cue_id, $_POST['unidadOrigen'], date("Y-m-d"));	

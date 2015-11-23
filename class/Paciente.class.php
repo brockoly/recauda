@@ -91,7 +91,7 @@
 	 	return $datos;
 	 }
 
-	 function getInformacionPaciente($objCon, $per_id, $pac_nombre){
+	 function getInformacionPaciente($objCon, $per_id, $pac_nombre, $cue_id){
 	 	$datos = array();
 		$i=0;
 	 	$sql ="SELECT
@@ -116,8 +116,12 @@
 		}else{ 
 			if(empty($pac_nombre)==false){ 
 				$sql.=" WHERE CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ', per_apellidoMaterno) LIKE REPLACE('%$pac_nombre%', ' ', '%')";
-			}else{ 
-			 	$sql.=" WHERE paciente.pac_id = '$this->pac_id'";
+			}else{
+				if(empty($cue_id)==false){
+					$sql.=" WHERE paciente.pac_id IN (SELECT cuenta_corriente.pac_id FROM cuenta_corriente WHERE cue_id = $cue_id)";
+				}else{
+			 		$sql.=" WHERE paciente.pac_id = '$this->pac_id'";
+			 	}
 			}
 		}
 			
