@@ -370,6 +370,26 @@ function tabla(id){
 		}														
 	});
 }
+function tablaMinima(id){
+	$('#'+id+'').DataTable({
+	"sPaginationType": "full_numbers",
+		"language": {
+			"lengthMenu": "Mostrar _MENU_ Resultados por pagina.",
+			"zeroRecords": "0 resultados de busqueda.",
+			"info": "Mostrando pagina _PAGE_ de _PAGES_",
+			"infoEmpty": "Sin resultados disponibles",
+			"infoFiltered": "",
+			"search": "Buscar",
+			"searchPlaceholder": "Buscar...",
+			"paginate": {
+			  "first": "Primera Pagina",
+			  "last":  "Ultima pagina",
+			  "previous": "Atras",
+			  "next": "Siguiente"
+			}
+		}														
+	});
+}
 function muestraError(div, mensaje){
 	$('#'+div).tooltip();
 	$('#'+div).attr("title", mensaje).show('500');
