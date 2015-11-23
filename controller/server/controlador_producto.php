@@ -7,7 +7,7 @@
 		case "editarTipo":
 			$objPro->setProducto($_POST['tip_descripcion'],$_POST['tip_prod_id']);				
 			$objCon->db_connect();
-			$producto=$objPro->buscarProducto($objCon);
+			$producto=$objPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
 				try{
 			 		$objCon->beginTransaction();
@@ -23,9 +23,9 @@
 		break;
 
 		case "agregarTipo":
-			$objPro->setProducto($_POST['tip_descripcion']);				
+			$objPro->setProducto($_POST['tip_descripcion'],'');				
 			$objCon->db_connect();
-			$producto=$objPro->buscarProducto($objCon);
+			$producto=$objPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
 				try{
 			 		$objCon->beginTransaction();

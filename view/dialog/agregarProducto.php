@@ -4,7 +4,7 @@
 	require_once('../../class/Producto.class.php'); $objPro = new Producto();
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
-	$productos = $objPro->tipoProducto($objCon);
+	$productos = $objPro->listarTipoProducto($objCon);
 	$objCon=null;
 	if(count($productos) ==0){ ?>
 		<label style="color: red; border-color: 1px solid black;">No hay tipos de productos, porfavor agregue uno para comenzar</label>

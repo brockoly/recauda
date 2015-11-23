@@ -4,7 +4,7 @@
 	require_once('../../class/Producto.class.php'); $objPro = new Producto();
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
-	$tipoProducto = $objPro->tipoProducto($objCon);
+	$tipoProducto = $objPro->listarTipoProducto($objCon);
 	$tipoProdcutoEliminados = $objPro->tipoProductoEliminado($objCon);
 	$objCon=null;
 ?>

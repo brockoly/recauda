@@ -48,7 +48,7 @@ class Producto{
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarTipoProducto');
 	 	return $rs;
 	}
-	function buscarProducto($objCon){//
+	function buscarTipoProducto($objCon){//
 	 	if(is_null($this->tip_prod_id)==false){
 	 		$cadena_id = " AND tip_prod_id NOT IN ('$this->tip_prod_id') ";
 	 	}
@@ -56,7 +56,7 @@ class Producto{
 			  FROM tipo_producto
 			  WHERE tip_descripcion='$this->tip_descripcion'".$cadena_id."  ";
 		$i=0;
-		foreach ($objCon->consultaSQL($sql, 'ERROR buscarProducto') as $v) {
+		foreach ($objCon->consultaSQL($sql, 'ERROR buscarTipoProducto') as $v) {
 			$datos=$v['tip_descripcion'];
 			$i++;
 	    }
@@ -72,7 +72,7 @@ class Producto{
 
 
 	 }
-	 function tipoProducto($objCon){
+	 function listarTipoProducto($objCon){
 	 	$sql ="SELECT
 			tipo_producto.tip_prod_id,
 			tipo_producto.tip_descripcion
@@ -80,7 +80,7 @@ class Producto{
 			WHERE tipo_producto.tip_pro_estado='0'";
 	 	$datos = array();
 			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR tipoProducto') as $v) {
+			foreach ($objCon->consultaSQL($sql, 'ERROR listarTipoProducto') as $v) {
 				$datos[$i][tip_prod_id]=$v['tip_prod_id'];
 				$datos[$i][tip_descripcion]=$v['tip_descripcion'];
 				$i++;
