@@ -1,8 +1,7 @@
 $(document).ready(function(){
 	tablaMinima('tblTipoProducto');
 	tablaMinima('tblTipoProductoEliminado');
-	var contadorId = 0;	
-	$('.btnNuevaMedida').remove();
+	var contadorId = 0;
 	$('#chkUM').click(function(){
 		if($('#chkUM').prop('checked')==true){
 			contadorId++;
@@ -12,13 +11,12 @@ $(document).ready(function(){
 		}else{
 			$('#chkUM').val('0');
 			$('#tblUM').remove();
-			$('.btnNuevaMedida').remove();
 			contadorId = 0;
 		}
 	});
 	$(this).on('click', "#btnNuevaMedida", function(){
 		contadorId++;
-		$('<tr><td>Nombre UM:</td><td>&nbsp;&nbsp;<input type="text" class="um" name="'+contadorId+'" id="'+contadorId+'" /><img src="include/img/Information.png" id="err'+contadorId+'" hidden="true"  /></td><td><td></td></tr>').appendTo('#tblUM');
+		$('<tr><td>Nombre UM:</td><td>&nbsp;&nbsp;<input type="text" name="'+contadorId+'" id="'+contadorId+'" /><img src="include/img/Information.png" id="err'+contadorId+'" hidden="true"  /></td><td><td></td></tr>').appendTo('#tblUM');
 	});
 	
 	$('#btnAddTipo').button().click(function(){
