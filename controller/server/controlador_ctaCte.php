@@ -21,7 +21,7 @@
 						 		$objPss->generarPss($objCon,$cue_id);
 						 		$objCon->commit();
 						 		unset($_SESSION['pac_id']);
-						 		echo "Cuenta Corriente creada con exito.";
+						 		echo "Cuenta Corriente creada con exito. <b><u>N° de Cuenta</u>: $cue_id</b>";
 						 		$objCon=null;					 		
 						}catch (PDOException $e){
 					 			$objCon->rollBack(); 

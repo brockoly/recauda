@@ -40,7 +40,7 @@ $(document).ready(function(){
 	  change: function( event, ui ) {
 	  	switch($("#opcionesGestion").val()){
 	 		case "CtaCorriente":
-	 				$('<input type="text" id="filtroBusquedaCta" name="filtroBusquedaCta" />').appendTo('.inputs');
+	 				$('<input type="text" id="filtroBusquedaCta" name="filtroBusquedaCta" class="inputValidar" />').appendTo('.inputs');
 	 				$(".tdOcultos").show('slow');
 	 				$("#filtroBusquedaPac").remove();
 	 				$("#filtroBusquedaIde").remove();
@@ -49,7 +49,7 @@ $(document).ready(function(){
 	 				validar('filtroBusquedaCta', 'id','numero');
 	 			break;
 	 		case "Paciente":
-	 				$('<input type="text" id="filtroBusquedaPac" name="filtroBusquedaPac" />').appendTo('.inputs');
+	 				$('<input type="text" id="filtroBusquedaPac" placeholder="Mínimo 3 caracteres" name="filtroBusquedaPac"  class="inputValidar"/>').appendTo('.inputs');
 	 				$(".tdOcultos").show('slow');
 	 				$("#filtroBusquedaCta").remove();
 	 				$("#filtroBusquedaIde").remove();
@@ -58,7 +58,7 @@ $(document).ready(function(){
 	 				validar('filtroBusquedaPac', 'id','letras');		
 	 			break;
 	 		case "Identificador":
-	 				$('<input type="text" value="'+rut+'" id="filtroBusquedaIde" name="filtroBusquedaIde" style="margin-top: 20px;"/>').appendTo('.inputs');
+	 				$('<input type="text" value="'+rut+'" id="filtroBusquedaIde" name="filtroBusquedaIde" style="margin-top: 20px;" class="inputValidar"/>').appendTo('.inputs');
 	 				$(".divOcultos").show('slow');
 	 				$(".tdOcultos").show('slow');
 	 				$("#filtroBusquedaCta").remove();
@@ -94,20 +94,35 @@ $(document).ready(function(){
 	  }
 	});
 	$("#btnBusqueda").button().click(function(){
-	 	switch($("#opcionesGestion").val()){
-	 		case "CtaCorriente":
-	 				cargarContenido('view/interface/busquedaGestionDePago.php','CtaCorriente='+$("#filtroBusquedaCta").val(),'#contenidoBuscado');
-	 			break;
-	 		case "Paciente":
-	 				cargarContenido('view/interface/busquedaGestionDePago.php','Paciente='+$("#filtroBusquedaPac").val(),'#contenidoBuscado');
-	 			break;
-	 		case "Identificador":
-	 				if(bandera==1){
-	 					cargarContenido('view/interface/busquedaGestionDePago.php','Identificador='+identificador,'#contenidoBuscado');
-	 				}else{
-	 					cargarContenido('view/interface/busquedaGestionDePago.php','Identificador='+$("#filtroBusquedaIde").val(),'#contenidoBuscado');	 					
-	 				}	 				
-	 			break;
-	 	}		
-	});	
+	 	
+		 	switch($("#opcionesGestion").val()){
+		 		case "CtaCorriente":
+		 			if($(".inputValidar").val().length>0){
+		 				cargarContenido('view/interface/busquedaGestionDePago.php','CtaCorriente='+$("#filtroBusquedaCta").val(),'#contenidoBuscado');
+		 				$(".inputValidar").removeClass("cajamala" );
+		 			}else{
+		 				$(".inputValidar").removeClass("cajabuena" ).addClass( "cajamala" );
+		 			}
+		 			break;
+		 		case "Paciente":
+		 				if($(".inputValidar").val().length>2){
+		 					cargarContenido('view/interface/busquedaGestionDePago.php','Paciente='+$("#filtroBusquedaPac").val(),'#contenidoBuscado');
+		 					$(".inputValidar").removeClass("cajamala" );
+		 				}else{
+		 					$(".inputValidar").removeClass("cajabuena" ).addClass( "cajamala" );
+		 				}
+		 			break;
+		 		case "Identificador":
+		 				if(bandera==1){
+		 					cargarContenido('view/interface/busquedaGestionDePago.php','Identificador='+identificador,'#contenidoBuscado');
+		 				}else{
+		 					cargarContenido('view/interface/busquedaGestionDePago.php','Identificador='+$("#filtroBusquedaIde").val(),'#contenidoBuscado');	 					
+		 				}
+
+		 			break;
+		 	}
+		 	
+		
+	});
+		
 });

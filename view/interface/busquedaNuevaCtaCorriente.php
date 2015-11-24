@@ -36,7 +36,7 @@
 								<td><?=$datos[$i]['Nombre']?></td>
 								<td><?=$datos[$i]['Apellido_Paterno']?></td>
 								<td><?=$datos[$i]['Apellido_Materno']?></td>
-								<td><input type="button" value="Nueva Cta Cte (+)" class="modCtaNueva" onclick="ventanaModal('./view/dialog/agregarCtaCorriente.php','pac_id=<?=$datos[$i]['pac_id']?>','auto','auto','Editar Usuario','modalAgregarCtaCte')" /></td>								
+								<td><input type="button" value="Nueva Cta Cte (+)" class="modCtaNueva" onclick="ventanaModal('./view/dialog/agregarCtaCorriente.php','pac_id=<?=$datos[$i]['pac_id']?>','auto','auto','Crear Cuenta Corriente','modalAgregarCtaCte')" /></td>								
 			            </tr>
 <?php		            }
 ?>

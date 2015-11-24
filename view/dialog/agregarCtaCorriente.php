@@ -26,3 +26,4 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Crear Cuenta" id="agregarCuenta">
 		
 </center>
+<input type="hidden" value="<?=$_POST['pac_id']?>" id="cue_id">

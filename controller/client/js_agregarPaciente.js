@@ -22,7 +22,7 @@ $(document).ready(function(){
 		//alert("a="+a+"b="+b+"c="+c+"d="+d+"e="+e+"f="+f);
 		if(a==1 && b==1 && c==1 && d==1 && e==1/* && f==1*/){
 			var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
-			alert(resPac);
+			//alert(resPac);
 			if(resPac ==0){
 				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rut='+rut);
 				//alert(cont);
