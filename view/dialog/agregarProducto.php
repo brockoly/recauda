@@ -5,6 +5,7 @@
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
 	$productos = $objPro->listarTipoProducto($objCon);
+	$valores = $objPro->listarTiposValores($objCon);
 	$objCon=null;
 	if(count($productos) ==0){ ?>
 		<label style="color: red; border-color: 1px solid black;">No hay tipos de productos, porfavor agregue uno para comenzar</label>
@@ -42,58 +43,14 @@
 <fieldset style="width: 400px;"><legend>Valores</legend>
 <center>
 <table>
+		<?
+			for ($i=0; $i<count($valores); $i++) { 
+		?>
 		<tr>
-			<td>Fonasa A:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text"  id="" />&nbsp&nbsp<img src="../../include/img/Information.png" id="" hidden="true" /> </td>
+			<td><?=$valores[$i]['pre_nombre']?></td>
+			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="<?=$valores[$i]['pre_id']?>" /></td>
 		</tr>
-		<tr>
-			<td>Fonasa B:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Fonasa C:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Fonasa D:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Isapre:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Libre Elección N1:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Libre Elección N2:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Libre Elección N3:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Ejercito:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Fuerza Aérea:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Dipreca:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Capredena:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
-		<tr>
-			<td>Armada:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="" /></td>
-		</tr>
+		<? }?>
 </table>
 </center><br><br>
 <center><input type="button" id="btnAddProducto" value="Agregar Producto"/></center>

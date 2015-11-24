@@ -56,5 +56,16 @@
 		function rut( $rut ) {
 	    	return number_format( substr ( $rut, 0 , -1 ) , 0, "", ".") . '-' . substr ( $rut, strlen($rut) -1 , 1 );
 		}
+		function objectToArray($d) {
+			if (is_object($d)) {
+				$d = get_object_vars($d);
+			}
+	 
+			if (is_array($d)) {
+				return array_map(__FUNCTION__, $d);
+			}else{
+				return $d;
+			}
+		}
 	}
 ?>

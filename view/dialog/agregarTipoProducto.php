@@ -10,16 +10,25 @@
 ?>
 <script type="text/javascript" src="controller/client/js_agregarTipoProducto.js"></script>
 <center>
+<form id="frmTipoProducto">
 <fieldset style="width: 400px;"><legend>Datos Tipo Producto</legend>
 <center>
 <table>
 		<tr>
-			<td>Nombre:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="tip_descripcion" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errtip_descripcion" hidden="true"  /></td>
+			<td width="25%">Nombre:</td>
+			<td>&nbsp;&nbsp;&nbsp;<input type="text" name="tip_descripcion" id="tip_descripcion" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errtip_descripcion" hidden="true"  /><input type="checkbox" id="chkUM" name="chkUM" value="0">UM</td>
+		</tr>
+		<tr id="trUnidadMedida">
+			<tr>
+				<td colspan="2" id="tdUnidadMedida">
+					
+				</td>
+			</tr>
 		</tr>
 </table>
 </center><br><br>
 </fieldset>
+</form>
 <br><br>
 <center><input type="button" id="btnAddTipo" value="Agregar Tipo"/></center>
 <br><br>

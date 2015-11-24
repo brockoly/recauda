@@ -20,11 +20,31 @@ class Producto{
 	    }
 		return $datos;		 	
 	}
+	function buscarMaximoIdUM($objCon){//
+	 	$sql="SELECT MAX(uni_id)+1 as CONT
+			  FROM unidad_de_medida";
+		$i=0;
+		$datos;
+		foreach ($objCon->consultaSQL($sql, 'ERROR buscarMaximoId') as $v) {
+			$datos=$v['CONT'];
+	    }
+	    if($datos==""){
+	    	$datos=1;
+	    }
+		return $datos;		 	
+	}
 	function insertarTipoProducto($objCon){
  		$max=$this->buscarMaximoId($objCon);
 	 	$sql ="INSERT INTO tipo_producto(tip_prod_id, tip_descripcion)
 			   VALUES ($max, '$this->tip_descripcion')";
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL insertarTipoProducto');
+	 	return $max;
+	}
+	function insertarUnidadMedida($objCon, $tip_pro, $uni_nombre){
+ 		$maxUM=$this->buscarMaximoIdUM($objCon);
+	 	$sql ="INSERT INTO unidad_de_medida(uni_id, tip_prod_id, uni_nombre)
+			   VALUES ($maxUM, '$tip_pro', '$uni_nombre')";
+	 	$rs=$objCon->ejecutarSQL($sql,'ERROR insertarUnidadMedida');
 	 	return $rs;
 	}
 	function editarTipoProducto($objCon){
@@ -101,5 +121,22 @@ class Producto{
 				$i++;
 		    }
 			return $datos;
+	}
+	function listarTiposValores($objCon){
+	 	$sql ="SELECT
+			prevision.pre_id,
+			prevision.pre_nombre,
+			prevision.pre_estado
+			FROM
+			prevision
+			WHERE pre_estado = '0'";
+	 	$datos = array();
+			$i=0;
+			foreach ($objCon->consultaSQL($sql, 'ERROR listarTiposValores') as $v) {
+				$datos[$i][pre_id]=$v['pre_id'];
+				$datos[$i][pre_nombre]=$v['pre_nombre'];
+				$i++;
+		    }
+		return $datos;
 	}
 }?>
