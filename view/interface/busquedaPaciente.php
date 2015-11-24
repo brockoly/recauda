@@ -78,6 +78,17 @@
 						&nbsp;&nbsp;&nbsp;
 						</td>
 					</tr>
+        			<tr>
+        			
+		              <td><? if($pacientes[$i]['Nacionalidad']=='Chile'){echo $objUtil->formatRut($pacientes[$i]['Identificador']);}else{echo $pacientes[$i]['Identificador'];}?></td>
+		              <td><?= $pacientes[$i]['Nombre']?></td>
+		              <td><?= $pacientes[$i]['Apellido_Paterno']?></td>
+		              <td><?= $pacientes[$i]['Apellido_Materno']?></td>
+		              <td><?= $objUtil->cambiarfecha_mysql_a_normal($pacientes[$i]['fecha_nac'])?></td>
+		              <td><?= $pacientes[$i]['Nacionalidad']?></td>
+		              <td><img name="btnEditar" title="Editar Nacionalidad" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarPaciente.php','pac_id=<?=$pacientes[$i]['pac_id']?>','auto','auto','Editar Paciente','modalEditarPaciente')" style="cursor: pointer;"/>
+						&nbsp;&nbsp;&nbsp;</td>
+		            </tr>
             		<? }
             	?>
             

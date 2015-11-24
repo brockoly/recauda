@@ -1,47 +1,45 @@
 <?php
 	require_once('../../class/Conectar.class.php');
 	require_once('../../class/Util.class.php');
+	require_once('../../class/Paciente.class.php');
 	$objCon = new Conectar(); 
 	$objUtil = new Util(); 
-	$objCon->db_connect();
+	$objPac = new Paciente(); 
+	$objCon->db_connect();	
+	if(isset($_POST['Paciente']) && $_POST['Paciente']!=""){
+		$datos=$objPac->getInformacionPaciente($objCon,'',$_POST['Paciente'],'');
+	}	
+	if(isset($_POST['Identificador']) && $_POST['Identificador']!=""){
+		$datos=$objPac->getInformacionPaciente($objCon,$objUtil->valida_rut($_POST['Identificador']),'','');
+	}
 	$objCon=null;
 ?>
-<script type="text/javascript" src="controller/client/js_busquedaCtaCorriente.js"></script>
+<script type="text/javascript" src="controller/client/js_busquedaNuevaCtaCorriente.js"></script>
 <br><br>
 <center>
-	<table class="display" width="100%" id="tabCtaCorriente">
-            <thead>
-	            <tr>
-	              <th width="10%">Usuario</th>
-	              <th width="10%">Rut</th>
-	              <th width="10%">Nombre</th>
-	              <th width="10%">Apellido Paterno</th>
-	              <th width="10%">Apellido Materno</th>
-	              <th width="10%">Telefono</th>	              
-	              <th width="10%">Correo</th>
-	              <th width="10%">Opciones Usuario</th>
-	            </tr>
-            </thead>
-            <?php
-            	//for($i=0; $i<count($datos); $i++){
-	        ?> 
-	        	<tr>
-	        			<!-- <td><?=$datos[$i]['usuario']?></td>
-	        									<td><?=$objUtil->formatRut($datos[$i]['rut'])?></td>
-	        									<td><?=$datos[$i]['nombre']?></td>
-	        									<td><?=$datos[$i]['apellidoPaterno']?></td>
-	        									<td><?=$datos[$i]['aplellidoMaterno']?></td>
-	        									<td><?=$datos[$i]['telefono']?></td>
-	        									<td><?=$datos[$i]['correo']?></td>
-	        									<td>
-	        										<img title="Editar Usuario" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarUsuario','usu_nombre=<?=$datos[$i]['usuario']?>','auto','auto','Editar Usuario','modalEditarUsuario')" style="cursor: pointer;"/>
-	        										&nbsp;&nbsp;
-	        										<img title="Eliminar Usuario" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a eliminar el usuario, ¿Desea Eliminar Este Usuario?','./controller/server/controlador_usuario.php','per_id=<?=$datos[$i]['rut']?>&op=eliminarUsuario','view/interface/busquedaUsuario.php','','#contenidoCargado')" style="cursor: pointer;"/>
-	        										&nbsp;&nbsp;
-	        										<img title="Resetear Clave" width="16" height="16" src="./include/img/reset_pass.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención se procedera a restaurar la clave de ingreso, ¿Desea restaurar la clave a este Usuario?','./controller/server/controlador_usuario.php','usu_nombre=<?=$datos[$i]['usuario']?>&op=restaurarClave','view/interface/busquedaUsuario.php','','#contenidoCargado')" style="cursor: pointer;"/>
-	        									</td> -->
-	            </tr>
-            <?php 	//}
-            ?>	
-    </table>
+<div style="width: 70%;">
+			<table class="display" width="100%" id="tabCtaCorriente">
+		            <thead>
+			            <tr>
+			              <th>N° Identificación</th>
+			              <th>Nombre(s)</th>
+			              <th>Apellido Paterno</th>
+			              <th>Apellido Materno</th>
+			              <th></th>
+			            </tr>
+		            </thead>
+<?php
+		            	for($i=0; $i<count($datos); $i++){
+?> 
+			        	<tr>
+			        			<td><? if( $datos[$i]['nac_id']==1 ){ echo $objUtil->formatRut($datos[$i]['Identificador']);}else{ echo $datos[$i]['Identificador'];}?></td>
+								<td><?=$datos[$i]['Nombre']?></td>
+								<td><?=$datos[$i]['Apellido_Paterno']?></td>
+								<td><?=$datos[$i]['Apellido_Materno']?></td>
+								<td><input type="button" value="Nueva Cta Cte (+)" class="modCtaNueva" onclick="ventanaModal('./view/dialog/agregarCtaCorriente.php','pac_id=<?=$datos[$i]['pac_id']?>','auto','auto','Crear Cuenta Corriente','modalAgregarCtaCte')" /></td>								
+			            </tr>
+<?php		            }
+?>
+			</table>
+</div>
 </center>

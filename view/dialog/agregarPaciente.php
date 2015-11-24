@@ -10,7 +10,7 @@
 	$nacionalidades = $objNac->obtenerNacionalidades($objCon);
 	$previsiones = $objPrev->obtenerPrevisiones($objCon);
 	$objCon=null;
-	$fecha = date("d-m-Y");
+	$fecha = date("d")."/".date("m")."/".date("Y");
 ?>
 
 <script type="text/javascript" src="controller/client/js_agregarPaciente.js"></script>

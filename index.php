@@ -91,7 +91,7 @@ if ( $_SESSION['usuario'] == null ) {
 			<? }?>
 		</ul>
 	</nav>
-</div><br><br><br><br>
+</div><br><br>
 <div class="mainWrap" id="contenidoCargado">
 
 </div>

@@ -4,7 +4,6 @@
 <script type="text/javascript" src="controller/client/js_agregarNacionalidad.js"></script>
 <center>
 <form id="frmEditarUsuario">
-		<input type="hidden" name="txtIdNac" value="<?=$_POST['nac_id']?>">
 		<fieldset style="width: 400px;"><legend>Nacionalidad</legend>
 		<table>
 				<tr>
