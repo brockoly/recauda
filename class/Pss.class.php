@@ -73,5 +73,25 @@ class Pss{
 			}
 		 	return $datos;
 		}
+		function desplegarBotonesAcciones($estado,$pss_id){
+
+			$ancho=30;
+			$alto=30;
+			$botones;
+			$rulesAbierto  = array(0 => "cerrado",0 => "valorizado",);
+			$rulesCerrar  = array(0 => "abierto",0 => "valorizado",);
+
+			$abrir='<img class="open" src="./include/img/open.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$cerrar='<img class="close" src="./include/img/close.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$detalle='<img class="detalle" src="./include/img/detalle.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$editPss='<img class="editPss" src="./include/img/editPss.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';							
+			$imprimir='<img class="printer" src="./include/img/printer.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$valorizar='<img class="calculator" src="./include/img/calculator.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$pagar='<img class="pagar" src="./include/img/pagar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$abonar='<img class="abonar" src="./include/img/abonar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$ordenAtencion='<img class="ordenAtencion" src="./include/img/ordenAtencion.png" width="'.$ancho.'" height="$alto" style="cursor: pointer;">';
+		 	$botones=$abrir.$cerrar.$detalle.$editPss.$imprimir.$valorizar.$pagar.$abonar.$ordenAtencion;
+		 	return $botones;
+		}
 }
 ?>

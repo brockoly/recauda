@@ -394,6 +394,15 @@ function muestraError(div, mensaje){
 	$('#'+div).tooltip();
 	$('#'+div).attr("title", mensaje).show('500');
 }
+function tooltipImg(div, mensaje){
+	$('.'+div).attr("title", mensaje).show('500');
+	$('.'+div).tooltip({
+		position: {
+	        my: "center bottom-20",
+	        at: "center top"
+	    }
+    });	
+}
 function validaEmail( email ) {
     expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	if ( !expr.test(email) ){// INCORRECTO , ENTRA
