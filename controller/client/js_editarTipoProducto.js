@@ -1,4 +1,5 @@
 $(document).ready(function(){	
+	tablaMinima('tblUnidadesMedida');
 	$('#btnModificarTipoProducto').button().click(function(){
 		if($("#txtNombreTipoProducto").val()!=""){
 			var res = validarProcesos('./controller/server/controlador_producto.php','tip_descripcion='+$("#txtNombreTipoProducto").val()+'&tip_prod_id='+$("#tip_prod_id").val()+"&op=editarTipo");

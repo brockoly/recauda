@@ -8,17 +8,16 @@ $(document).ready(function(){
 			$('#chkUM').val('1');
 			$('<table id="tblUM"></table>').appendTo('#tdUnidadMedida');
 			$('<tr><td>Nombre UM:</td><td>&nbsp;&nbsp;<input type="text" name="'+contadorId+'" id="'+contadorId+'" /><img src="include/img/Information.png" id="err'+contadorId+'" hidden="true"  /></td><td id="btnNuevaMedida" class="btnNuevaMedida">&nbsp;&nbsp;<img title="Mas" width="25" height="25" src="./include/img/plus.png" style="cursor: pointer;"/></td></tr>').appendTo('#tblUM');
+			$('.btnNuevaMedida').click(function(){
+				contadorId++;
+				$('<tr><td>Nombre UM:</td><td>&nbsp;&nbsp;<input type="text" name="'+contadorId+'" id="'+contadorId+'" /><img src="include/img/Information.png" id="err'+contadorId+'" hidden="true"  /></td><td><td></td></tr>').appendTo('#tblUM');
+			});
 		}else{
 			$('#chkUM').val('0');
 			$('#tblUM').remove();
 			contadorId = 0;
 		}
 	});
-	$(this).on('click', "#btnNuevaMedida", function(){
-		contadorId++;
-		$('<tr><td>Nombre UM:</td><td>&nbsp;&nbsp;<input type="text" name="'+contadorId+'" id="'+contadorId+'" /><img src="include/img/Information.png" id="err'+contadorId+'" hidden="true"  /></td><td><td></td></tr>').appendTo('#tblUM');
-	});
-	
 	$('#btnAddTipo').button().click(function(){
 		var datosEnviar=[];
 		var i=0;

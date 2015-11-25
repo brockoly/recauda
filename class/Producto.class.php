@@ -88,11 +88,11 @@ class Producto{
 
 	 }	
 
-	 function validarProducto($conexion){
+	function validarProducto($conexion){
 
 
-	 }
-	 function listarTipoProducto($objCon){
+	}
+	function listarTipoProducto($objCon){
 	 	$sql ="SELECT
 			tipo_producto.tip_prod_id,
 			tipo_producto.tip_descripcion
@@ -106,7 +106,7 @@ class Producto{
 				$i++;
 		    }
 			return $datos;
-	 }
+	}
 	function tipoProductoEliminado($objCon){
 	 	$sql ="SELECT
 			tipo_producto.tip_prod_id,
@@ -135,6 +135,24 @@ class Producto{
 			foreach ($objCon->consultaSQL($sql, 'ERROR listarTiposValores') as $v) {
 				$datos[$i][pre_id]=$v['pre_id'];
 				$datos[$i][pre_nombre]=$v['pre_nombre'];
+				$i++;
+		    }
+		return $datos;
+	}
+
+	function listarUMProducto($objCon){
+	 	$sql ="SELECT
+			unidad_de_medida.uni_id,
+			unidad_de_medida.tip_prod_id,
+			unidad_de_medida.uni_nombre
+			FROM unidad_de_medida
+			WHERE tip_prod_id = '$this->tip_prod_id'";
+	 	$datos = array();
+			$i=0;
+			foreach ($objCon->consultaSQL($sql, 'ERROR listarTipoProducto') as $v) {
+				$datos[$i][uni_id]=$v['uni_id'];
+				$datos[$i][tip_prod_id]=$v['tip_prod_id'];
+				$datos[$i][uni_nombre]=$v['uni_nombre'];
 				$i++;
 		    }
 		return $datos;
