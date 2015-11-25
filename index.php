@@ -40,7 +40,7 @@ if ( $_SESSION['usuario'] == null ) {
             	<div class="usuario" align="right"><img src="include/img/user.png" width="32" height="32"  style="vertical-align:middle"/>&nbsp; <?= $_SESSION['usuario'][1]['nombre_usuario'];?>&nbsp; | <?= $_SESSION['usuario'][0]['tipo_usuario'];?><br/><? //include('');?></div>
             	<div class="btn_logout" align="right"><table id="BTNlogout"><tr><td width="10%"><img src="include/img/buttons/logout.png" width="20" height="20"/></td><td>Cerrar sesión</td></tr></table></div>            
 				<div class="right"><a style="cursor:pointer; font-size: 12px;" id="btnChCon" >Cambiar contraseña</a></div>
-            </div>	
+            </div>
     	</div>
 	</div>
 </div>
