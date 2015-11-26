@@ -39,14 +39,13 @@
 			            </tr>
 		            </thead>
 <?php
-            	for($i=0; $i<count($datos); $i++){
-?> 
+            	for($i=0; $i<count($datos); $i++){?> 
 		        	<tr>
 		        			<td align="center"><?=$datos[$i]['pss_id']?></td>
 							<td><?=$objUtil->cambiarfecha_mysql_a_normal($datos[$i]['pss_fecha'])?></td>
 							<td><?=$datos[$i]['pss_estado']?></td>
 							<td>
-								<?=$objPss->desplegarBotonesAcciones('','')?>
+								<?=$objPss->desplegarBotonesAcciones($datos[$i]['pss_estado'],'',$datos[$i]['pss_id'])?>
 							</td>
 					</tr>
 <?php 			}

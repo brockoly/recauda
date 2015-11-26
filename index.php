@@ -46,7 +46,7 @@ if ( $_SESSION['usuario'] == null ) {
 </div>
 </center>
 </head>
-<body bgcolor="#E6E6FA">
+<body bgcolor="#E6E6FA" oncontextmenu="return false" onkeydown="return false">
 <div class="mainWrap">
 <a id="touch-menu" class="mobile-menu" href="#"><i class="icon-reorder"></i>Menu</a>
 	<nav>
@@ -64,15 +64,24 @@ if ( $_SESSION['usuario'] == null ) {
 		<? //}?>
 			<li><a href="#"><i class="icon-search"></i>CONSULTA</a>
 				<ul class="sub-menu">
-					<li class="change"><a href="#">GENERAL</a></li>
-					<li class="change"><a href="#">BOLETA</a></li>
+					<li class="change"><a href="#">PAGOS</a></li>
+					<li class="change"><a href="#">BOLETA</a></li>					
+					<li class="change"><a href="#">ARQUEO ESPONTANEO</a></li>
 				</ul>
 			</li>
-			<li><a href="#"><i class="icon-copy"></i>PAGARÉ</a></li>
+			<li><a href="#"><i class="icon-copy"></i>PAGARÉ</a>
+				<ul class="sub-menu">
+					<li class="change"><a href="#">GENERAR PAGARÉ</a></li>
+				</ul>
+			</li>
 			<li><a href="#"><i class="icon-print"></i>REPORTES</a>
 				<ul class="sub-menu">
-					<li class="change"><a href="#">ANALISIS DE COSTOS</a></li>
-					<li class="change"><a href="#">ARQUEO</a></li>
+					<li class="change"><a href="#">ARQUEOS</a>
+						<ul class="sub-menu">
+							<li class="change"><a href="#">ESPONTANEO</a></li>
+							<li class="change"><a href="#">GLOBAL</a></li>
+						</ul>
+					</li>
 				</ul>
 			</li>
 			<li><a  href="#"><i class="icon-money"></i>COTIZACIÓN</a></li>

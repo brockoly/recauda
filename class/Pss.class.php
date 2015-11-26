@@ -73,14 +73,20 @@ class Pss{
 			}
 		 	return $datos;
 		}
-		function desplegarBotonesAcciones($estado,$pss_id){
-
+		function desplegarBotonesAcciones($estado,$institucion,$pss_id){
 			$ancho=30;
 			$alto=30;
-			$botones;
-			$rulesAbierto  = array(0 => "cerrado",0 => "valorizado",);
-			$rulesCerrar  = array(0 => "abierto",0 => "valorizado",);
-
+			$botones="";
+			/*--------------------------Condiciones de los botones------------------------*/
+			$rulesAbierto  = array(0 => "Cerrado",1 => "Valorizado",);
+			$rulesCerrar  = array(0 => "Abierto",);
+			$rulesDetalle  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
+			$rulesEditarpSS  = array(0 => "Abierto", 1=> "Cerrado", 2=>"Valorizado");
+			$rulesImprimir  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
+			$rulesValorizar  = array(0 => "Cerrado",);
+			$rulesPagar_Abonar  = array(0 => "Valorizado",1=> "Abonado",);
+			$rulesOrdenAtencion  = array(0 => "Cerrado",1=> "Abonado",);// Se valida con la institucion;
+			/*--------------------------Botones------------------------*/
 			$abrir='<img class="open" src="./include/img/open.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$cerrar='<img class="close" src="./include/img/close.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$detalle='<img class="detalle" src="./include/img/detalle.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
@@ -90,8 +96,31 @@ class Pss{
 			$pagar='<img class="pagar" src="./include/img/pagar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$abonar='<img class="abonar" src="./include/img/abonar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$ordenAtencion='<img class="ordenAtencion" src="./include/img/ordenAtencion.png" width="'.$ancho.'" height="$alto" style="cursor: pointer;">';
-		 	$botones=$abrir.$cerrar.$detalle.$editPss.$imprimir.$valorizar.$pagar.$abonar.$ordenAtencion;
-		 	return $botones;
+		 	
+		 	if(in_array($estado, $rulesAbierto)){
+		 		$botones.=$abrir;
+			}
+			if(in_array($estado, $rulesCerrar)){
+		 		$botones.=$cerrar;
+			}
+			if(in_array($estado, $rulesDetalle)){
+		 		$botones.=$detalle;
+			}
+			if(in_array($estado, $rulesEditarpSS)){
+		 		$botones.=$editPss;
+			}
+			if(in_array($estado, $rulesImprimir)){
+		 		$botones.=$imprimir;
+			}
+			if(in_array($estado, $rulesValorizar)){
+		 		$botones.=$valorizar;
+			}
+			if(in_array($estado, $rulesPagar_Abonar)){
+		 		$botones.=$pagar;
+		 		$botones.=$abonar;
+			}
+			$botones.$ordenAtencion;
+			return $botones;
 		}
 }
 ?>
