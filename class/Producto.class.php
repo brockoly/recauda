@@ -1,160 +1,64 @@
 <?php 
 class Producto{
-	 public $tip_descripcion;
-	 public $tip_prod_id;
+	 public $pro_id;
+	 public $pro_nom;
+	 public $pro_estado;
 	 
-	 function setProducto($tip_descripcion,$tip_prod_id){
- 		$this->tip_descripcion=trim($tip_descripcion);
- 		$this->tip_prod_id=trim($tip_prod_id);
-	 }
-	 function buscarMaximoId($objCon){//
-	 	$sql="SELECT MAX(tip_prod_id)+1 as CONT
-			  FROM tipo_producto";
-		$i=0;
-		$datos;
-		foreach ($objCon->consultaSQL($sql, 'ERROR buscarMaximoId') as $v) {
-			$datos=$v['CONT'];
-	    }
-	    if($datos==""){
-	    	$datos=1;
-	    }
-		return $datos;		 	
+	function setProducto($pro_id,$pro_nom,$pro_estado){
+ 		$this->pro_id=trim($pro_id);
+ 		$this->pro_nom=trim($pro_nom);
+ 		$this->pro_estado=trim($pro_estado);
 	}
-	function buscarMaximoIdUM($objCon){//
-	 	$sql="SELECT MAX(uni_id)+1 as CONT
-			  FROM unidad_de_medida";
-		$i=0;
-		$datos;
-		foreach ($objCon->consultaSQL($sql, 'ERROR buscarMaximoId') as $v) {
-			$datos=$v['CONT'];
-	    }
-	    if($datos==""){
-	    	$datos=1;
-	    }
-		return $datos;		 	
-	}
-	function insertarTipoProducto($objCon){
- 		$max=$this->buscarMaximoId($objCon);
-	 	$sql ="INSERT INTO tipo_producto(tip_prod_id, tip_descripcion)
-			   VALUES ($max, '$this->tip_descripcion')";
-	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL insertarTipoProducto');
-	 	return $max;
-	}
-	function insertarUnidadMedida($objCon, $tip_pro, $uni_nombre){
- 		$maxUM=$this->buscarMaximoIdUM($objCon);
-	 	$sql ="INSERT INTO unidad_de_medida(uni_id, tip_prod_id, uni_nombre)
-			   VALUES ($maxUM, '$tip_pro', '$uni_nombre')";
-	 	$rs=$objCon->ejecutarSQL($sql,'ERROR insertarUnidadMedida');
-	 	return $rs;
-	}
-	function editarTipoProducto($objCon){
-	 	$sql="UPDATE tipo_producto
-			  SET tipo_producto.tip_descripcion='$this->tip_descripcion'
-			  WHERE tipo_producto.tip_prod_id=$this->tip_prod_id";
-		$rs=$objCon->ejecutarSQL($sql,'ERROR AL editarTipoProducto');
-	 	return $rs;
-	}
-	function eliminarTipoProducto($objCon){
-		$sql="UPDATE tipo_producto
-			  SET tipo_producto.tip_pro_estado='1'
-			  WHERE tipo_producto.tip_prod_id=$this->tip_prod_id";			
-		$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarTipoProducto');
-	 	return $rs;
-	}
-	function restaurarTipoProducto($objCon){
-		$sql="UPDATE tipo_producto
-			  SET tipo_producto.tip_pro_estado='0'
-			  WHERE tipo_producto.tip_prod_id=$this->tip_prod_id";			
-		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarTipoProducto');
-	 	return $rs;
-	}
-	function buscarTipoProducto($objCon){//
-	 	if(is_null($this->tip_prod_id)==false){
-	 		$cadena_id = " AND tip_prod_id NOT IN ('$this->tip_prod_id') ";
-	 	}
-	 	$sql="SELECT tip_descripcion
-			  FROM tipo_producto
-			  WHERE tip_descripcion='$this->tip_descripcion'".$cadena_id."  ";
-		$i=0;
-		foreach ($objCon->consultaSQL($sql, 'ERROR buscarTipoProducto') as $v) {
-			$datos=$v['tip_descripcion'];
-			$i++;
-	    }
-		return $datos;		 	
-	}
+	function actualizarProducto($conexion){
 
-
-	 function actualizarProducto($conexion){
-
-	 }	
-
+	}	
 	function validarProducto($conexion){
 
-
 	}
-	function listarTipoProducto($objCon){
-	 	$sql ="SELECT
-			tipo_producto.tip_prod_id,
-			tipo_producto.tip_descripcion
-			FROM tipo_producto
-			WHERE tipo_producto.tip_pro_estado='0'";
-	 	$datos = array();
-			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR listarTipoProducto') as $v) {
-				$datos[$i][tip_prod_id]=$v['tip_prod_id'];
-				$datos[$i][tip_descripcion]=$v['tip_descripcion'];
-				$i++;
-		    }
-			return $datos;
-	}
-	function tipoProductoEliminado($objCon){
-	 	$sql ="SELECT
-			tipo_producto.tip_prod_id,
-			tipo_producto.tip_descripcion
-			FROM tipo_producto
-			WHERE tipo_producto.tip_pro_estado='1'";
-	 	$datos = array();
-			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR tipoProductoEliminado') as $v) {
-				$datos[$i][tip_prod_id]=$v['tip_prod_id'];
-				$datos[$i][tip_descripcion]=$v['tip_descripcion'];
-				$i++;
-		    }
-			return $datos;
-	}
-	function listarTiposValores($objCon){
-	 	$sql ="SELECT
-			prevision.pre_id,
-			prevision.pre_nombre,
-			prevision.pre_estado
+	function agregarProducto($objCon,$tip_prod_id,$uni_id){
+	 	$sql ="INSERT INTO productos(pro_id,tip_prod_id,pro_nom,pro_estado,uni_id)
+			   VALUES ('$this->pro_id','$tip_prod_id', '$this->pro_nom', '$this->pro_estado', '$uni_id')";
+	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL insertarPrevision');
+	 	return $rs;
+	} 
+	/*function listarProductos($objCon){
+		$sql="SELECT
+			productos.pro_id,
+			tipo_producto.tip_descripcion,
+			productos.pro_nom
 			FROM
-			prevision
-			WHERE pre_estado = '0'";
-	 	$datos = array();
-			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR listarTiposValores') as $v) {
-				$datos[$i][pre_id]=$v['pre_id'];
-				$datos[$i][pre_nombre]=$v['pre_nombre'];
-				$i++;
-		    }
+			productos
+			INNER JOIN tipo_producto ON productos.tip_prod_id = tipo_producto.tip_prod_id
+			WHERE pro_estado = '0'";
+		$datos = array();
+		$i=0;
+		foreach ($objCon->consultaSQL($sql, 'ERROR listarProducto') as $v) {
+			$datos[$i]['pro_id']=$v['pro_id'];
+			$datos[$i]['tip_descripcion']=$v['tip_descripcion'];
+			$datos[$i]['pro_nom']=$v['pro_nom'];
+			$i++;
+		}
 		return $datos;
-	}
+	}*/
 
-	function listarUMProducto($objCon){
-	 	$sql ="SELECT
-			unidad_de_medida.uni_id,
-			unidad_de_medida.tip_prod_id,
-			unidad_de_medida.uni_nombre
-			FROM unidad_de_medida
-			WHERE tip_prod_id = '$this->tip_prod_id'";
+	function listarProductos($objCon){
 	 	$datos = array();
-			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR listarTipoProducto') as $v) {
-				$datos[$i][uni_id]=$v['uni_id'];
-				$datos[$i][tip_prod_id]=$v['tip_prod_id'];
-				$datos[$i][uni_nombre]=$v['uni_nombre'];
-				$i++;
-		    }
-		return $datos;
+		$i=0;
+		$sql ="SELECT
+			productos.pro_id,
+			tipo_producto.tip_descripcion,
+			productos.pro_nom
+			FROM
+			productos
+			INNER JOIN tipo_producto ON productos.tip_prod_id = tipo_producto.tip_prod_id
+			WHERE productos.pro_estado = 0";		
+			
+	 	foreach($objCon->consultaSQL($sql, 'ERROR listarProductos') as $v) {
+			$datos[$i]['pro_id']=$v['pro_id'];
+			$datos[$i]['tip_descripcion']=$v['tip_descripcion'];
+			$datos[$i]['pro_nom']=$v['pro_nom'];
+			$i++;
+		}
+	 	return $datos;
 	}
 }?>

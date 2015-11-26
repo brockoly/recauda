@@ -24,6 +24,27 @@
 	$objCon=null;
 ?>
 <script type="text/javascript" src="controller/client/js_busquedaCtaCorriente.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('tr.trclass').each(function(index, element) {
+		$(this).click(function () {
+			if($(this).attr('id').match(/.*/)){
+				var idTd = $('#tdCue').text();
+				var id = $(this).attr('id');
+				if(idTd == id){
+					cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente=<?=$_POST['Paciente']?>&CtaCorriente=<?=$_POST['CtaCorriente']?>&Identificador=<?=$_POST['Identificador']?>','#contenidoBuscado');
+				}
+				else{
+					alert('mal');
+				}
+			}else{
+				alert('ñee');
+			}
+				
+		});
+	});
+});
+</script>
 <center><br><h3>Listado de Cuentas Corrientes</h3></center>
 <br>
 <center>
@@ -41,8 +62,8 @@
 <?php
 		            for($i=0; $i<count($datos); $i++){
 ?> 
-			        	<tr style="cursor: pointer;" onclick="cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id=<?=$datos[$i]['cue_id']?>&Paciente=<?=$_POST['Paciente']?>&CtaCorriente=<?=$_POST['CtaCorriente']?>&Identificador=<?=$_POST['Identificador']?>','#contenidoBuscado');">
-		        			<td><?=$datos[$i]['cue_id']?></td>
+			        	<tr style="cursor: pointer;" class="trclass" id="<?=$datos[$i]['cue_id']?>">
+		        			<td id="tdCue"><?=$datos[$i]['cue_id']?></td>
 							<td><? if($datos[$i]['Nacionalidad']=='Chile'){echo $objUtil->formatRut($datos[$i]['per_id']);}else{echo $datos[$i]['per_id'];}?></td>
 							<td><?=$datos[$i]['per_nombre']?></td>
 							<td><?=$datos[$i]['per_apellidoPaterno']?></td>

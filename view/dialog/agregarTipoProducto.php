@@ -2,10 +2,11 @@
 	//LLAMADA DE CLASES
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 	require_once('../../class/Producto.class.php'); $objPro = new Producto();
+	require_once('../../class/Tipo_Producto.class.php');$objTipoPro = new Tipo_Producto();
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
-	$tipoProducto = $objPro->listarTipoProducto($objCon);
-	$tipoProdcutoEliminados = $objPro->tipoProductoEliminado($objCon);
+	$tipoProducto = $objTipoPro->listarTipoProducto($objCon);
+	$tipoProdcutoEliminados = $objTipoPro->tipoProductoEliminado($objCon);
 	$objCon=null;
 ?>
 <script type="text/javascript" src="controller/client/js_agregarTipoProducto.js"></script>
@@ -14,17 +15,17 @@
 <fieldset style="width: 400px;"><legend>Datos Tipo Producto</legend>
 <center>
 <table>
+	<tr>
+		<td width="25%">Nombre:</td>
+		<td>&nbsp;&nbsp;&nbsp;<input type="text" name="tip_descripcion" id="tip_descripcion" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errtip_descripcion" hidden="true"  /><input type="checkbox" id="chkUM" name="chkUM" value="0">UM</td>
+	</tr>
+	<tr id="trUnidadMedida">
 		<tr>
-			<td width="25%">Nombre:</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" name="tip_descripcion" id="tip_descripcion" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errtip_descripcion" hidden="true"  /><input type="checkbox" id="chkUM" name="chkUM" value="0">UM</td>
+			<td colspan="2" id="tdUnidadMedida">
+				
+			</td>
 		</tr>
-		<tr id="trUnidadMedida">
-			<tr>
-				<td colspan="2" id="tdUnidadMedida">
-					
-				</td>
-			</tr>
-		</tr>
+	</tr>
 </table>
 </center><br><br>
 </fieldset>
