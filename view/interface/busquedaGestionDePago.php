@@ -10,7 +10,7 @@
 		$datos=$objCue->buscarCuentaSola($objCon, $_POST['Paciente'], "", "","");
 	}
 	if(isset($_POST['CtaCorriente']) && $_POST['CtaCorriente']!=""){
-		$datos=$objCue->buscarCuentaSola($objCon,"", $_POST['CtaCorriente'], "","");
+		$datos=$objCue->buscarCuentaSola($objCon,"", $_POST['CtaCorriente'], "","");		
 	}
 	if(isset($_POST['Identificador']) && $_POST['Identificador']!=""){
 		$identificador = "";
@@ -19,7 +19,7 @@
 			$datos=$objCue->buscarCuentaSola($objCon, "", "","", $identificador);
 		}else{
 			$datos=$objCue->buscarCuentaSola($objCon, "", "","", $_POST['Identificador']);	
-		}		
+		}	
 	}
 	$objCon=null;
 ?>
@@ -41,7 +41,7 @@
 <?php
 		            for($i=0; $i<count($datos); $i++){
 ?> 
-			        	<tr style="cursor: pointer;" onclick="cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id=<?=$datos[$i]['cue_id']?>&Paciente=<?=$_POST['Paciente']?>&CtaCorriente=<?=$_POST['CtaCorriente']?>&Identificador=<?=$_POST['Identificador']?>','#contenidoBuscado');">
+			        	<tr style="cursor: pointer;" class="buscaPss" id="<?=$datos[$i]['cue_id']?>">
 		        			<td><?=$datos[$i]['cue_id']?></td>
 							<td><? if($datos[$i]['Nacionalidad']=='Chile'){echo $objUtil->formatRut($datos[$i]['per_id']);}else{echo $datos[$i]['per_id'];}?></td>
 							<td><?=$datos[$i]['per_nombre']?></td>
@@ -52,5 +52,8 @@
 ?>
 			</table>
 </div>
-
 </center>
+<input type="hidden" value="<?=$_POST['Paciente']?>" id="Paciente">
+<input type="hidden" value="<?=$_POST['CtaCorriente']?>" id="CtaCorriente">
+<input type="hidden" value="<?=$_POST['Identificador']?>" id="Identificador">
+

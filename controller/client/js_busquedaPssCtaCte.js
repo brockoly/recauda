@@ -13,7 +13,34 @@ $(document).ready(function(){
 	$("#nuevoPss").button();
 	tabla("tabCtaCorrientePss");
 	$("#nuevoPss").click(function(){
-		mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a crear un nuevo PSS asociado a la cuenta corriente, ¿Desea Continuar?','./controller/server/controlador_pss.php',$("#frmAgregarPssCuenta").serialize()+'&op=agregarPSS','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarCtaCte');
+		mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a crear un nuevo PSS asociado a la cuenta corriente, ¿Desea Continuar?','./controller/server/controlador_pss.php',$("#frmAgregarPssCuenta").serialize()+'&op=agregarPSS','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarPssCtaCte');
 	});
+
+	$(".opcionPss").click(function(){
+			var pss_id=$(this).attr('id');
+			if($(this).hasClass('open')){
+				mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a Abrir el PSS N° '+pss_id+', ¿Desea Continuar?','./controller/server/controlador_pss.php','pss_id='+pss_id+'&op=abrirPss','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarPssCtaCte');
+			}
+
+			if($(this).hasClass('close')){
+				mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a Cerrar el PSS N° '+pss_id+', ¿Desea Continuar?','./controller/server/controlador_pss.php','pss_id='+pss_id+'&op=cerrarPss','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarPssCtaCte');
+			}
+			if($(this).hasClass('detalle')){
+				alert('detalle')	
+			}
+			if($(this).hasClass('valorizar')){
+				alert('valorizar')	
+			}
+			if($(this).hasClass('editPss')){
+				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id,'auto','auto','Edición de Pss','modalEditarPss')
+			}
+			
+
+			/*var id=$(this).attr('id');
+			var paciente=$("#Paciente").val();
+			var ctaCorriente=$("#CtaCorriente").val();
+			var identificador=$("#Identificador").val();
+			cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
+	*/});		
 	
 });
