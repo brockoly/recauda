@@ -90,4 +90,24 @@ class Producto{
 		}
 	 	return $datos;
 	}
+	function listarProductosEliminados($objCon){
+	 	$datos = array();
+		$i=0;
+		$sql ="SELECT
+			productos.pro_id,
+			tipo_producto.tip_descripcion,
+			productos.pro_nom
+			FROM
+			productos
+			INNER JOIN tipo_producto ON productos.tip_prod_id = tipo_producto.tip_prod_id
+			WHERE productos.pro_estado = 1";		
+			
+	 	foreach($objCon->consultaSQL($sql, 'ERROR listarProductos') as $v) {
+			$datos[$i]['pro_id']=$v['pro_id'];
+			$datos[$i]['tip_descripcion']=$v['tip_descripcion'];
+			$datos[$i]['pro_nom']=$v['pro_nom'];
+			$i++;
+		}
+	 	return $datos;
+	}
 }?>
