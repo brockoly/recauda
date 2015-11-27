@@ -23,14 +23,14 @@
             	<?
             	for($i=0; $i<count($listaProductos); $i++){
 	        ?> 	<tr>
-	            		<td><?=$listaProductos[$i]['pro_id']?></td>
-						<td><?=$listaProductos[$i]['tip_descripcion']?></td>
-						<td><?=$listaProductos[$i]['pro_nom']?></td>
-						<td>
-							<img title="Editar producto" src="./include/img/Edit.png" onclick=""/>
-							&nbsp;&nbsp;&nbsp;							
-							<img title="Eliminar Producto" src="./include/img/Delete.png" onclick=""/>						
-						</td>
+            		<td><?=$listaProductos[$i]['pro_id']?></td>
+					<td><?=$listaProductos[$i]['tip_descripcion']?></td>
+					<td><?=$listaProductos[$i]['pro_nom']?></td>
+					<td>
+						<img title="Editar producto" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarProducto.php','pro_id=<?=$listaProductos[$i]["pro_id"]?>','auto','auto','Editar Producto','modalEditarProducto')" style="cursor: pointer;')"/>
+						&nbsp;&nbsp;&nbsp;							
+						<img title="Eliminar Producto" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a DESACTIVAR la previsión <?=$datos[$i]['pre_nombre']?>, ¿Desea desactivar esta previsión?','./controller/server/controlador_prevision.php','pre_id=<?=$datos[$i]['pre_id']?>&op=desactivarPrevision','view/interface/busquedaPrevision.php','pre_id=<?=$_POST['pre_id']?>&pre_nombre=<?=$_POST['pre_nombre']?>','#contenidoCargado')"/>						
+					</td>
 	            </tr>
             <? 	}
             ?>	

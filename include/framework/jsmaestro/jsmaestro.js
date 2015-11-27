@@ -116,6 +116,26 @@ function cargarComboAjax(url,parametros,combo){
 		}
 	});
 }
+function cargarComboAjaxValorP(url,parametros,combo, valor){
+	var miselect = $(combo);
+	$(combo).find('option').remove().end().append('<option value="">Cargando...</option>').val('');
+	$.ajax({   
+		type: "POST",
+		dataType: "json",
+		url:url,
+		async: false,
+		data: parametros,
+		success: function(data){
+			$(combo).empty();
+			$(combo).append('<option value="0">Seleccione...</option>').val('');
+			for (var i=0; i<data.length; i++) {
+				var se = '';
+				if(data[i].id==valor){ se = 'selected'; }
+				$(combo).append('<option '+se+' value="' + data[i].id + '">' + data[i].valor + '</option>');
+			}
+		}
+	});
+}
 //FUNCION QUE ENVIA PETICION AJAX AL SERVIDOR DE FORMA SINCRONICA
 function ejecutarProcedimiento(url,parametros){
 	$.ajax({   

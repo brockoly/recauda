@@ -1,9 +1,17 @@
 $(document).ready(function(){	
 	validar('txtId', 'id' ,'numero');
-	validar('campoValor', 'name' ,'numero')
-	var a=0,b=0,c=0,d=0;
+	validar('campoValor', 'name' ,'numero');
 	$('#trUnidadMedida').hide();
-	$('#btnAddProducto').button().click(function(){
+	var producto = $("#cmbTipoProducto option:selected").val();
+	var unidad = $('#uni_id').val();
+	var res = validarProcesos('controller/server/controlador_producto.php','op=buscarUmTipoProducto'+'&tip_prod_id='+producto);
+	if(res>0){
+		$('<td name="tdUM">UM:</td><td name="tdUM">&nbsp;&nbsp;&nbsp;<select id="cmbUnidadM"  name="cmbUnidadM"><option value="0">Seleccione..</option></select><img src="./include/img/information.png" id="errCmbUm" hidden="true"/></td>').appendTo('#trUnidadMedida');
+		$('#trUnidadMedida').show();
+		cargarComboAjaxValorP('controller/server/controlador_parametros.php','op=cmbUnidadM'+'&tip_prod_id='+producto,'#cmbUnidadM', unidad);
+	}
+	var a=0,b=0,c=0,d=0;
+	$('#btnAddProductoE').button().click(function(){
 		var arrDatosPre=[];
 		var i = 0;
 		$('#tblUM :input').each(function() {
@@ -32,11 +40,11 @@ $(document).ready(function(){
 			$('#'+res).blur();
 		});
 		if(a==1 && b==1 && c==1 && d==1){
-			var res = validarProcesos('controller/server/controlador_producto.php','op=addProducto'+'&datosPre='+arrDatosPre+'&pro_id='+pro_id+'&pro_nom='+pro_nom+'&tip_pro_id='+tip_pro_id+'&uni_id='+uni_id);
+			var res = validarProcesos('controller/server/controlador_producto.php','op=editarProducto'+'&datosPre='+arrDatosPre+'&pro_id='+pro_id+'&pro_nom='+pro_nom+'&tip_pro_id='+tip_pro_id+'&uni_id='+uni_id);
 			if(res=='bien'){
-				mensajeUsuario('successMensaje','Éxito','Producto agregado exitosamente.');
+				mensajeUsuario('successMensaje','Éxito','Producto editado exitosamente.');
 				cargarContenido('view/interface/busquedaProducto.php','','#contenidoCargado');
-				$('#modalAgregarProducto').dialog('destroy').remove();
+				$('#modalEditarProducto').dialog('destroy').remove();
 			}else{
 				$('#txtId').blur();
 				$('#txtDescripcion').blur();
@@ -44,10 +52,21 @@ $(document).ready(function(){
 			}
 		}
 	});	
+	var i = 0;
+	$('#tblUM :input').each(function() {
+		var res = $(this).attr('id');
+		var dat = res.split("_");
+		var prevision = dat[0];
+		var idPre = dat[1];
+		$('#'+res).blur(function(){
+			d=1;
+		});
+		i++;
+	});
 	$('#cmbTipoProducto').change(function(){
 		if($("#cmbTipoProducto option:selected").val() == 0){
 			$('#trUnidadMedida').hide();
-			d=1;
+			d=0;
 		}else{
 			$('[name="tdUM"]').remove();
 			$('#trUnidadMedida').hide();
@@ -79,30 +98,6 @@ $(document).ready(function(){
 			}
 		}
 	});
-	var i = 0;
-	$('#tblUM :input').each(function() {
-		var res = $(this).attr('id');
-		var dat = res.split("_");
-		var prevision = dat[0];
-		var idPre = dat[1];
-		$('#'+res).blur(function(){
-			if( $(this).val()==""){
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('err'+idPre,'Rellene los campos');	
-				d=0;		
-			}else{
-				$(this).removeClass("cajamala" );
-				$('#err'+idPre).attr("title", "").hide("slow");
-				d=1;
-			}
-		});
-
-		$('#'+res).focus(function(){
-			$(this).removeClass("cajamala");	
-			$('#err'+idPre).attr("title", "").hide("slow");				
-		});
-		i++;
-	});
 		
 	$('#txtId').blur(function(){
 		if( $(this).val()==""){
@@ -110,7 +105,7 @@ $(document).ready(function(){
 			muestraError('errId','Rellene los campos');
 			a=0;			
 		}else{
-			var res = validarProcesos('controller/server/controlador_producto.php','op=buscarProducto'+'&pro_id='+$('#txtId').val());
+			var res = validarProcesos('controller/server/controlador_producto.php','op=buscarProductoEditar'+'&pro_id_editar='+$('#pro_id_actual').val()+'&pro_id='+$('#txtId').val());
 			if(res>0){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errId','El producto ingresado ya existe');
