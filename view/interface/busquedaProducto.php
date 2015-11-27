@@ -43,7 +43,7 @@
 <center><h3>Listado de productos eliminados</h3></center>
 <br><br>
 <center>
-	<table class="display" width="100%" id="tblProductos">
+	<table class="display" width="100%" id="tblProductoEliminados">
             <thead>
 	            <tr>
 	              <th width="10%">Id</th>
