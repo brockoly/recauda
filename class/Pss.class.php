@@ -18,6 +18,14 @@ class Pss{
 		    $this->pssInsId=$pss_InsId;
 		}
 
+		function setPss_estado($pss_estado){
+			$this->pss_estado=$pss_estado;
+		}
+
+		function setPss_id($pss_id){
+			$this->pss_id=$pss_id;
+		}
+
 		function generarPss($objCon, $cue_id){
 			session_start();
 			$usu_nombre=$_SESSION['usuario'][1]['nombre_usuario'];		
@@ -72,6 +80,65 @@ class Pss{
 					$i++;
 			}
 		 	return $datos;
+		}
+		function desplegarBotonesAcciones($estado,$institucion,$pss_id){
+			$ancho=30;
+			$alto=30;
+			$botones="";
+			/*--------------------------Condiciones de los botones------------------------*/
+			$rulesAbierto  = array(0 => "Cerrado",1 => "Valorizado",);
+			$rulesCerrar  = array(0 => "Abierto",);
+			$rulesDetalle  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
+			$rulesEditarpSS  = array(0 => "Abierto", 1=> "Cerrado", 2=>"Valorizado");
+			$rulesImprimir  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
+			$rulesValorizar  = array(0 => "Cerrado",);
+			$rulesPagar_Abonar  = array(0 => "Valorizado",1=> "Abonado",);
+			$rulesOrdenAtencion  = array(0 => "Cerrado",1=> "Abonado",);// Se valida con la institucion;
+			/*--------------------------Botones------------------------*/
+
+			$abrir='<img class="open opcionPss" id="'.$pss_id.'" src="./include/img/open.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$cerrar='<img class="close opcionPss" id="'.$pss_id.'" src="./include/img/close.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$detalle='<img class="detalle opcionPss" id="'.$pss_id.'" src="./include/img/detalle.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$editPss='<img class="editPss opcionPss" id="'.$pss_id.'" src="./include/img/editPss.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';							
+			$imprimir='<img class="printer opcionPss" id="'.$pss_id.'" src="./include/img/printer.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$valorizar='<img class="calculator opcionPss" id="'.$pss_id.'" src="./include/img/calculator.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$pagar='<img class="pagar opcionPss" id="'.$pss_id.'" src="./include/img/pagar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$abonar='<img class="abonar opcionPss" id="'.$pss_id.'" src="./include/img/abonar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
+			$ordenAtencion='<img class="ordenAtencion opcionPss" id="'.$pss_id.'" src="./include/img/ordenAtencion.png" width="'.$ancho.'" height="$alto" style="cursor: pointer;">';
+		 	
+		 	if(in_array($estado, $rulesAbierto)){
+		 		$botones.=$abrir;
+			}
+			if(in_array($estado, $rulesCerrar)){
+		 		$botones.=$cerrar;
+			}
+			if(in_array($estado, $rulesDetalle)){
+		 		$botones.=$detalle;
+			}
+			if(in_array($estado, $rulesEditarpSS)){
+		 		$botones.=$editPss;
+			}
+			if(in_array($estado, $rulesImprimir)){
+		 		$botones.=$imprimir;
+			}
+			if(in_array($estado, $rulesValorizar)){
+		 		$botones.=$valorizar;
+			}
+			if(in_array($estado, $rulesPagar_Abonar)){
+		 		$botones.=$pagar;
+		 		$botones.=$abonar;
+			}
+			$botones.$ordenAtencion;
+			return $botones;
+		}
+
+		function cambiarEstadoPss($objCon){
+			$sql="UPDATE pss
+				  SET pss.pss_estado='$this->pss_estado'
+				  WHERE pss_id=$this->pss_id";
+			$rs=$objCon->ejecutarSQL($sql,'ERROR AL cambiarEstadoPss');
+		 	return $rs;
+
 		}
 }
 ?>
