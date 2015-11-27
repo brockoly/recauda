@@ -7,8 +7,9 @@
 ?>
 <script type="text/javascript" src="controller/client/js_busqudaProducto.js"></script>
 <center><h3>Listado de producto</h3></center>
-<div id="btnAgregarTipoProducto" onclick="ventanaModal('./view/dialog/agregarTipoProducto','','auto','auto','Registro De Tipo De Producto','modalAgregarProducto')"><img src="./include/img/tipo_producto.png" width="25" height="25"> Tipo</div>
-<div id="btnAgregarProducto" onclick="ventanaModal('./view/dialog/agregarProducto','','auto','auto','Registro De Producto','modalAgregarProducto')"><img src="./include/img/mas.png" width="25" height="25"> Producto</div>
+<div id="btnAgregarTipoProducto"><img src="./include/img/tipo_producto.png" width="25" height="25"> Tipo</div>
+<div id="btnAgregarProducto"><img src="./include/img/mas.png" width="25" height="25"> Producto</div>
+<div id="btnAgregarUm"><img src="./include/img/medida.png" width="25" height="25"> Unidad Medida</div>
 <br><br>
 <center>
 	<table class="display" width="100%" id="tblProductos">

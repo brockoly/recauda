@@ -1,11 +1,13 @@
 <?php 
 class Unidad_Medida{
-	 public $uni_id;
-	 public $uni_nombre;
+	public $uni_id;
+	public $uni_nombre;
+	public $uni_estado;
 	
-	function setUnidadMedida($uni_id,$uni_nombre){
+	function setUnidadMedida($uni_id,$uni_nombre,$uni_estado){
  		$this->uni_id=trim($uni_id);
  		$this->uni_nombre=trim($uni_nombre);
+ 		$this->uni_estado=trim($uni_estado);
 	}
 	function buscarMaximoIdUM($objCon){//
 	 	$sql="SELECT MAX(uni_id)+1 as CONT
@@ -20,18 +22,26 @@ class Unidad_Medida{
 	    }
 		return $datos;		 	
 	}
-	function insertarUnidadMedida($objCon, $tip_pro, $uni_nombre){
+	function insertarUnidadMedida($objCon){
  		$maxUM=$this->buscarMaximoIdUM($objCon);
-	 	$sql ="INSERT INTO unidad_de_medida(uni_id, tip_prod_id, uni_nombre)
-			   VALUES ($maxUM, '$tip_pro', '$uni_nombre')";
+	 	$sql ="INSERT INTO unidad_de_medida(uni_id, uni_nombre, uni_estado)
+			   VALUES ($maxUM, '$this->uni_nombre', '$this->uni_estado')";
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR insertarUnidadMedida');
 	 	return $rs;
 	}
-	function eliminarUM($objCon){
-		$sql="DELETE FROM unidad_de_medida
-			WHERE unidad_de_medida.uni_id = $this->uni_id";			
-		$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarUM');
-		return $rs;
+	function actualizarUnidadMedida($objCon){
+		$sql="UPDATE unidad_de_medida
+			  SET unidad_de_medida.uni_nombre='$this->uni_nombre'
+			  WHERE unidad_de_medida.uni_id='$this->uni_id'";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR actualizarUnidadMedida');
+	 	return $rs;
+	}
+	function cambiarEstadoUnidadMedida($objCon,$estado){
+		$sql="UPDATE unidad_de_medida
+			  SET unidad_de_medida.uni_estado='$estado'
+			  WHERE unidad_de_medida.uni_id='$this->uni_id'";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR cambiarEstadoUnidadMedida');
+	 	return $rs;
 	}
 	function listarUMProducto($objCon, $tip_prod_id){
 	 	$sql ="SELECT
@@ -50,22 +60,54 @@ class Unidad_Medida{
 		    }
 		return $datos;
 	}
-	function buscarUnidadMedidaProducto($objCon, $tip_prod_id){
-			$sql="SELECT
-				tipo_producto.tip_descripcion,
-				unidad_de_medida.uni_id,
-				unidad_de_medida.uni_nombre
-				FROM
-				unidad_de_medida
-				INNER JOIN tipo_producto ON tipo_producto.tip_prod_id = unidad_de_medida.tip_prod_id
-				WHERE tip_pro_estado = '0' AND tipo_producto.tip_prod_id = '$tip_prod_id'";
-			$datos = array();
+	function buscarUnidadMedida($objCon,$uni_nombreAct){
+		if($uni_nombreAct!=''){
+			$cadena = " AND uni_nombre NOT IN ('$uni_nombreAct')";
+		}
+		$sql="SELECT
+			unidad_de_medida.uni_id,
+			unidad_de_medida.uni_nombre,
+			unidad_de_medida.uni_estado
+			FROM unidad_de_medida
+			WHERE uni_nombre = '$this->uni_nombre' ".$cadena." ";
+		$datos = array();
+		$i=0;
+		foreach ($objCon->consultaSQL($sql, 'ERROR buscarUnidadMedida') as $v) {
+			$datos[$i]['uni_id']=$v['uni_id'];
+			$datos[$i]['uni_nombre']=$v['uni_nombre'];
+			$datos[$i]['uni_estado']=$v['uni_estado'];
+			$i++;
+	    }
+		return $datos;
+	}
+	function listarUnidadMedida($objCon){
+	 	$sql ="SELECT
+			unidad_de_medida.uni_id,
+			unidad_de_medida.uni_nombre
+			FROM unidad_de_medida
+			WHERE unidad_de_medida.uni_estado = '0'";
+	 	$datos = array();
 			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR buscarUnidadMedidaProducto') as $v) {
-				$datos[$i]['id']=$v['uni_id'];
-				$datos[$i]['valor']=$v['uni_nombre'];
+			foreach ($objCon->consultaSQL($sql, 'ERROR listarUnidadMedida') as $v) {
+				$datos[$i][uni_id]=$v['uni_id'];
+				$datos[$i][uni_nombre]=$v['uni_nombre'];
 				$i++;
 		    }
-			return $datos;
-		}
+		return $datos;
+	}
+	function listarUnidadMedidaEliminados($objCon){
+	 	$sql ="SELECT
+			unidad_de_medida.uni_id,
+			unidad_de_medida.uni_nombre
+			FROM unidad_de_medida
+			WHERE unidad_de_medida.uni_estado = '1'";
+	 	$datos = array();
+			$i=0;
+			foreach ($objCon->consultaSQL($sql, 'ERROR listarUnidadMedida') as $v) {
+				$datos[$i][uni_id]=$v['uni_id'];
+				$datos[$i][uni_nombre]=$v['uni_nombre'];
+				$i++;
+		    }
+		return $datos;
+	}
 }?>
