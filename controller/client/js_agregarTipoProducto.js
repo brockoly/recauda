@@ -1,33 +1,18 @@
 $(document).ready(function(){
 	tablaMinima('tblTipoProducto');
 	tablaMinima('tblTipoProductoEliminado');
-	var contadorId = 0;
-	$('#chkUM').click(function(){
-		if($('#chkUM').prop('checked')==true){
-			contadorId++;
-			$('#chkUM').val('1');
-			$('<table id="tblUM"></table>').appendTo('#tdUnidadMedida');
-			$('<tr><td>Nombre UM:</td><td>&nbsp;&nbsp;<input type="text" name="'+contadorId+'" id="'+contadorId+'" /><img src="include/img/Information.png" id="err'+contadorId+'" hidden="true"  /></td><td id="btnNuevaMedida" class="btnNuevaMedida">&nbsp;&nbsp;<img title="Mas" width="25" height="25" src="./include/img/plus.png" style="cursor: pointer;"/></td></tr>').appendTo('#tblUM');
-			$('.btnNuevaMedida').click(function(){
-				contadorId++;
-				$('<tr><td>Nombre UM:</td><td>&nbsp;&nbsp;<input type="text" name="'+contadorId+'" id="'+contadorId+'" /><img src="include/img/Information.png" id="err'+contadorId+'" hidden="true"  /></td><td><td></td></tr>').appendTo('#tblUM');
-			});
-		}else{
-			$('#chkUM').val('0');
-			$('#tblUM').remove();
-			contadorId = 0;
-		}
-	});
+	
 	$('#btnAddTipo').button().click(function(){
-		var datosEnviar=[];
-		var i=0;
-		$('#tblUM :input').each(function(){
-			datosEnviar[i] = $(this).val(); 
-			i++;
-		})
-		var chk = $('#chkUM').val();
+		var arrDatosUM=[];
+		var i = 0;
+		var chk = $('#tblUM').find('input[type="checkbox"]:checked').each(function () {
+	       	arrDatosUM[i] = $(this).val(); 
+	       	i++;
+   		});
+		//alert(arrDatosUM); 
 		if($("#tip_descripcion").val()!=""){
-			var res = validarProcesos('./controller/server/controlador_producto.php','tip_descripcion='+$("#tip_descripcion").val()+"&chkUM="+chk+"&op=agregarTipo"+'&datos='+datosEnviar);
+			var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#tip_descripcion").val()+"&op=agregarTipo"+'&datos='+arrDatosUM);
+			alert(res);
 			if(res=="existe"){
 				$("#tip_descripcion").addClass("cajamala");
 				muestraError("errtip_descripcion", "Este tipo de producto ya existe");

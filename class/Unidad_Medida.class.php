@@ -29,6 +29,12 @@ class Unidad_Medida{
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR insertarUnidadMedida');
 	 	return $rs;
 	}
+	function insertarUnidadMedidaTProducto($objCon,$tip_pro_id){
+	 	$sql ="INSERT INTO tipopro_unidadmed(uni_id, tip_prod_id)
+			   VALUES ('$this->uni_id', '$tip_pro_id')";
+	 	$rs=$objCon->ejecutarSQL($sql,'ERROR insertarUnidadMedidaTProducto');
+	 	return $rs;
+	}
 	function actualizarUnidadMedida($objCon){
 		$sql="UPDATE unidad_de_medida
 			  SET unidad_de_medida.uni_nombre='$this->uni_nombre'
@@ -43,19 +49,17 @@ class Unidad_Medida{
 		$rs=$objCon->ejecutarSQL($sql,'ERROR cambiarEstadoUnidadMedida');
 	 	return $rs;
 	}
-	function listarUMProducto($objCon, $tip_prod_id){
+	function listarUnidadTipoProducto($objCon,$tip_prod_id){
 	 	$sql ="SELECT
-			unidad_de_medida.uni_id,
-			unidad_de_medida.tip_prod_id,
-			unidad_de_medida.uni_nombre
-			FROM unidad_de_medida
+			tipopro_unidadmed.uni_id,
+			tipopro_unidadmed.tip_prod_id
+			FROM tipopro_unidadmed
 			WHERE tip_prod_id = '$tip_prod_id'";
 	 	$datos = array();
 			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR listarTipoProducto') as $v) {
+			foreach ($objCon->consultaSQL($sql, 'ERROR listarUnidadTipoProducto') as $v) {
 				$datos[$i][uni_id]=$v['uni_id'];
 				$datos[$i][tip_prod_id]=$v['tip_prod_id'];
-				$datos[$i][uni_nombre]=$v['uni_nombre'];
 				$i++;
 		    }
 		return $datos;

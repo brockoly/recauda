@@ -22,7 +22,7 @@ class Tipo_Producto{
 		return $datos;		 	
 	}
 	function insertarTipoProducto($objCon){
-			$max=$this->buscarMaximoId($objCon);
+		$max=$this->buscarMaximoId($objCon);
 	 	$sql ="INSERT INTO tipo_producto(tip_prod_id, tip_descripcion)
 			   VALUES ($max, '$this->tip_descripcion')";
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL insertarTipoProducto');
