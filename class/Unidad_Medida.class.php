@@ -114,4 +114,22 @@ class Unidad_Medida{
 		    }
 		return $datos;
 	}
+	function buscarUnidadMedidaProducto($objCon,$tip_prod_id){
+	 	$sql ="SELECT
+			unidad_de_medida.uni_id,
+			unidad_de_medida.uni_nombre
+			FROM
+			tipo_producto
+			INNER JOIN tipopro_unidadmed ON tipo_producto.tip_prod_id = tipopro_unidadmed.tip_prod_id
+			INNER JOIN unidad_de_medida ON tipopro_unidadmed.uni_id = unidad_de_medida.uni_id
+			WHERE tipo_producto.tip_prod_id = '$tip_prod_id'";
+	 	$datos = array();
+			$i=0;
+			foreach ($objCon->consultaSQL($sql, 'ERROR buscarUnidadMedidaProducto') as $v) {
+				$datos[$i][id]=$v['uni_id'];
+				$datos[$i][valor]=$v['uni_nombre'];
+				$i++;
+		    }
+		return $datos;
+	}
 }?>

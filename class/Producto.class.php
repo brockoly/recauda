@@ -22,7 +22,7 @@ class Producto{
 	 	return $rs;
 	} 
 	function editarProducto($objCon,$tip_prod_id,$uni_id){
-		$sql="UPDATE productos
+		echo $sql="UPDATE productos
 			  SET productos.tip_prod_id='$tip_prod_id', productos.pro_nom='$this->pro_nom', productos.uni_id='$uni_id' 
 			  WHERE productos.pro_id=$this->pro_id";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL editarProducto');

@@ -70,18 +70,6 @@
 	 			$e->getMessage();
 			}
 		break;
-		/*case "buscarUmTipoProducto":				
-			$objCon->db_connect();
-			try{
-		 		$objCon->beginTransaction();
-				$res = $objUnidadM->buscarUnidadMedidaProducto($objCon,$_POST['tip_prod_id']);
-		 		$objCon->commit();	
-		 		echo count($res);					 		
-			}catch (PDOException $e){
-					$objCon->rollBack(); 
-					$e->getMessage();
-			}
-		break;*/
 	}
 
 ?>
