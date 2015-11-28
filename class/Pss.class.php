@@ -51,7 +51,7 @@ class Pss{
 			return $datos;		 	
 		}
 
-		function buscarPssCtaCte($objCon,$cuenta_id){
+		function buscarPss($objCon,$cuenta_id){
 		 	$datos = array();
 			$i=0;
 			$sql ="SELECT
@@ -65,7 +65,12 @@ class Pss{
 						pss.pssPrevId,
 						pss.pssInsId
 				   FROM pss
-				   WHERE cue_id=$cuenta_id";		
+				   ";
+			if(empty($cuenta_id)==false){
+				$sql.=" WHERE cue_id=$cuenta_id";
+			}else{
+				$sql.=" WHERE pss_id=$this->pss_id";
+			}		
 				
 		 	foreach($objCon->consultaSQL($sql, 'ERROR buscarPssCtaCte') as $v) {
 					$datos[$i]['cue_id']=$v['cue_id'];
@@ -89,11 +94,12 @@ class Pss{
 			$rulesAbierto  = array(0 => "Cerrado",1 => "Valorizado",);
 			$rulesCerrar  = array(0 => "Abierto",);
 			$rulesDetalle  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
-			$rulesEditarpSS  = array(0 => "Abierto", 1=> "Cerrado", 2=>"Valorizado");
+			$rulesEditarpSS  = array(0 => "Abierto");
 			$rulesImprimir  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
 			$rulesValorizar  = array(0 => "Cerrado",);
-			$rulesPagar_Abonar  = array(0 => "Valorizado",1=> "Abonado",);
-			$rulesOrdenAtencion  = array(0 => "Cerrado",1=> "Abonado",);// Se valida con la institucion;
+			$rulesPagar = array(0 => "Valorizado", 1=> "Abonado",);
+			$rulesAbonar = array(0 => "Pagado",);
+			$rulesOrdenAtencion  = array(0 => "Pagado",1=> "Abonado",2=> "Valorizado",);// Se valida con la institucion;
 			/*--------------------------Botones------------------------*/
 
 			$abrir='<img class="open opcionPss" id="'.$pss_id.'" src="./include/img/open.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
@@ -124,11 +130,15 @@ class Pss{
 			if(in_array($estado, $rulesValorizar)){
 		 		$botones.=$valorizar;
 			}
-			if(in_array($estado, $rulesPagar_Abonar)){
+			if(in_array($estado, $rulesPagar)){
 		 		$botones.=$pagar;
+			}
+			if(in_array($estado, $rulesAbonar)){
 		 		$botones.=$abonar;
 			}
-			$botones.$ordenAtencion;
+			if(in_array($estado, $rulesOrdenAtencion)){
+		 		$botones.=$ordenAtencion;
+			}
 			return $botones;
 		}
 

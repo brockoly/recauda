@@ -10,7 +10,7 @@
 	$objCue = new Cuenta_Corriente(); 
 	$objCon->db_connect();
 	if(isset($_POST['cue_id']) && $_POST['cue_id']!=""){
-		$datos=$objPss->buscarPssCtaCte($objCon,$_POST['cue_id']);
+		$datos=$objPss->buscarPss($objCon,$_POST['cue_id']);
 	}
 	unset($_SESSION['cue_id']);
 	$_SESSION['cue_id']=$_POST['cue_id'];
