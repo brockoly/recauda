@@ -12,7 +12,6 @@ $(document).ready(function(){
 		//alert(arrDatosUM); 
 		if($("#tip_descripcion").val()!=""){
 			var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#tip_descripcion").val()+"&op=agregarTipo"+'&datos='+arrDatosUM);
-			alert(res);
 			if(res=="existe"){
 				$("#tip_descripcion").addClass("cajamala");
 				muestraError("errtip_descripcion", "Este tipo de producto ya existe");
@@ -29,7 +28,6 @@ $(document).ready(function(){
 		$(this).removeClass("cajabuena cajamala");	
 		$('#errtip_descripcion').attr("title", "").hide("slow");				
 	});
-	
 });
 
 	
