@@ -10,7 +10,7 @@
 		$datos=$objCue->buscarCuentaSola($objCon, $_POST['Paciente'], "", "","");
 	}
 	if(isset($_POST['CtaCorriente']) && $_POST['CtaCorriente']!=""){
-		$datos=$objCue->buscarCuentaSola($objCon,"", $_POST['CtaCorriente'], "","");
+		$datos=$objCue->buscarCuentaSola($objCon,"", $_POST['CtaCorriente'], "","");		
 	}
 	if(isset($_POST['Identificador']) && $_POST['Identificador']!=""){
 		$identificador = "";
@@ -19,7 +19,7 @@
 			$datos=$objCue->buscarCuentaSola($objCon, "", "","", $identificador);
 		}else{
 			$datos=$objCue->buscarCuentaSola($objCon, "", "","", $_POST['Identificador']);	
-		}		
+		}	
 	}
 	$objCon=null;
 ?>
@@ -62,8 +62,8 @@ $(document).ready(function() {
 <?php
 		            for($i=0; $i<count($datos); $i++){
 ?> 
-			        	<tr style="cursor: pointer;" class="trclass" id="<?=$datos[$i]['cue_id']?>">
-		        			<td id="tdCue"><?=$datos[$i]['cue_id']?></td>
+		        	<tr style="cursor: pointer;" class="buscaPss" id="<?=$datos[$i]['cue_id']?>">
+		        			<td><?=$datos[$i]['cue_id']?></td>
 							<td><? if($datos[$i]['Nacionalidad']=='Chile'){echo $objUtil->formatRut($datos[$i]['per_id']);}else{echo $datos[$i]['per_id'];}?></td>
 							<td><?=$datos[$i]['per_nombre']?></td>
 							<td><?=$datos[$i]['per_apellidoPaterno']?></td>
@@ -73,5 +73,8 @@ $(document).ready(function() {
 ?>
 			</table>
 </div>
-
 </center>
+<input type="hidden" value="<?=$_POST['Paciente']?>" id="Paciente">
+<input type="hidden" value="<?=$_POST['CtaCorriente']?>" id="CtaCorriente">
+<input type="hidden" value="<?=$_POST['Identificador']?>" id="Identificador">
+

@@ -58,3 +58,15 @@ select {
     border:1px solid #f2c779;
 }
 
+.cabezeraDatos{
+  border:1px solid #aed0ea; 
+  background-color: #f2f5f7  !important; 
+}
+
+.cuerpoDatos{
+  padding: 0.2em 0.5em;
+  border:1px solid #aed0ea;
+  font-size:90%;
+  text-align:left;
+  background-color: #f2f5f7  !important;
+  }

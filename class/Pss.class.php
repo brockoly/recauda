@@ -51,7 +51,7 @@ class Pss{
 			return $datos;		 	
 		}
 
-		function buscarPssCtaCte($objCon,$cuenta_id){
+		function buscarPss($objCon,$cuenta_id){
 		 	$datos = array();
 			$i=0;
 			$sql ="SELECT
@@ -65,7 +65,12 @@ class Pss{
 						pss.pssPrevId,
 						pss.pssInsId
 				   FROM pss
-				   WHERE cue_id=$cuenta_id";		
+				   ";
+			if(empty($cuenta_id)==false){
+				$sql.=" WHERE cue_id=$cuenta_id";
+			}else{
+				$sql.=" WHERE pss_id=$this->pss_id";
+			}		
 				
 		 	foreach($objCon->consultaSQL($sql, 'ERROR buscarPssCtaCte') as $v) {
 					$datos[$i]['cue_id']=$v['cue_id'];
@@ -89,11 +94,12 @@ class Pss{
 			$rulesAbierto  = array(0 => "Cerrado",1 => "Valorizado",);
 			$rulesCerrar  = array(0 => "Abierto",);
 			$rulesDetalle  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
-			$rulesEditarpSS  = array(0 => "Abierto", 1=> "Cerrado", 2=>"Valorizado");
+			$rulesEditarpSS  = array(0 => "Abierto");
 			$rulesImprimir  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
 			$rulesValorizar  = array(0 => "Cerrado",);
-			$rulesPagar_Abonar  = array(0 => "Valorizado",1=> "Abonado",);
-			$rulesOrdenAtencion  = array(0 => "Cerrado",1=> "Abonado",);// Se valida con la institucion;
+			$rulesPagar = array(0 => "Valorizado", 1=> "Abonado",);
+			$rulesAbonar = array(0 => "Pagado",);
+			$rulesOrdenAtencion  = array(0 => "Pagado",1=> "Abonado",2=> "Valorizado",);// Se valida con la institucion;
 			/*--------------------------Botones------------------------*/
 
 
@@ -106,15 +112,6 @@ class Pss{
 			$pagar='<img class="pagar opcionPss" id="'.$pss_id.'" src="./include/img/pagar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$abonar='<img class="abonar opcionPss" id="'.$pss_id.'" src="./include/img/abonar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$ordenAtencion='<img class="ordenAtencion opcionPss" id="'.$pss_id.'" src="./include/img/ordenAtencion.png" width="'.$ancho.'" height="$alto" style="cursor: pointer;">';
-			$abrir='<img class="open" src="./include/img/open.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$cerrar='<img class="close" src="./include/img/close.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$detalle='<img class="detalle" src="./include/img/detalle.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$editPss='<img class="editPss" src="./include/img/editPss.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';							
-			$imprimir='<img class="printer" src="./include/img/printer.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$valorizar='<img class="calculator" src="./include/img/calculator.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$pagar='<img class="pagar" src="./include/img/pagar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$abonar='<img class="abonar" src="./include/img/abonar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$ordenAtencion='<img class="ordenAtencion" src="./include/img/ordenAtencion.png" width="'.$ancho.'" height="$alto" style="cursor: pointer;">';
 		 	
 		 	if(in_array($estado, $rulesAbierto)){
 		 		$botones.=$abrir;
@@ -134,11 +131,15 @@ class Pss{
 			if(in_array($estado, $rulesValorizar)){
 		 		$botones.=$valorizar;
 			}
-			if(in_array($estado, $rulesPagar_Abonar)){
+			if(in_array($estado, $rulesPagar)){
 		 		$botones.=$pagar;
+			}
+			if(in_array($estado, $rulesAbonar)){
 		 		$botones.=$abonar;
 			}
-			$botones.$ordenAtencion;
+			if(in_array($estado, $rulesOrdenAtencion)){
+		 		$botones.=$ordenAtencion;
+			}
 			return $botones;
 		}
 		function cambiarEstadoPss($objCon){

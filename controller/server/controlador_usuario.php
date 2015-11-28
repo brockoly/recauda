@@ -29,7 +29,7 @@
 								$objNac->setNacionalidad(1,"");								
 								$rut = $objUti->valida_rut($_POST['rut']);
 								$objPer->setPersona($rut,$_POST['txtNombre'],$_POST['txtApellidoPaterno'],$_POST['txtApellidoMaterno'],
-													$objUti->cambiarfecha_mysql($_POST['txtFechaNacimiento']),$telefono,0);
+													$objUti->cambiarfecha_mysql($_POST['txtFechaNacimiento']),$telefono,1);
 								$usuAux=$objUsu->buscarUsuario($objCon);
 
 								if($usuAux!=""){
