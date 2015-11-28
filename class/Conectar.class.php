@@ -12,7 +12,7 @@
 		$this->dns="mysql";
 		$this->user = "recauda";
 		$this->pass = "recaudaIncap123";
-		$this->server = "localhost";
+		$this->server = "127.0.0.1";
 		$this->database = "recaudacion";		
 	}
 	/*************SOBRECARGAS*************/
