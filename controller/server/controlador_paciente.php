@@ -41,9 +41,13 @@
 									$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia);
 									$objPac->setPaciente($pac_id);		
 									$objNac->setNacionalidad($nac_id,'');
-									$objPer->insertarPersona($objCon);
-									$objPac->insertarPaciente($objCon, $pre_id, $per_id, $ins_id);
-									$objNac->insertarNacionalidadPersona($objCon, $per_id);
+									if($_POST['pacEx']==0){
+										$objPer->insertarPersona($objCon);
+										$objNac->insertarNacionalidadPersona($objCon, $per_id);
+									}else{
+										$objPer->modificarPersona($objCon);
+									}									
+									$objPac->insertarPaciente($objCon, $pre_id, $per_id, $ins_id);									
 							 		$objCon->commit();
 							 		echo "bien";						 		
 							 	} catch (PDOException $e){
@@ -127,6 +131,15 @@
 						 			$objCon->rollBack(); 
 						 			$e->getMessage();
 							 	}
+								break;
+		case "buscarPersona":
+								$objCon = new Conectar();
+								$objPac= new Paciente();
+								$objUti= new Util(); 
+								$objCon->db_connect();
+								$txtRut = $_POST['txtRut'];
+								$per_id = $objUti->valida_rut($txtRut);
+								echo $res = $objPac->buscarPersona($objCon, $per_id);
 								break;
 	}
 ?>
