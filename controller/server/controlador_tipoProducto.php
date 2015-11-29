@@ -31,7 +31,7 @@
 		break;
 		case "agregarTipo":
 			$datosTipo = explode(',', $_POST['datos']);
-			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],'');				
+			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],'','');				
 			$objCon->db_connect();
 			$producto=$objTipoPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
