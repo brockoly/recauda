@@ -1,4 +1,8 @@
 <?php
+if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 	require_once('../../class/Conectar.class.php');  $objCon = new Conectar();
 	require_once('../../class/Prevision.class.php'); $objPre = new Prevision();	
 	$objCon->db_connect();

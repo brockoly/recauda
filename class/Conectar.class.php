@@ -1,4 +1,9 @@
-<?php class Conectar extends PDO {
+<?php 
+if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
+class Conectar extends PDO {
 	private $dns;
 	private $lnk; //puntero a la BD
 	private $user;

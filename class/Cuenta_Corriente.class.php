@@ -1,4 +1,8 @@
 <?php
+if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 class Cuenta_Corriente{
 		private $cue_id;
 		private $cue_unidadOrigen;

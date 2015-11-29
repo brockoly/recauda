@@ -1,4 +1,8 @@
 <?php
+	if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 	class Nacionalidad{
 		private $nac_id;
 		private $nac_nombre;

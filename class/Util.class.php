@@ -1,4 +1,8 @@
 <?php
+	if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 	class Util{
 		function cambiarfecha_mysql($fecha){
 					list($dia,$mes,$ano)=explode("/",$fecha);

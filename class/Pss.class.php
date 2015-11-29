@@ -1,4 +1,8 @@
 <?php
+	if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 class Pss{
 	   private $pss_id;
 	   private $pss_fecha;

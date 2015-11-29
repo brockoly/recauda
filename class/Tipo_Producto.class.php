@@ -1,4 +1,8 @@
 <?php 
+	if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 class Tipo_Producto{
 	 public $tip_descripcion;
 	 public $tip_prod_id;

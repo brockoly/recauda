@@ -1,4 +1,8 @@
 <?php 
+	if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 class Unidad_Medida{
 	public $uni_id;
 	public $uni_nombre;

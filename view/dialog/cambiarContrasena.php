@@ -1,6 +1,9 @@
 <?
 session_start();
-
+if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 //print_r($_SESSION['usuario']);
 ?>
 <script src="controller/client/js_sesion.js"></script>

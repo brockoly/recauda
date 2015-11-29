@@ -1,3 +1,9 @@
+<?
+if ( $_SESSION['usuario'] == null ) {
+    $GoTo = "../../../login/index.php";
+    header(sprintf("Location: %s", $GoTo));
+  }
+?>
 <script type="text/javascript" src="controller/client/js_nuevaCuentaCte.js"></script>
 <!-- <div id="information" style="cursor: help; width:120px;"><img src="./include/img/information.png" /> <b>Información</b></div> -->
 <center>

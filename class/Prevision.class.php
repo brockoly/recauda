@@ -1,4 +1,8 @@
 <?php
+	if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 	class Prevision{
 		private $pre_id;
 		private $pre_nombre;

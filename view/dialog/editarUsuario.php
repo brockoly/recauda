@@ -1,6 +1,10 @@
 <?php
 	//LLAMADA DE CLASES
 	session_start();
+	if ( $_SESSION['usuario'] == null ) {
+		$GoTo = "../../../login/index.php";
+		header(sprintf("Location: %s", $GoTo));
+	}
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 	require_once('../../class/Nacionalidad.class.php'); $objNac = new Nacionalidad();
 	require_once('../../class/Privilegios.class.php'); $objPri = new Privilegio();
