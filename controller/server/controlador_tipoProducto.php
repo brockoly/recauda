@@ -35,13 +35,16 @@
 			$objCon->db_connect();
 			$producto=$objTipoPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
+
 				try{
 			 		$objCon->beginTransaction();
 					$tip_pro_id = $objTipoPro->insertarTipoProducto($objCon);
-					for($i=0;$i<count($datosTipo);$i++){
+					if($datosTipo[0]!=''){
+						for($i=0;$i<count($datosTipo);$i++){
 						$objUnidadM->setUnidadMedida($datosTipo[$i],'','');
 						$objUnidadM->insertarUnidadMedidaTProducto($objCon,$tip_pro_id);
-					}
+						}
+					}					
 			 		$objCon->commit();						 		
 				}catch (PDOException $e){
 		 			$objCon->rollBack(); 
