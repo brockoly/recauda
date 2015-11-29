@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	validar('txtNombres', 'id','letras');
-	var a=0, b=0, c=0, d=0, e=0, f=0,g=0, rut = 0, id = 0; /*BANDERAS GLOBALES*/
+	var a=0, b=0, c=0, d=0, e=0, f=0,g=0, rut = 0, id = 0, pacEx = 0; /*BANDERAS GLOBALES*/
 	calendario('txtFechaNac');
 	$("#btnAgregarPacienteModal").button().click(function(){
 		if( $("#txtFechaNac").val()==""){
@@ -14,7 +14,11 @@ $(document).ready(function(){
 		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && g==1){
 			var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
 			if(resPac ==0){
-				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rut='+rut);
+				if(pacEx == 0){
+
+
+				}
+				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rut='+rut+'&pacEx='+pacEx);
 				if(cont ='bien'){ 
 					mensajeUsuario('successMensaje','Exito','Paciente creado exitosamente');
 					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
@@ -59,12 +63,25 @@ $(document).ready(function(){
 					muestraError('errRut','Rellene los campos');
 					a=0;			
 				}else{
-					if(a==1){
+					if(a==1){						
+						var resUsu2 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut); 
 						var resPac2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
 						if(resPac2!=0){
 							$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 							muestraError('errRut','Identificador ya existente');
 							a=0;			
+						}else if(resUsu2.length>2){
+							pacEx =1;
+							b=1;
+							c=1;
+							d=1;
+							e=1;
+							var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+$('#txtRut').val()));							
+							$('#txtNombres').val(arrExistente.per_nombre);
+							$('#txtApellidoPat').val(arrExistente.per_apellidoPaterno);
+							$('#txtApellidoMat').val(arrExistente.per_apellidoMaterno);
+							$('#txtFechaNac').val(arrExistente.per_fechaNacimiento);
+							$('#txtTelefono').val(arrExistente.per_telefono);
 						}else{
 							$(this).removeClass("cajamala" );
 							a=1;

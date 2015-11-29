@@ -1,7 +1,7 @@
 $(document).ready(function(){	
 
 	//Variables Banderas	
-	var a=0,b=0,c=0,d=0,e=0,f=0,g=0, o=0, z=0, rut=0; //BANDERAS GLOBALES
+	var a=0,b=0,c=0,d=0,e=0,f=0,g=0, o=0, z=0, rut=0, pacEx=0; //BANDERAS GLOBALES
 	validar('txtUsuario', 'id' ,'letrasUsuario');
 	validar('txtCorreo', 'id' ,'correo');
 	validar('txtIdentificador', 'id' ,'rut');
@@ -24,7 +24,7 @@ $(document).ready(function(){
 		
 		//alert("a="+a+"b="+b+"c="+c+"d="+d+"e="+e+"f="+f+"o="+o+"z="+z)
 		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && o==1 && z==1){
-			var res = retornarJson('./controller/server/controlador_usuario.php',$("#frmAgregarUsuario").serialize()+"&op=agregarUsuario&rut="+rut);
+			var res = retornarJson('./controller/server/controlador_usuario.php',$("#frmAgregarUsuario").serialize()+"&op=agregarUsuario&rut="+rut+"&pacEx="+pacEx);
 			//alert(res);
 			//alert(Object.keys(res).length);
 			if(Object.keys(res).length>0){
@@ -34,8 +34,9 @@ $(document).ready(function(){
 					if(res.txtUsuario=="desactivado"){
 						mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, El usuario ingresado ya existe pero en estado desactivado, ¿Desea Activarlo Nuevamente?','./controller/server/controlador_usuario.php','usu_nombre='+$("#txtUsuario").val()+'&op=restaurarUsuario','view/interface/busquedaUsuario.php','','#contenidoCargado','modalAgregarUsuario');
 						muestraError('errUsuario',"El usuario ingresado ya existe pero está desactivado, vaya al mantenedor y activelo nuevamente.");
-					}else{muestraError('errUsuario',res.txtUsuario);}
-					
+					}else{
+						muestraError('errUsuario',res.txtUsuario);
+					}					
 				}else{
 					$("#txtUsuario").removeClass("cajabuena cajamala");	
 					$('#errUsuario').attr("title", "").hide("slow");
@@ -192,15 +193,34 @@ $(document).ready(function(){
 	});
 
 	$("#txtIdentificador").blur(function(){
-			if( $(this).val()==""){
+			if( $(this).val()==""){				
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errIdentificador','Rellene los campos');
 				o=0;			
+			}else{
+				rut=$.Rut.quitarFormato($("#txtIdentificador").val());				
+				var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut); 
+				
+				if(resUsu2.length>2){
+					pacEx=1;
+					c=1;
+					d=1;
+					e=1;
+					g=1;
+					var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut));												
+					$('#txtNombre').val(arrExistente.per_nombre);
+					$('#txtApellidoPaterno').val(arrExistente.per_apellidoPaterno);
+					$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
+					$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
+					$('#txtTelefono').val(arrExistente.per_telefono);
+				}else{
+					pacEx=0;
+				}
 			}
 	});
 
 	$("#txtIdentificador").Rut({
-		  on_error: function(){  
+		  on_error: function(){
 		  						$("#txtIdentificador").removeClass("cajabuena" ).addClass( "cajamala" );
 								 muestraError('errIdentificador','El rut ingresado es incorrecto');
 								 o=0;

@@ -41,11 +41,6 @@ class Usuario{
 	 	}
 	 	return $datos;
 	}
-
-	function actualizarUsuario($conexion){
-
-	}	
-
 	function validarUsuarioClave($objCon){
 	 	
 	 	$sql="SELECT
@@ -221,6 +216,51 @@ class Usuario{
 			  WHERE usuario.usu_nombre='$this->usu_nombre'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarClave');
 	 	return $rs;
+	}
+	function buscarUsuarioRut($objCon, $per_id){
+			$datos = 0;
+			$i=0;
+			$sql =" SELECT	usuario.usu_nombre
+					FROM usuario
+					WHERE usuario.per_id = '$per_id'";
+			foreach($objCon->consultaSQL($sql, 'ERROR buscarUsuario') as $v) {
+					$datos =1;
+			}
+			return $datos;
+	}
+	function buscarPersona($objCon, $usu_nombre, $per_id){
+			$datos = array();
+			$i=0;
+			$sql =" SELECT
+						usuario.usu_nombre,
+						usuario.usu_correo,
+						persona.per_nombre,
+						persona.per_telefono,
+						persona.per_apellidoPaterno,
+						persona.per_apellidoMaterno,
+						persona.per_fechaNacimiento						
+					FROM usuario
+					LEFT JOIN persona ON persona.per_id = usuario.per_id";
+
+			if(empty($usu_nombre)==false){
+				$sql.=" WHERE usuario.usu_nombre = '$usu_nombre'";
+			}else if(empty($per_id)==false){ 
+					$sql.=" WHERE usuario.per_id = '$per_id'";
+			}				
+		 	foreach($objCon->consultaSQL($sql, 'ERROR buscarUsuario') as $v) {
+					$datos['usu_nombre']=$v['usu_nombre'];
+					$datos['usu_correo']=$v['usu_correo'];
+					$datos['per_nombre']=$v['per_nombre'];
+					$datos['per_apellidoPaterno']=$v['per_apellidoPaterno'];
+					$datos['per_apellidoMaterno']=$v['per_apellidoMaterno'];
+
+					//formatear fecha
+					require_once('../../class/Util.class.php'); 
+					$objUti=new Util(); 
+					$datos['per_fechaNacimiento']=$objUti->cambiarfecha_mysql_a_normal($v['per_fechaNacimiento']);
+					$datos['per_telefono']=$v['per_telefono'];
+			}
+		 	return json_encode($datos);
 	}
 
 

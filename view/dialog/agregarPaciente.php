@@ -18,7 +18,25 @@
 <form id="frmDatosPaciente" name="frmDatosPaciente">
 <fieldset style="width: 450px;"><legend>Datos Paciente</legend>
 <center>
-<table>
+<table><tr>
+			<td>País *</td>
+			<td>&nbsp;&nbsp;
+				<select id="cmbPais" name="cmbPais">
+					<option value="0">Seleccione País</option>
+				<?
+				for($i=0; $i<count($nacionalidades); $i++){ ?>
+						<option value="<?= $nacionalidades[$i]['nac_id']?>"><?= $nacionalidades[$i]['nac_nombre']?></option>
+				<?
+					} 
+				?>
+					
+				</select>
+			&nbsp;&nbsp;<img src="./include/img/Information.png" id="errcmbPais" hidden="true"  /></td>
+		</tr>
+		<tr hidden="true" id="trIdentificador">
+			<td>Identificador *</td>
+			
+		</tr>
 		<tr>
 			<td>Nombres *</td>
 			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtNombres" name="txtNombres" />&nbsp;&nbsp;<img src="./include/img/Information.png" id="errNombres" hidden="true"  /></td>
@@ -39,25 +57,7 @@
 			<td>Telefono </td>
 			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtTelefono" name="txtTelefono" />&nbsp;&nbsp;<img src="./include/img/Information.png" id="errTelefono" hidden="true"  /></td>
 		</tr>
-		<tr>
-			<td>País *</td>
-			<td>&nbsp;&nbsp;
-				<select id="cmbPais" name="cmbPais">
-					<option value="0">Seleccione País</option>
-				<?
-				for($i=0; $i<count($nacionalidades); $i++){ ?>
-						<option value="<?= $nacionalidades[$i]['nac_id']?>"><?= $nacionalidades[$i]['nac_nombre']?></option>
-				<?
-					} 
-				?>
-					
-				</select>
-			&nbsp;&nbsp;<img src="./include/img/Information.png" id="errcmbPais" hidden="true"  /></td>
-		</tr>
-		<tr hidden="true" id="trIdentificador">
-			<td>Identificador *</td>
-			
-		</tr>
+		
 		<tr>
 			<td>Previsión *</td>
 			<td>&nbsp;&nbsp;
