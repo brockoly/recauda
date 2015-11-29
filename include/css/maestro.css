@@ -68,5 +68,14 @@ select {
   border:1px solid #aed0ea;
   font-size:90%;
   text-align:left;
-  background-color: #f2f5f7  !important;
-  }
+  background-color: #3baae3  !important;
+  color: white;
+}
+
+.cuerpoDatosTablas{
+  padding: 0.2em 0.5em;
+  border:1px solid #aed0ea;
+  font-size:90%;
+  background-color: #deedf7   !important;
+  color: black;
+}

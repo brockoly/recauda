@@ -150,5 +150,9 @@ class Pss{
 		 	return $rs;
 
 		}
+		function verDetallePss($objCon){
+			
+
+		}
 }
 ?>
