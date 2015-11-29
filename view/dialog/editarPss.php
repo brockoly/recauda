@@ -35,7 +35,7 @@
   <?php
     for($i=0; $i<count($tipoProducto); $i++){
   ?>
-    <li><a href="#<?=$tipoProducto[$i]['tip_prod_id']?>"><?=$tipoProducto[$i]['tip_descripcion']?></a></li>
+    <li><a href="#proTip<?=$tipoProducto[$i]['tip_prod_id']?>"><?=$tipoProducto[$i]['tip_descripcion']?></a></li>
   <?php 
     } 
   ?>
@@ -43,16 +43,16 @@
   <?php
     for($i=0; $i<count($tipoProducto); $i++){
   ?>
-      <div id="<?=$tipoProducto[$i]['tip_prod_id']?>">
+      <div id="proTip<?=$tipoProducto[$i]['tip_prod_id']?>">
           <p>
             <center>
             <fieldset class="cabezeraDatos" style="background-color: #f2f5f7 !important; width: 400px;">
-                <b>Buscar <?=$tipoProducto[$i]['tip_descripcion']?></b> <input type="text" value="" class="filtroBus">
+                <b>Buscar <?=$tipoProducto[$i]['tip_descripcion']?></b> <input type="text" id="<?=$tipoProducto[$i]['tip_prod_id']?>" class="filtroBus">
             </fieldset>
             </center>
             <fieldset class="cabezeraDatos" style="background-color: #DEE2E4 !important;"><legend  class="cuerpoDatos"><?=$tipoProducto[$i]['tip_descripcion']?></legend>
                   <center>
-                    <table width="95%" border="0" id="tblProducto<?=$tipoProducto[$i]['tip_descripcion']?>">
+                    <table width="95%" border="0" id="tblProducto<?=$tipoProducto[$i]['tip_prod_id']?>">
                         <thead>
                           <tr>
                             <th><center>Código</center></th>
@@ -60,9 +60,6 @@
                             <th><center>Cantidad</center></th>
                           </tr>
                         </thead>
-                        <tr>
-                          <td align="center" class="cuerpoDatosTablas"></td><td class="cuerpoDatosTablas" align="center"></td><td class="cuerpoDatosTablas" align="center"></td>
-                        </tr>
                     </table>
                   </center>
                   <br><br>    

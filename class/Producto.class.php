@@ -110,4 +110,25 @@ class Producto{
 		}
 	 	return $datos;
 	}
+	function buscarProductoSensitiva($objCon, $tipo_producto){
+		$sql ="SELECT
+					productos.pro_id,
+					productos.tip_prod_id,
+					productos.pro_nom,
+					productos.pro_estado,
+					productos.proUnidad,
+				    unidad_de_medida.uni_nombre
+			   FROM
+					productos
+			   LEFT JOIN unidad_de_medida ON productos.proUnidad = unidad_de_medida.uni_id
+			   WHERE pro_estado = 0 AND tip_prod_id = $tipo_producto AND  pro_nom LIKE '%$this->pro_nom%' ";		
+		$return_arr = array();				
+	 	foreach($objCon->consultaSQL($sql, 'ERROR BuscarProductoSensitiva') as $v) {
+			$row_array['id'] = $v['pro_id'];
+		    $row_array['value'] = $v['pro_nom'];
+		    $row_array['unidad'] = $v['uni_nombre'];
+		    array_push($return_arr,$row_array);
+		}
+		return json_encode($return_arr);
+	}
 }?>
