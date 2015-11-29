@@ -31,16 +31,18 @@
 		break;
 		case "agregarTipo":
 			$datosTipo = explode(',', $_POST['datos']);
-			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],'');				
+			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],'','');				
 			$objCon->db_connect();
 			$producto=$objTipoPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
 				try{
 			 		$objCon->beginTransaction();
 					$tip_pro_id = $objTipoPro->insertarTipoProducto($objCon);
-					for($i=0;$i<count($datosTipo);$i++){
-						$objUnidadM->setUnidadMedida($datosTipo[$i],'','');
-						$objUnidadM->insertarUnidadMedidaTProducto($objCon,$tip_pro_id);
+					if($datosTipo[0]!=''){
+						for($i=0;$i<count($datosTipo);$i++){
+							$objUnidadM->setUnidadMedida($datosTipo[$i],'','');
+							$objUnidadM->insertarUnidadMedidaTProducto($objCon,$tip_pro_id);
+						}
 					}
 			 		$objCon->commit();						 		
 				}catch (PDOException $e){
