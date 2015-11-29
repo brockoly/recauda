@@ -8,7 +8,7 @@
 
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
-	$objTipoPro->setTipoProducto('',$tip_prod_id);
+	$objTipoPro->setTipoProducto('',$tip_prod_id,'');
 	$unidades = $objUniMed->listarUnidadMedida($objCon);
 	$unidadesTiPro = $objUniMed->listarUnidadTipoProducto($objCon,$_POST['tip_prod_id']);
 	$objCon=null;
@@ -26,7 +26,7 @@
 		</table>
 		<br/>
 		<p><b>Unidades de medida</b></p>
-		<table id="tblUM" style="text-align: left; border-collapse: collapse;" border="1" width="80%">
+		<table id="tblUME" style="text-align: left; border-collapse: collapse;" border="1" width="80%">
 		<?
 		$totalRes = count($unidades);
 		$columnas = 4;

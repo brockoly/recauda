@@ -16,7 +16,7 @@ $(document).ready(function(){
 				$("#tip_descripcion").addClass("cajamala");
 				muestraError("errtip_descripcion", "Este tipo de producto ya existe");
 			}else{
-				cargarContenido('./view/dialog/agregarTipoProducto.php','','#modalAgregarProducto');
+				cargarContenido('./view/dialog/agregarTipoProducto.php','','#modalAgregarTipoProducto');
 				mensajeUsuario('successMensaje','Exito','Tipo de producto agregado con exito.');
 			}
 		}else{

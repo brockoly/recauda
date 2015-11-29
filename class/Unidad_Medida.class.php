@@ -35,6 +35,12 @@ class Unidad_Medida{
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR insertarUnidadMedidaTProducto');
 	 	return $rs;
 	}
+	function eliminarUnidadMedidaTProducto($objCon, $tip_prod_id){
+		$sql ="DELETE FROM tipopro_unidadmed
+				WHERE tipopro_unidadmed.tip_prod_id = '$tip_prod_id'";
+	 	$rs=$objCon->ejecutarSQL($sql,'ERROR eliminarUnidadMedidaTProducto');
+	 	return $rs;
+	}
 	function actualizarUnidadMedida($objCon){
 		$sql="UPDATE unidad_de_medida
 			  SET unidad_de_medida.uni_nombre='$this->uni_nombre'

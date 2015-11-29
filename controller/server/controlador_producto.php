@@ -7,7 +7,6 @@
 
 	switch($_POST['op']) {
 		case "addProducto":		
-			echo $_POST['datosPre'];
 			$datos = explode(',', $_POST['datosPre']);
 			$datos2 = array();
 			for($i=0; $i<count($datos);$i++){
@@ -26,20 +25,14 @@
 				$cont++;
 			}
 			$objCon->db_connect();
-			print_r($arrDatos);
 			try{
 		 		$objCon->beginTransaction();
 		 		$objPro->setProducto($_POST['pro_id'],$_POST['pro_nom'],'0');
-				echo "entra 1  ";
-				echo $_POST['pro_id'].' --- '.$_POST['pro_nom'].' --- '.$_POST['tip_pro_id'].' --- '.$_POST['uni_id'].' --- '.$arrDatos[0]['id'];
-				echo $objPro->agregarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
-				echo "entra 2";
-				print_r($arrDatos);
-				echo count($arrDatos);
+				$objPro->agregarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
 				for($i=0; $i<count($arrDatos);$i++){
 					$objValores->setValores($arrDatos[$i]['id'],$arrDatos[$i]['prevision'],$arrDatos[$i]['valor']);
-					echo $objValores->agregarValores($objCon, $_POST['pro_id'], $arrDatos[$i]['id']);
-				}	
+					$objValores->agregarValores($objCon, $_POST['pro_id'], $arrDatos[$i]['id']);
+				}
 		 		$objCon->commit();	
 		 		echo 'bien';					 		
 			}catch (PDOException $e){
@@ -124,7 +117,32 @@
 					$e->getMessage();
 			}
 		break;
-
+		case "eliminarProducto":				
+			$objCon->db_connect();
+			try{
+		 		$objCon->beginTransaction();
+		 		$objPro->setProducto($_POST['pro_id'],'','1');
+				$objPro->cambiarEstadoProducto($objCon);
+		 		$objCon->commit();	
+		 		echo 'Producto eliminado con exito';					 		
+			}catch (PDOException $e){
+				$objCon->rollBack(); 
+				$e->getMessage();
+			}
+		break;
+		case "restaurarProducto":				
+			$objCon->db_connect();
+			try{
+		 		$objCon->beginTransaction();
+		 		$objPro->setProducto($_POST['pro_id'],'','0');
+				$objPro->cambiarEstadoProducto($objCon);
+		 		$objCon->commit();	
+		 		echo 'Producto restaurado con exito';					 		
+			}catch (PDOException $e){
+				$objCon->rollBack(); 
+				$e->getMessage();
+			}
+		break;
 	}
 
 ?>

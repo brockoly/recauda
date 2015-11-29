@@ -16,7 +16,7 @@ class Valores{
 
 	}
 	function agregarValores($objCon, $pro_id, $pre_id){
-	 	echo $sql ="INSERT INTO valores(pro_id,val_id,pre_id,val_nombre,val_monto)
+	 	$sql ="INSERT INTO valores(pro_id,val_id,pre_id,val_nombre,val_monto)
 			   VALUES ('$pro_id','$this->val_id', '$pre_id', '$this->val_nombre', '$this->val_monto')";
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR agregarValores');
 	 	return $rs;

@@ -31,7 +31,7 @@
 					<td>
 						<img title="Editar producto" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarProducto.php','pro_id=<?=$listaProductos[$i]["pro_id"]?>','auto','auto','Editar Producto','modalEditarProducto')" style="cursor: pointer;')"/>
 						&nbsp;&nbsp;&nbsp;							
-						<img title="Eliminar Producto" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a ELIMINAR el producto <?=$listaProductos[$i]['tip_descripcion']?>, ¿Desea continuar?','./controller/server/controlador_prevision.php','pre_id=<?=$datos[$i]['pre_id']?>&op=desactivarPrevision','view/interface/busquedaPrevision.php','pre_id=<?=$_POST['pre_id']?>&pre_nombre=<?=$_POST['pre_nombre']?>','#contenidoCargado')"/>						
+						<img title="Eliminar Producto" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a ELIMINAR el producto <?=$listaProductos[$i]['pro_nom']?>, ¿Desea continuar?','./controller/server/controlador_producto.php','pro_id=<?=$listaProductos[$i]['pro_id']?>&op=eliminarProducto','view/interface/busquedaProducto.php','','#contenidoCargado')"/>						
 					</td>
 	            </tr>
             <? 	}
@@ -61,7 +61,7 @@
 					<td><?=$listaProductosE[$i]['tip_descripcion']?></td>
 					<td><?=$listaProductosE[$i]['pro_nom']?></td>
 					<td>						
-						<img title="Restaurar Producto" src="./include/img/restaurar.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a DESACTIVAR la previsión <?=$datos[$i]['pre_nombre']?>, ¿Desea desactivar esta previsión?','./controller/server/controlador_prevision.php','pre_id=<?=$datos[$i]['pre_id']?>&op=desactivarPrevision','view/interface/busquedaPrevision.php','pre_id=<?=$_POST['pre_id']?>&pre_nombre=<?=$_POST['pre_nombre']?>','#contenidoCargado')"/>						
+						<img title="Restaurar Producto" src="./include/img/restaurar.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a RESTAURAR el producto <?=$listaProductosE[$i]['pro_nom']?>, ¿Desea continuar?','./controller/server/controlador_producto.php','pro_id=<?=$listaProductosE[$i]['pro_id']?>&op=restaurarProducto','view/interface/busquedaProducto.php','','#contenidoCargado')"/>						
 					</td>
 	            </tr>
             <? 	}

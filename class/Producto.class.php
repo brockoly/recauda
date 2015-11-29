@@ -16,16 +16,23 @@ class Producto{
 
 	}
 	function agregarProducto($objCon,$tip_prod_id,$uni_id){
-	 	$sql ="INSERT INTO productos(pro_id,tip_prod_id,pro_nom,pro_estado,uni_id)
+	 	$sql ="INSERT INTO productos(pro_id,tip_prod_id,pro_nom,pro_estado,proUnidad)
 			   VALUES ('$this->pro_id','$tip_prod_id', '$this->pro_nom', '$this->pro_estado', '$uni_id')";
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL insertarPrevision');
 	 	return $rs;
 	} 
 	function editarProducto($objCon,$tip_prod_id,$uni_id){
-		echo $sql="UPDATE productos
-			  SET productos.tip_prod_id='$tip_prod_id', productos.pro_nom='$this->pro_nom', productos.uni_id='$uni_id' 
+		$sql="UPDATE productos
+			  SET productos.tip_prod_id='$tip_prod_id', productos.pro_nom='$this->pro_nom', productos.proUnidad='$uni_id' 
 			  WHERE productos.pro_id=$this->pro_id";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL editarProducto');
+	 	return $rs;
+	} 
+	function cambiarEstadoProducto($objCon){
+		$sql="UPDATE productos
+			  SET productos.pro_estado='$this->pro_estado'
+			  WHERE productos.pro_id=$this->pro_id";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR AL cambiarEstadoProducto');
 	 	return $rs;
 	} 
 	function buscarProducto($objCon){
@@ -34,7 +41,7 @@ class Producto{
 			productos.tip_prod_id,
 			productos.pro_nom,
 			productos.pro_estado,
-			productos.uni_id
+			productos.proUnidad AS uni_id
 			FROM productos
 			WHERE pro_id = '$this->pro_id'";
 		$datos = array();

@@ -7,7 +7,7 @@
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
 	$tipoProducto = $objTipoPro->listarTipoProducto($objCon);
-	$tipoProdcutoEliminados = $objTipoPro->tipoProductoEliminado($objCon);
+	$tipoProductoEliminados = $objTipoPro->tipoProductoEliminado($objCon);
 	$unidades = $objUniMed->listarUnidadMedida($objCon);
 	$objCon=null;
 ?>
@@ -67,7 +67,7 @@ for($t=0;$t<$filas;$t++){ ?>
 			<td>
 				<img title="Editar Tipo Producto" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarTipoProducto.php','tip_descripcion=<?=$tipoProducto[$i]["tip_descripcion"]?>&tip_prod_id=<?=$tipoProducto[$i]["tip_prod_id"]?>','auto','auto','Editar Tipo Producto','modalEditarTipoProducto')" style="cursor: pointer;')"/>
 				&nbsp;&nbsp;&nbsp;
-				<img title="Eliminar Tipo Producto" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a ELIMINAR el tipo de producto <?=$tipoProducto[$i]["tip_descripcion"]?>, ¿Desea continuar?','./controller/server/controlador_tipoProducto.php','tip_prod_id=<?=$tipoProducto[$i]["tip_prod_id"]?>&op=eliminarTipo','./view/dialog/agregarTipoProducto.php','','#modalAgregarProducto')" style="cursor: pointer;" style="cursor: pointer;')"/>
+				<img title="Eliminar Tipo Producto" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a ELIMINAR el tipo de producto <?=$tipoProducto[$i]['tip_descripcion']?>, ¿Desea continuar?','./controller/server/controlador_tipoProducto.php','tip_prod_id=<?=$tipoProducto[$i]['tip_prod_id']?>&op=eliminarTipo','view/dialog/agregarTipoProducto.php','','#modalAgregarTipoProducto')" style="cursor: pointer;" style="cursor: pointer;')"/>
 				&nbsp;&nbsp;&nbsp;
 			</td>
 		</tr>
@@ -91,11 +91,11 @@ for($t=0;$t<$filas;$t++){ ?>
             </thead>
             <tbody>
 			<?php
-			for($i=0; $i<count($tipoProdcutoEliminados); $i++){
+			for($i=0; $i<count($tipoProductoEliminados); $i++){
 		?> 	<tr>
-				<td><?=$tipoProdcutoEliminados[$i]['tip_descripcion']?></td>
+				<td><?=$tipoProductoEliminados[$i]['tip_descripcion']?></td>
 				<td>
-					<img title="Restaurar Tipo Producto" src="./include/img/restaurar.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a RESTAURAR el tipo de producto <?=$tipoProdcutoEliminados[$i]["tip_descripcion"]?>, ¿Desea continuar?','./controller/server/controlador_producto.php','tip_prod_id=<?=$tipoProdcutoEliminados[$i]["tip_prod_id"]?>&op=restaurarTipo','./view/dialog/agregarTipoProducto.php','','#modalAgregarProducto')" style="cursor: pointer;" style="cursor: pointer;')"/>
+					<img title="Restaurar Tipo Producto" src="./include/img/restaurar.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a RESTAURAR el tipo de producto <?=$tipoProductoEliminados[$i]['tip_descripcion']?>, ¿Desea continuar?','./controller/server/controlador_tipoProducto.php','tip_prod_id=<?=$tipoProductoEliminados[$i]['tip_prod_id']?>&op=restaurarTipo','view/dialog/agregarTipoProducto.php','','#modalAgregarTipoProducto')" style="cursor: pointer;" style="cursor: pointer;')"/>
 					&nbsp;&nbsp;&nbsp;
 				</td>
 			</tr>

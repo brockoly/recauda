@@ -33,7 +33,6 @@ $(document).ready(function(){
 		});
 		if(a==1 && b==1 && c==1 && d==1){
 			var res = validarProcesos('controller/server/controlador_producto.php','op=addProducto'+'&datosPre='+arrDatosPre+'&pro_id='+pro_id+'&pro_nom='+pro_nom+'&tip_pro_id='+tip_pro_id+'&uni_id='+uni_id);
-			alert(res);
 			if(res=='bien'){
 				mensajeUsuario('successMensaje','Éxito','Producto agregado exitosamente.');
 				cargarContenido('view/interface/busquedaProducto.php','','#contenidoCargado');

@@ -2,10 +2,12 @@
 class Tipo_Producto{
 	 public $tip_descripcion;
 	 public $tip_prod_id;
+	 public $tip_Pro_estado;
 	 
-	 function setTipoProducto($tip_descripcion,$tip_prod_id){
+	 function setTipoProducto($tip_descripcion,$tip_prod_id,$tip_Pro_estado){
  		$this->tip_descripcion=trim($tip_descripcion);
  		$this->tip_prod_id=trim($tip_prod_id);
+ 		$this->tip_Pro_estado=trim($tip_Pro_estado);
 	 }
 	
 	function buscarMaximoId($objCon){//
@@ -35,9 +37,9 @@ class Tipo_Producto{
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL editarTipoProducto');
 	 	return $rs;
 	}
-	function eliminarTipoProducto($objCon){
+	function cambiarEstadoTipoProducto($objCon){
 		$sql="UPDATE tipo_producto
-			  SET tipo_producto.tip_pro_estado='1'
+			  SET tipo_producto.tip_pro_estado='$this->tip_Pro_estado'
 			  WHERE tipo_producto.tip_prod_id=$this->tip_prod_id";			
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarTipoProducto');
 	 	return $rs;

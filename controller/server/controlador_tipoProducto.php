@@ -6,13 +6,20 @@
 	switch($_POST['op']) {
 		case "editarTipo":
 			$datos = explode(',', $_POST['datosE']);
-			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],$_POST['tip_prod_id']);				
+			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],$_POST['tip_prod_id'],'');				
 			$objCon->db_connect();
 			$producto=$objTipoPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
 				try{
 			 		$objCon->beginTransaction();
 					$objTipoPro->editarTipoProducto($objCon);
+					$objUnidadM->eliminarUnidadMedidaTProducto($objCon, $_POST['tip_prod_id']);
+					if($datos[0]!=''){
+						for($i=0;$i<count($datos);$i++){
+							$objUnidadM->setUnidadMedida($datos[$i],'','');
+							$objUnidadM->insertarUnidadMedidaTProducto($objCon,$_POST['tip_prod_id'],'');
+						}
+					}
 			 		$objCon->commit();						 		
 				}catch (PDOException $e){
 		 			$objCon->rollBack(); 
@@ -45,11 +52,11 @@
 			}
 		break;
 		case "eliminarTipo":
-			$objTipoPro->setTipoProducto('',$_POST['tip_prod_id']);				
+			$objTipoPro->setTipoProducto('',$_POST['tip_prod_id'],'1');				
 			$objCon->db_connect();
 			try{
 		 		$objCon->beginTransaction();
-				$objTipoPro->eliminarTipoProducto($objCon);
+				$objTipoPro->cambiarEstadoTipoProducto($objCon);
 		 		$objCon->commit();	
 		 		echo "Tipo de producto eliminado";					 		
 			}catch (PDOException $e){
@@ -58,11 +65,11 @@
 			}
 		break;
 		case "restaurarTipo":
-			$objTipoPro->setTipoProducto('',$_POST['tip_prod_id']);				
+			$objTipoPro->setTipoProducto('',$_POST['tip_prod_id'],'0');				
 			$objCon->db_connect();
 			try{
 		 		$objCon->beginTransaction();
-				$objTipoPro->restaurarTipoProducto($objCon);
+				$objTipoPro->cambiarEstadoTipoProducto($objCon);
 		 		$objCon->commit();	
 		 		echo "Tipo de producto restaurado";					 		
 			}catch (PDOException $e){
@@ -70,6 +77,7 @@
 	 			$e->getMessage();
 			}
 		break;
+
 	}
 
 ?>
