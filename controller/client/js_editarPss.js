@@ -1,15 +1,33 @@
+ var productos = [];
  $(document).ready(function(){
     var id = 0;
     var codigo = ""; 
     var descripcion = "";
     var cantidad = "";
-    var productos = [];
     var idSen = 0;
     var idPro = 0;
+    var vacio="";
     validar('cantPro', 'class' ,'numero');
-    validar('proCantAgregar', 'class' ,'numero');
-      
-	
+    $("#btnAgregar").button().click(function(){ 
+        var productosFinal = [productos.length]; 
+        patron = "cantProducto";
+        var z=0;
+        $(".tablaProductosAgregados input[type=text]").each(function (index){             
+            //var valor = $("#"+$(this).attr('id')).val();
+            var productosX = [2];
+            productosX[0]=$(this).attr('id').replace(patron,'');
+            productosX[1]=$("#"+$(this).attr('id')).val();
+            productosFinal[z]=productosX;
+            z++;
+                        
+        })
+        var cont = validarProcesos('controller/server/controlador_pss.php','productosFinal='+productosFinal+'&op=agregarProductoPss');
+        $('#modalEditarPss').dialog('destroy').remove();
+        cargarContenido('./view/interface/busquedaPssCtaCte.php','cue_id='+$("#cue_id").val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado');
+        mensajeUsuario('successMensaje','Exito','<b>PSS modificado con exito</b>');
+
+    });
+    	
     $(".filtroBus").keypress(function(){
        idSen = $(this).attr('id');
     });
@@ -17,7 +35,7 @@
     $(".filtroBus").autocomplete({
         source: function(request, response) {
                 $.ajax({
-                      type: "GET",
+                      type: "POST",
                       url: "./controller/server/controlador_sensitiva.php",
                       dataType: "json",
                       data: {
@@ -47,37 +65,76 @@
 
     $(".cantPro").blur(function(){
         $("#tblProducto"+id).show("slow");
-        var x =parseInt($("#cantPro"+id).val());
-        if(x==0){
+        var x = parseInt($("#cantPro"+id).val());
+        var y = parseInt($("#cantProducto"+idPro).val());
+        if(isNaN(x)==true){
             x=1;
+        }        
+        if(isNaN(y)==true){
+            y=1;
         }
-        var y = parseInt($("#cantProducto"+id).val());
+
         if(productos.length==0){                    
             cantidad="";
-            cantidad = '<td class="cuerpoDatosTablas" align="center" width="10%"><input  class="proCantAgregar" type="text" style="width:60px" id="cantProducto'+idPro+'" value="'+x+'" /></td>';
-            $("#tblProducto"+id).append("<tr id='eliminarPro"+id+"'>"+codigo+descripcion+cantidad+"</tr>");
+            cantidad = '<td class="cuerpoDatosTablas" align="center" width="10%"><input  class="proCantAgregar" type="text" style="width:60px" id="cantProducto'+idPro+'"  onblur="verificaEntero('+idPro+')" value="'+x+'" /></td><td width="3%">&nbsp&nbsp<img class="eliminarFila'+idPro+'" onclick="eliminarFila('+idPro+')" src="./include/img/delete.png" width="16" height="16" id="'+idPro+'"/></td>';
+            $("#tblProducto"+id).append("<tr id='eliminarPro"+idPro+"'>"+codigo+descripcion+cantidad+"</tr>");
             $("#cantPro"+id).val("");
             $("#cantPro"+id).hide();            
             productos[productos.length]=idPro;
+            validar('proCantAgregar', 'class' ,'numero');
         }else{
-            if(jQuery.inArray( id, productos )==-1){
+            if(jQuery.inArray( idPro, productos )==-1){
                 cantidad="";
-                cantidad = '<td class="cuerpoDatosTablas" align="center" width="10%"><input class="proCantAgregar"  type="text" style="width:60px" id="cantProducto'+idPro+'" value="'+$("#cantPro"+id).val()+'" /></td>';
-                $("#tblProducto"+id).append("<tr id='eliminarPro"+id+"'>"+codigo+descripcion+cantidad+"</tr>");
+                cantidad = '<td class="cuerpoDatosTablas" align="center" width="10%"><input  class="proCantAgregar" type="text" style="width:60px" id="cantProducto'+idPro+'" onblur="verificaEntero('+idPro+')"  value="'+x+'" /></td><td width="3%">&nbsp&nbsp<img class="eliminarFila'+idPro+'" onclick="eliminarFila('+idPro+')" src="./include/img/delete.png" width="16" height="16" id="'+idPro+'"/></td>';
+                $("#tblProducto"+id).append("<tr id='eliminarPro"+idPro+"'>"+codigo+descripcion+cantidad+"</tr>");
                 $("#cantPro"+id).val("");
                 $("#cantPro"+id).hide();
-                productos[productos.length]=idPro;
-            }else{               
-               $("#cantProducto"+id).val(x+y);
+                productos[productos.length]=idPro;       
+                validar('proCantAgregar', 'class' ,'numero');
+            }else{              
+               $("#cantProducto"+idPro).val(x+y);
                $("#cantPro"+id).val("");
                $("#cantPro"+id).hide();
             }
         }
+        //alert(productos)
     });
+
 });
 
+function eliminarFila(idPro){
+        if($(".eliminarFila"+idPro).hasClass('bd')){
+            validarProcesos('controller/server/controlador_pss.php','idPro='+idPro+'&op=eliminarProductoPss');
+            $("#eliminarPro"+idPro).remove();        
+            var i=0;
+            for(i; i<productos.length; i++){
+                if(productos[i]==idPro){
+                    productos.splice(i,1); 
+                }
+            } 
+        }else{
+            $("#eliminarPro"+idPro).remove();        
+            var i=0;
+            for(i; i<productos.length; i++){
+                if(productos[i]==idPro){
+                    productos.splice(i,1); 
+                }
+            }   
+        }
+        
+}
+function verificaEntero(idPro){
+        /*$("#cantProducto"+idPro).val();*/
+        var x = parseInt($("#cantProducto"+idPro).val());
+        if(isNaN(x)==true){
+            $("#cantProducto"+idPro).val("1");
+        }else{
+            if($("#cantProducto"+idPro).val()==""){
+                $("#cantProducto"+idPro).val("1");
+            }
+        }         
+}
 $(".filtroBus").focus(function(){
      $(this).val("")
 });
-
 $("#tabs" ).tabs();	

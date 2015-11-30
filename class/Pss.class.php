@@ -38,10 +38,70 @@ class Pss{
 		 	return $rs;
 		}
 
+		function insertarDetallePss($objCon, $cue_id, $productos){
+			$z=0;//par
+			$o=1;//impar
+			$contador=count($productos);
+			for($i=0; $i<$contador/2; $i++){
+				$idDetalle = $this->buscarMaximoDetallePssId($objCon);
+				if($this->consultarDetalleEspcifico($objCon,$productos[$z])==0){
+			  		$sql ="INSERT INTO detalleproducto(cue_id, pss_id, det_proId, pro_id, det_proCantidad, det_proUnitario)
+			  			   VALUES ($cue_id, $this->pss_id, '$idDetalle', '$productos[$z]', '$productos[$o]',  '0')";	
+					$rs =$objCon->ejecutarSQL($sql, 'ERROR AL generarCtaCte');
+				}else{
+					$sql="UPDATE detalleproducto
+						  SET detalleproducto.det_proCantidad=$productos[$o]
+						  WHERE  pss_id = $this->pss_id AND pro_id =$productos[$z]";
+					$objCon->ejecutarSQL($sql,'ERROR AL actualizarProDetalleCantidad');
+				}
+				$z= $z+2;
+				$o= $o+2;
+			}
+
+			 return $rs;	
+			
+		}
+		function eliminarProductoDetallePss($objCon,$productos){
+			$sql="	DELETE 	FROM detalleproducto
+					WHERE detalleproducto.pss_id = $this->pss_id AND detalleproducto.pro_id = $productos";			
+			$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarProductoDetallePss');
+		 	return $rs;
+
+		}
+
+		function consultarDetalleEspcifico($objCon, $pro_id){//
+
+		 	$sql=" SELECT detalleproducto.det_proCantidad 
+		 		   FROM detalleproducto
+		 		   WHERE pss_id = $this->pss_id AND pro_id =$pro_id";
+			$i=0;
+			$datos=0;
+			foreach ($objCon->consultaSQL($sql, 'ERROR consultarDetalleEspcifico') as $v) {
+				if(is_null($v['det_proCantidad'])==false){
+    	 			$datos = $v['det_proCantidad'];
+    	 		}
+		    }
+			return $datos;		 	
+		}
+
 		function buscarMaximoId($objCon,$cue_id){//
 
 		 	$sql="SELECT MAX(pss_id)+1 as CONT
 				  FROM pss";
+			$i=0;
+			$datos=1;
+			foreach ($objCon->consultaSQL($sql, 'ERROR buscarMaximoId') as $v) {
+				if(is_null($v['CONT'])==false){
+    	 			$datos = $v['CONT'];
+    	 		}
+		    }
+			return $datos;		 	
+		}
+
+		function buscarMaximoDetallePssId($objCon){//
+
+		 	$sql="SELECT MAX(det_proId)+1 as CONT
+				  FROM detalleproducto";
 			$i=0;
 			$datos=1;
 			foreach ($objCon->consultaSQL($sql, 'ERROR buscarMaximoId') as $v) {
