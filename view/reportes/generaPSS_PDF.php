@@ -206,11 +206,11 @@ for($i=0; $i<count($pagos); $i++){
 					<td>'.$objUtil->cambiarfecha_mysql_a_normal($pagos[$i][bol_fecha]).'</td>
 					<td>'.$pagos[$i][bol_hora].'</td>
 					<td align="center"><table width="50px" align="right"><tr><td>'.$pagos[$i][pag_monto].'</td></tr></table></td>
+				</tr>
+				</table>
+				</td>
 				</tr>';
 }
-		$html .='</table>
-				</td>
-			</tr>';
 //TERMINA LA MUESTRA DE BOLETAS
 $html .='</table>';
 

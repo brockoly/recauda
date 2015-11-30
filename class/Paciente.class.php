@@ -214,7 +214,9 @@
 						persona.per_telefono,
 						persona.per_apellidoPaterno,
 						persona.per_apellidoMaterno,
-						persona.per_fechaNacimiento						
+						persona.per_fechaNacimiento,
+						persona.per_sexo,
+						persona.per_direccion						
 					FROM paciente
 					LEFT JOIN persona ON persona.per_id = paciente.per_id";
 			if(empty($per_id)==false){
@@ -230,6 +232,8 @@
 					$objUti=new Util(); 
 					$datos['per_fechaNacimiento']=$objUti->cambiarfecha_mysql_a_normal($v['per_fechaNacimiento']);
 					$datos['per_telefono']=$v['per_telefono'];
+					$datos['per_sexo']=$v['per_sexo'];
+					$datos['per_direccion']=$v['per_direccion'];
 			}
 		 	return json_encode($datos);
 	}

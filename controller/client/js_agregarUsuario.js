@@ -222,6 +222,10 @@ $(document).ready(function(){
 					$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
 					$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
 					$('#txtTelefono').val(arrExistente.per_telefono);
+					if(arrExistente.per_sexo=='m'){
+						$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
+					}					
+					$('#txtDireccion').val(arrExistente.per_direccion);
 				}else{
 					pacEx=0;
 				}

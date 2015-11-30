@@ -63,15 +63,11 @@ if ( $_SESSION['usuario'] == null ) {
 			</li>
 		<? //}?>
 			<li><a href="#"><i class="icon-search"></i>CONSULTA</a>
-				<ul class="sub-menu">
+				<ul class="sub-menu">				
 					<li class="change"><a href="#">PAGOS</a></li>
 					<li class="change"><a href="#">BOLETA</a></li>					
+					<li class="change"><a href="#">PAGARÉ</a></li>
 					<li class="change"><a href="#">ARQUEO ESPONTANEO</a></li>
-				</ul>
-			</li>
-			<li><a href="#"><i class="icon-copy"></i>PAGARÉ</a>
-				<ul class="sub-menu">
-					<li class="change"><a href="#">GENERAR PAGARÉ</a></li>
 				</ul>
 			</li>
 			<li><a href="#"><i class="icon-print"></i>REPORTES</a>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 	require_once('../../class/Conectar.class.php');
 	require_once('../../class/Usuario.class.php');
 	require_once('../../class/Util.class.php');	
@@ -45,8 +46,11 @@
 						<td>
 							<img title="Editar Usuario" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarUsuario.php','usu_nombre=<?=$datos[$i]['usuario']?>','auto','auto','Editar Usuario','modalEditarUsuario')" style="cursor: pointer;"/>
 							&nbsp;&nbsp;
+							<? if($datos[$i]['usuario']!=$_SESSION['usuario'][1]['nombre_usuario']){?> 
+							
 							<img title="Eliminar Usuario" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a eliminar el usuario, ¿Desea Eliminar Este Usuario?','./controller/server/controlador_usuario.php','per_id=<?=$datos[$i]['rut']?>&op=eliminarUsuario','view/interface/busquedaUsuario.php','','#contenidoCargado')" style="cursor: pointer;"/>
 							&nbsp;&nbsp;
+							<? } ?>
 							<img title="Resetear Clave" width="16" height="16" src="./include/img/reset_pass.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención se procedera a restaurar la clave de ingreso, ¿Desea restaurar la clave a este Usuario?','./controller/server/controlador_usuario.php','usu_nombre=<?=$datos[$i]['usuario']?>&op=restaurarClave','view/interface/busquedaUsuario.php','','#contenidoCargado')" style="cursor: pointer;"/>
 						</td>
 	            </tr>
