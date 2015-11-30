@@ -1,10 +1,8 @@
 <?php
-  session_start();
-  
+  session_start();  
   require_once('../../class/Conectar.class.php');
   require_once('../../class/Util.class.php');
   require_once('../../class/Pss.class.php');
-  require_once('../../class/Cuenta_Corriente.class.php');
   require_once('../../class/Paciente.class.php');
   require_once('../../class/Tipo_Producto.class.php');
   $objCon = new Conectar(); 
@@ -13,10 +11,15 @@
   $objPac = new Paciente();
   $objTip_pro = new Tipo_Producto();
   $objCon->db_connect();
+  unset($_SESSION['pss_id']);
+  $_SESSION['pss_id']=$_POST['pss_id'];  
   $objPss->setPss_id($_POST['pss_id']);
   $pss=$objPss->buscarPss($objCon,"");
   $paciente=$objPac->getInformacionPaciente($objCon, "", "", $pss[0]['cue_id']);
+  unset($_SESSION['cue_id']);
+  $_SESSION['cue_id']=$pss[0]['cue_id'];
   $tipoProducto=$objTip_pro->listarTipoProducto($objCon);
+  $productos_PSS=$objPss->verDetallePss($objCon);
   $objCon=null;
 ?>
 <script type="text/javascript" src="controller/client/js_editarPss.js"></script>
@@ -55,14 +58,25 @@
             </center>
             <fieldset class="cabezeraDatos" style="background-color: #DEE2E4 !important;"><legend  class="cuerpoDatos"><?=$tipoProducto[$i]['tip_descripcion']?></legend>
                   <center>
-                    <table width="95%" border="0" id="tblProducto<?=$tipoProducto[$i]['tip_prod_id']?>" hidden="true">
+                    <table width="95%" border="0" class="tablaProductosAgregados" id="tblProducto<?=$tipoProducto[$i]['tip_prod_id']?>" <? if(count($productos_PSS)==0){ echo "hidden='true'";} ?>>
                         <thead>
                           <tr>
                             <th><center>Código</center></th>
                             <th><center>Descripción</center></th>
                             <th><center>Cantidad</center></th>
-                          </tr>
+	                      </tr>
                         </thead>
+                        <?php
+                        	if(count($productos_PSS)>0){
+                        	for($p=0; $p<count($productos_PSS); $p++){
+                        		if($tipoProducto[$i]['tip_prod_id']==$productos_PSS[$p]['tip_prod_id']){
+						?>	
+								<tr id='eliminarPro<?=$productos_PSS[$p]['pro_id']?>'>
+			                        <td align="center" class="cuerpoDatosTablas"><?=$productos_PSS[$p]['pro_id']?></td>
+				                    <td class="cuerpoDatosTablas" align="center"><?=$productos_PSS[$p]['pro_nom']?></td>
+				                    <td class="cuerpoDatosTablas" align="center" width="10%"><input  class="proCantAgregar" type="text" style="width:60px" id="cantProducto<?=$productos_PSS[$p]['pro_id']?>" onblur="verificaEntero(<?=$productos_PSS[$p]['pro_id']?>)"  value="<?=$productos_PSS[$p]['det_proCantidad']?>" /></td><td width="3%">&nbsp&nbsp<img class="eliminarFila<?=$productos_PSS[$p]['pro_id']?> bd" onclick="eliminarFila(<?=$productos_PSS[$p]['pro_id']?>)" src="./include/img/delete.png" width="16" height="16" id="<?=$productos_PSS[$p]['pro_id']?>"/></td>
+			                    </tr>
+                        <?  }}}?> 
                     </table>
                   </center>
                   <br><br>    
@@ -73,4 +87,9 @@
   <?php 
     } 
   ?>
-</div>
+</div><br>
+<center><input type="button" value="Guardar PSS"  id="btnAgregar"></center>
+<input type="hidden" value="<?=$_SESSION['cue_id']?>" id="cue_id">
+<input type="hidden" value="<?=$_POST['Paciente']?>" id="Paciente">
+<input type="hidden" value="<?=$_POST['CtaCorriente']?>" id="CtaCorriente">
+<input type="hidden" value="<?=$_POST['Identificador']?>" id="Identificador">
