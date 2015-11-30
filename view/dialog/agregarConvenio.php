@@ -1,4 +1,5 @@
 <?php
+
 	require_once('../../class/Conectar.class.php');  $objCon = new Conectar();
 	require_once('../../class/Prevision.class.php'); $objPre = new Prevision();	
 	$objCon->db_connect();

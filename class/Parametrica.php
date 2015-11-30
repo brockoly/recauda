@@ -1,4 +1,6 @@
-<? class Parametrica{
+<? 
+
+class Parametrica{
 	function arrayAJson($arrayQR){
 		$i=0;
 		if(mysql_num_rows($arrayQR)){

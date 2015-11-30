@@ -1,3 +1,5 @@
+<?
+?>
 <script type="text/javascript" src="controller/client/js_nuevaCuentaCte.js"></script>
 <!-- <div id="information" style="cursor: help; width:120px;"><img src="./include/img/information.png" /> <b>Información</b></div> -->
 <center>

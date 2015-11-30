@@ -1,4 +1,4 @@
-<?php 
+<?php 	
 class Tipo_Producto{
 	 public $tip_descripcion;
 	 public $tip_prod_id;

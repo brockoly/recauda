@@ -1,4 +1,6 @@
-<?php class Conectar extends PDO {
+<?php 
+
+class Conectar extends PDO {
 	private $dns;
 	private $lnk; //puntero a la BD
 	private $user;

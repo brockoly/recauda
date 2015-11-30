@@ -1,4 +1,6 @@
-<?php class Privilegio{
+<?php 
+
+class Privilegio{
 	 private $pri_id;
 	 private $pri_descripcion;
 

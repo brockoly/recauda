@@ -1,4 +1,5 @@
 <?php 
+	
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar();
 	require_once('../../class/Producto.class.php');$objPro = new Producto();
 	require_once('../../class/Tipo_Producto.class.php');$objTipoPro = new Tipo_Producto();

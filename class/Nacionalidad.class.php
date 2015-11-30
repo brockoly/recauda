@@ -1,4 +1,5 @@
 <?php
+
 	class Nacionalidad{
 		private $nac_id;
 		private $nac_nombre;

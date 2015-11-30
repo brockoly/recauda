@@ -1,4 +1,5 @@
 <?php
+
 	class Institucion{
 
 		private $ins_id;
