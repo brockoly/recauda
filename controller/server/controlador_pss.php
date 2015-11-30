@@ -45,7 +45,6 @@
 				break;
 
 				case "cerrarPss":
-						session_start();
 						$pss_id=$_POST['pss_id'];					 							
 						try{
 							$objCon->db_connect();
@@ -56,6 +55,45 @@
 						 	$objCon->commit();						 	
 						 	echo "PSS Cerrado con exito.";
 													 		
+						}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			echo $e->getMessage();
+						}
+				break;
+
+				case "agregarProductoPss":
+						session_start();
+						$pss_id=$_SESSION['pss_id'];
+						$cue_id=$_SESSION['cue_id'];					 							
+						try{
+							$objCon->db_connect();
+							$objCon->beginTransaction();
+							$objPss->setPss_id($pss_id);
+							$productosFinal = explode(",", $_POST['productosFinal']);
+
+							if(count($productosFinal)>1){
+								$objPss->insertarDetallePss($objCon, $cue_id, $productosFinal);
+								$objCon->commit();
+							 	unset($_SESSION['pss_id']);
+							    unset($_SESSION['cue_id']);
+							}
+													 	
+							echo "PSS Modificado con exito.";				 		
+						}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			echo $e->getMessage();
+						}
+				break;
+
+				case "eliminarProductoPss":
+						session_start();
+						$pss_id=$_SESSION['pss_id'];					 							
+						try{
+							$objCon->db_connect();
+							$objCon->beginTransaction();
+							$objPss->setPss_id($pss_id);
+							$objPss->eliminarProductoDetallePss($objCon, $_POST['idPro']);									
+						 	$objCon->commit();												 		
 						}catch (PDOException $e){
 					 			$objCon->rollBack(); 
 					 			echo $e->getMessage();

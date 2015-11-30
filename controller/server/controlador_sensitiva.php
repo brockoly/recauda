@@ -5,13 +5,13 @@
 	require_once('../../class/Unidad_Medida.class.php');$objUnidadM = new Unidad_Medida();
 	require_once('../../class/Valores.class.php');$objValores = new Valores();
 	
-	switch($_GET['op']) {
+	switch($_POST['op']) {
 		case "busquedaSensitivaPro":
 								
 			$objCon->db_connect();
 			try{
-		 		$objPro->setProducto("",$_GET['term'],"");
-		 		echo $objPro->buscarProductoSensitiva($objCon,$_GET['tip_pro']);
+		 		$objPro->setProducto("",$_POST['term'],"");
+		 		echo $objPro->buscarProductoSensitiva($objCon,$_POST['tip_pro']);
 			}catch (PDOException $e){
 				$e->getMessage();
 			}
