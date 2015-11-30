@@ -482,20 +482,38 @@ function validar(id, atributo,tipo){
 								break;
 		}
 
-	}else if(atributo=='id'){
-		switch(tipo){
-			case 'rut' 		: 	$('#'+id).validCampoFranz('0123456789-k'); 
-								break;
-			case 'numero' 	: 	$('#'+id).validCampoFranz('0123456789');
-								break;
-			case 'letras' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ ');
-								break;
-			case 'letrasUsuario' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ');
-								break;
-			case 'todo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ0123456789 ');
-								break;
-			case 'correo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
-								break;
+	}else{
+		if(atributo=='id'){
+			switch(tipo){
+				case 'rut' 		: 	$('#'+id).validCampoFranz('0123456789-k'); 
+									break;
+				case 'numero' 	: 	$('#'+id).validCampoFranz('0123456789');
+									break;
+				case 'letras' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ ');
+									break;
+				case 'letrasUsuario' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ');
+									break;
+				case 'todo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ0123456789 ');
+									break;
+				case 'correo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
+									break;
+			}
+		}
+		if(atributo=='class'){
+			switch(tipo){
+				case 'rut' 		: 	$('.'+id).validCampoFranz('0123456789-k'); 
+									break;
+				case 'numero' 	: 	$('.'+id).validCampoFranz('0123456789');
+									break;
+				case 'letras' 	: 	$('.'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ ');
+									break;
+				case 'letrasUsuario' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ');
+									break;
+				case 'todo' 	: 	$('.'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ0123456789 ');
+									break;
+				case 'correo' 	: 	$('.'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
+									break;
+			}
 		}
 	}
 	

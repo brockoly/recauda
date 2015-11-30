@@ -35,6 +35,7 @@
 			$objCon->db_connect();
 			$producto=$objTipoPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
+
 				try{
 			 		$objCon->beginTransaction();
 					$tip_pro_id = $objTipoPro->insertarTipoProducto($objCon);
