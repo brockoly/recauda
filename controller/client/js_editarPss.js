@@ -6,8 +6,7 @@
     var productos = [];
     var idSen = 0;
     var idPro = 0;
-    validar('cantPro', 'class' ,'numero');
-    
+    validar('cantPro', 'class' ,'numero');  
 	
     $(".filtroBus").keypress(function(){
        idSen = $(this).attr('id');
