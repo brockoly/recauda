@@ -1,4 +1,5 @@
 <?php
+
 		require_once('../../class/Conectar.class.php');  $objCon = new Conectar();
 		require_once('../../class/Institucion.class.php'); $objIns = new Institucion();	
 		$objCon->db_connect();

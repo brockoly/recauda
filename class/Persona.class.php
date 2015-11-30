@@ -1,4 +1,5 @@
 <?php 
+
 class Persona{
 	 private $per_id;
 	 private $per_nombre;

@@ -1,4 +1,5 @@
 <?php
+
 class Cuenta_Corriente{
 		private $cue_id;
 		private $cue_unidadOrigen;

@@ -1,4 +1,5 @@
 <?php
+
 	//LLAMADA DE CLASES
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 	require_once('../../class/Nacionalidad.class.php'); $objNac = new Nacionalidad();

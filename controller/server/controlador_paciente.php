@@ -1,4 +1,5 @@
 <?php
+	
 	//LLAMADA DE CLASES
 	require_once('../../class/Conectar.class.php');
  	require_once('../../class/Paciente.class.php'); 

@@ -1,5 +1,4 @@
 <?php
-	session_start();
 	require_once('../../class/Conectar.class.php');
 	require_once('../../class/Util.class.php');
 	require_once('../../class/Pss.class.php');
