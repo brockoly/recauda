@@ -44,6 +44,7 @@ $(document).ready(function(){
 				$("#txtNombre").blur();
 				$("#txtApellidoPaterno").blur();
 				$("#txtApellidoMaterno").blur();
+				$("#txtDireccion").blur();
 		}			
 	});	
 	
@@ -117,7 +118,10 @@ $(document).ready(function(){
 				}
 			}
 	});
-
+	$("#txtDireccion").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errDireccion').attr("title", "").hide("slow");				
+	});
 	/*$("#txtTelefono").blur(function(){
 			if( $(this).val()==""){
 				//$(this).removeClass("cajabuena" ).addClass( "cajamala" );

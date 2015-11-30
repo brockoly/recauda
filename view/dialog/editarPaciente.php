@@ -38,6 +38,13 @@
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtApellidoMat"  name="txtApellidoMat" value="<?=$datos[0]['Apellido_Materno']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
 				</tr>
 				<tr>
+					<td>Sexo</td>
+					<td>&nbsp;&nbsp;&nbsp;					
+					<input type="radio" id="rdSexo"   name="rdSexo" value="f" checked="<?if($datos[0]['per_sexo']=='f'){echo 'true';}else{echo 'false';}?>" /> Femenino
+					<input type="radio" id="rdSexo"   name="rdSexo" value="m" checked="<?if($datos[0]['per_sexo']=='m'){echo 'true';}else{echo 'false';}?>"/> Masculino
+					&nbsp;&nbsp;<img src="./include/img/information.png" id="errSexo" hidden="true"/></td>
+				</tr>
+				<tr>
 					<td>Fecha Nac. *</td>
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" readonly="true" id="txtFechaNac"  name="txtFechaNac" value="<?=$objUtil->cambiarfecha_mysql_a_normal($datos[0]['fecha_nac'])?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
 				</tr>
@@ -45,6 +52,10 @@
 					<td>Telefono *</td>
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtTelefono"  name="txtTelefono" value="<?=$datos[0]['per_telefono']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
 				</tr>
+		<tr>
+			<td>Dirección *</td>
+			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtDireccion"  name="txtDireccion" value="<?=$datos[0]['per_direccion']?>"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errDireccion" hidden="true"/></td>
+		</tr>
 				<tr>
 				<tr>
 					<td>Previsión:</td>

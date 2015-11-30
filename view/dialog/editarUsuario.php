@@ -79,6 +79,10 @@ $fecha = "01/01/".(date("Y")-18);
 					<td>Telefono</td>
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtTelefono"  name="txtTelefono" value="<?=$datos[0]['telefono']?>"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errTelefono" hidden="true"/></td>
 				</tr>
+				<tr>
+					<td>Dirección *</td>
+					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtDireccion"  name="txtDireccion" value="<?=$datos[0]['direccion']?>"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errDireccion" hidden="true"/></td>
+				</tr>
 		</table><br>
 		</fieldset><br>		
 		<center><input type="button" id="btnEditarUsuario" value="Modificar Usuario"/></center>

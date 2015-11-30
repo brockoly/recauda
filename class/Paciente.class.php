@@ -58,7 +58,9 @@
 			persona.per_apellidoMaterno AS Apellido_Materno,
 			persona.per_fechaNacimiento AS fecha_nac,
 			nacionalidad.nac_nombre AS Nacionalidad,
-			paciente.pac_id
+			paciente.pac_id,
+			persona.per_sexo,
+			persona.per_direccion
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -74,6 +76,12 @@
 			$datos[$i][fecha_nac]= $v['fecha_nac'];
 			$datos[$i][Nacionalidad]= $v['Nacionalidad'];
 			$datos[$i][pac_id]= $v['pac_id'];
+			if($v['per_sexo']=='m'){
+				$datos[$i][sexo]= 'Masculino';
+			}else{
+				$datos[$i][sexo]= 'Femenino';	
+			}
+			$datos[$i][direccion]= $v['per_direccion'];
 			$i++;
 		}
 		return $datos;
@@ -86,7 +94,9 @@
 			persona.per_apellidoMaterno AS Apellido_Materno,
 			persona.per_fechaNacimiento AS fecha_nac,
 			nacionalidad.nac_nombre AS Nacionalidad,
-			paciente.pac_id
+			paciente.pac_id,
+			persona.per_sexo,
+			persona.per_direccion
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -102,6 +112,12 @@
 			$datos[$i][fecha_nac]= $v['fecha_nac'];
 			$datos[$i][Nacionalidad]= $v['Nacionalidad'];
 			$datos[$i][pac_id]= $v['pac_id'];
+			if($v['per_sexo']=='m'){
+				$datos[$i][sexo]= 'Masculino';
+			}else{
+				$datos[$i][sexo]= 'Femenino';	
+			}
+			$datos[$i][direccion]= $v['per_direccion'];
 			$i++;
 		}
 		return $datos;
@@ -134,7 +150,9 @@
 				paciente.ins_id AS inst_id,
 				nacionalidad_persona.nac_id,
 				persona.per_telefono,
-				paciente.pac_id
+				paciente.pac_id,
+				persona.per_sexo,
+				persona.per_direccion
 				FROM
 				persona
 				INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -166,6 +184,8 @@
 				$datos[$i]['nac_id']=$v['nac_id'];
 				$datos[$i]['per_telefono']=$v['per_telefono'];
 				$datos[$i]['pac_id']=$v['pac_id'];
+				$datos[$i]['per_sexo']=$v['per_sexo'];
+				$datos[$i]['per_direccion']=$v['per_direccion'];
 				$i++;
 		}
 	 	return $datos;

@@ -30,7 +30,7 @@
 								$objNac->setNacionalidad(1,"");								
 								$rut = $objUti->valida_rut($_POST['rut']);
 								$objPer->setPersona($rut,$_POST['txtNombre'],$_POST['txtApellidoPaterno'],$_POST['txtApellidoMaterno'],
-													$objUti->cambiarfecha_mysql($_POST['txtFechaNacimiento']),$telefono,1);
+													$objUti->cambiarfecha_mysql($_POST['txtFechaNacimiento']),$telefono,1,$_POST['rdSexo'],$_POST['txtDireccion']);
 								$objPer->buscarIdentificador($objCon);
 								$usuAux=$objUsu->buscarUsuario($objCon);
 
@@ -93,7 +93,7 @@
 
 								$fecha = $objUtil->cambiarfecha_mysql($_POST['txtFechaNacimiento']);
 								$objUsu->setUsuario($_SESSION['usu_nombre'], '',$_POST['txtCorreo']);
-								$objPer->setPersona($_SESSION['rut'],$_POST['txtNombre'],$_POST['txtApellidoPaterno'],$_POST['txtApellidoMaterno'],	$fecha ,$telefono,1);
+								$objPer->setPersona($_SESSION['rut'],$_POST['txtNombre'],$_POST['txtApellidoPaterno'],$_POST['txtApellidoMaterno'],	$fecha ,$telefono,1, '',$_POST['txtDireccion']);
 								
 								$correoAux = $objUsu->buscarCorreo($objCon);
 								if($correoAux=="Existe con usuario"){
