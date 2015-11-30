@@ -6,17 +6,17 @@ class Pss{
 	   private $pss_hora;
 	   private $pss_saldo;
 	   private $pss_estado; //ESTADOS: Abierto, cerrado, valorizado, abonado y pagado
-	   private $pssPrevId;
-	   private $pssInsId;
+	   private $pss_prevId;
+	   private $pss_insId;
 
-		function setPss($pss_id, $pss_fecha, $pss_hora, $pss_saldo, $pss_estado, $pss_PrevId, $pss_InsId){
+		function setPss($pss_id, $pss_fecha, $pss_hora, $pss_saldo, $pss_estado, $pss_prevId, $pss_insId){
 		    $this->pss_id=$pss_id;
 		    $this->pss_fecha=$pss_fecha;
 		    $this->pss_hora=$pss_hora;
 		    $this->pss_saldo=$pss_saldo;
 		    $this->pss_estado=$pss_estado;
-		    $this->pssPrevId=$pss_PrevId;
-		    $this->pssInsId=$pss_InsId;
+		    $this->pss_prevId=$pss_prevId;
+		    $this->pss_insId=$pss_insId;
 		}
 
 		function setPss_estado($pss_estado){
@@ -30,10 +30,10 @@ class Pss{
 		function generarPss($objCon, $cue_id){
 			session_start();
 			$usu_nombre=$_SESSION['usuario'][1]['nombre_usuario'];		
-	  		$sql ="INSERT INTO pss(cue_id, pss_id, usu_nombre, pss_fecha, pss_hora, pss_saldo, pss_estado, pssPrevId,
-	  							   pssInsId)
+	  		$sql ="INSERT INTO pss(cue_id, pss_id, usu_nombre, pss_fecha, pss_hora, pss_saldo, pss_estado, pss_prevId,
+	  							   pss_insId)
 	  			   VALUES ($cue_id, $this->pss_id, '$usu_nombre', '$this->pss_fecha','$this->pss_hora',
-	  			   		   $this->pss_saldo, '$this->pss_estado', $this->pssPrevId,  $this->pssInsId)";	
+	  			   		   $this->pss_saldo, '$this->pss_estado', $this->pss_prevId,  $this->pss_insId)";	
 			$rs =$objCon->ejecutarSQL($sql, 'ERROR AL generarCtaCte');
 		 	return $rs;
 		}
@@ -63,8 +63,8 @@ class Pss{
 						pss.pss_hora,
 						pss.pss_saldo,
 						pss.pss_estado,
-						pss.pssPrevId,
-						pss.pssInsId
+						pss.pss_prevId,
+						pss.pss_insId
 				   FROM pss
 				   ";
 			if(empty($cuenta_id)==false){
@@ -81,8 +81,8 @@ class Pss{
 					$datos[$i]['pss_hora']=$v['pss_hora'];
 					$datos[$i]['pss_saldo']=$v['pss_saldo'];
 					$datos[$i]['pss_estado']=$v['pss_estado'];
-					$datos[$i]['pssPrevId']=$v['pssPrevId'];
-					$datos[$i]['pssInsId']=$v['pssInsId'];
+					$datos[$i]['pss_prevId']=$v['pss_prevId'];
+					$datos[$i]['pss_insId']=$v['pss_insId'];
 					$i++;
 			}
 		 	return $datos;
@@ -157,9 +157,9 @@ class Pss{
 			$sql ="SELECT
 				detalleproducto.pro_id,
 				productos.pro_nom,
-				detalleproducto.detProCantidad,
-				detalleproducto.detProUnitario,
-				(detalleproducto.detProUnitario * detalleproducto.detProCantidad) AS total,
+				detalleproducto.det_proCantidad,
+				detalleproducto.det_proUnitario,
+				(detalleproducto.det_proUnitario * detalleproducto.det_proCantidad) AS total,
 				tipo_producto.tip_prod_id,
 				tipo_producto.tip_descripcion
 				FROM
@@ -171,8 +171,8 @@ class Pss{
 		 	foreach($objCon->consultaSQL($sql, 'ERROR verDetallePss') as $v) {
 		 		$datos[$i]['pro_id']=$v['pro_id'];
 		 		$datos[$i]['pro_nom']=$v['pro_nom'];
-				$datos[$i]['detProCantidad']=$v['detProCantidad'];
-				$datos[$i]['detProUnitario']=$v['detProUnitario'];
+				$datos[$i]['det_proCantidad']=$v['det_proCantidad'];
+				$datos[$i]['det_proUnitario']=$v['det_proUnitario'];
 				$datos[$i]['total']=$v['total'];
 				$datos[$i]['tip_prod_id']=$v['tip_prod_id'];
 				$datos[$i]['tip_descripcion']=$v['tip_descripcion'];
@@ -201,8 +201,8 @@ class Pss{
 				INNER JOIN paciente ON persona.per_id = paciente.per_id
 				INNER JOIN cuenta_corriente ON paciente.pac_id = cuenta_corriente.pac_id
 				INNER JOIN pss ON cuenta_corriente.cue_id = pss.cue_id
-				INNER JOIN institucion ON pss.pssInsId = institucion.ins_id
-				INNER JOIN prevision ON pss.pssPrevId = prevision.pre_id
+				INNER JOIN institucion ON pss.pss_insId = institucion.ins_id
+				INNER JOIN prevision ON pss.pss_prevId = prevision.pre_id
 				WHERE pss.pss_id = '$this->pss_id'";		
 				
 		 	foreach($objCon->consultaSQL($sql, 'ERROR cabeceraPSS') as $v) {
@@ -218,14 +218,9 @@ class Pss{
 				$datos[$i]['pss_id']=$v['pss_id'];
 				$datos[$i]['pre_nombre']=$v['pre_nombre'];
 				$datos[$i]['ins_nombre']=$v['ins_nombre'];
-
-
-
-
 				$i++;
 			}
 		 	return $datos;
-
 		}
 }
 ?>

@@ -17,14 +17,14 @@ class Producto{
 
 	}
 	function agregarProducto($objCon,$tip_prod_id,$uni_id){
-	 	$sql ="INSERT INTO productos(pro_id,tip_prod_id,pro_nom,pro_estado,proUnidad)
+	 	$sql ="INSERT INTO productos(pro_id,tip_prod_id,pro_nom,pro_estado,pro_unidad)
 			   VALUES ('$this->pro_id','$tip_prod_id', '$this->pro_nom', '$this->pro_estado', '$uni_id')";
 	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL insertarPrevision');
 	 	return $rs;
 	} 
 	function editarProducto($objCon,$tip_prod_id,$uni_id){
 		$sql="UPDATE productos
-			  SET productos.tip_prod_id='$tip_prod_id', productos.pro_nom='$this->pro_nom', productos.proUnidad='$uni_id' 
+			  SET productos.tip_prod_id='$tip_prod_id', productos.pro_nom='$this->pro_nom', productos.pro_unidad='$uni_id' 
 			  WHERE productos.pro_id=$this->pro_id";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL editarProducto');
 	 	return $rs;
@@ -42,7 +42,7 @@ class Producto{
 			productos.tip_prod_id,
 			productos.pro_nom,
 			productos.pro_estado,
-			productos.proUnidad AS uni_id
+			productos.pro_unidad AS uni_id
 			FROM productos
 			WHERE pro_id = '$this->pro_id'";
 		$datos = array();
@@ -124,11 +124,11 @@ class Producto{
 					productos.tip_prod_id,
 					productos.pro_nom,
 					productos.pro_estado,
-					productos.proUnidad,
+					productos.pro_unidad,
 				    unidad_de_medida.uni_nombre
 			   FROM
 					productos
-			   LEFT JOIN unidad_de_medida ON productos.proUnidad = unidad_de_medida.uni_id
+			   LEFT JOIN unidad_de_medida ON productos.pro_unidad = unidad_de_medida.uni_id
 			   WHERE pro_estado = 0 AND tip_prod_id = $tipo_producto AND  pro_nom LIKE '%$this->pro_nom%' ";		
 		$return_arr = array();				
 	 	foreach($objCon->consultaSQL($sql, 'ERROR BuscarProductoSensitiva') as $v) {

@@ -148,8 +148,8 @@ $html = '
 				$html .='<tr>
 							<td>'.$detallePSS[$i][pro_id].'</td>
 							<td>'.$detallePSS[$i][pro_nom].'</td>
-							<td align="left">'.$detallePSS[$i][detProCantidad].'</td>
-							<td align="center">'.$detallePSS[$i][detProUnitario].'</td>
+							<td align="left">'.$detallePSS[$i][det_proCantidad].'</td>
+							<td align="center">'.$detallePSS[$i][det_proUnitario].'</td>
 							<td align="right">'.$detallePSS[$i][total].'</td>
 						</tr>';
 			

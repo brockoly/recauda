@@ -8,8 +8,7 @@
 		switch($_POST['op']){
 
 				case "agregarPSS":
-						session_start();
-						$cue_id=$_SESSION['cue_id'];					 							
+						session_start();				 							
 						try{
 							$objCon->db_connect();
 							$objCon->beginTransaction();
