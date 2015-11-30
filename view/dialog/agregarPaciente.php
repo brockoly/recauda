@@ -51,6 +51,13 @@
 			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtApellidoMat" name="txtApellidoMat" />&nbsp;&nbsp;<img src="./include/img/Information.png" id="errApellidoMat" hidden="true"  /></td>
 		</tr>
 		<tr>
+					<td>Sexo</td>
+					<td>&nbsp;&nbsp;&nbsp;					
+					<input type="radio" id="rdSexo"   name="rdSexo" value="f" checked="true" /> Femenino
+					<input type="radio" id="rdSexo"   name="rdSexo" value="m"/> Masculino
+					&nbsp;&nbsp;<img src="./include/img/information.png" id="errSexo" hidden="true"/></td>
+				</tr>
+		<tr>
 			<td>Fecha Nac *</td>
 			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtFechaNac" name="txtFechaNac" readonly="true" />&nbsp;&nbsp;<img src="./include/img/Information.png" id="errFechaNac" hidden="true"  /></td>
 		</tr>
@@ -58,7 +65,10 @@
 			<td>Telefono </td>
 			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtTelefono" name="txtTelefono" />&nbsp;&nbsp;<img src="./include/img/Information.png" id="errTelefono" hidden="true"  /></td>
 		</tr>
-		
+		<tr>
+			<td>Dirección *</td>
+			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtDireccion"  name="txtDireccion"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errDireccion" hidden="true"/></td>
+		</tr>		
 		<tr>
 			<td>Previsión *</td>
 			<td>&nbsp;&nbsp;

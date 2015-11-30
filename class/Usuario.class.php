@@ -132,7 +132,8 @@ class Usuario{
 					persona.per_nombre,
 					persona.per_apellidoPaterno,
 					persona.per_apellidoMaterno,
-					persona.per_telefono
+					persona.per_telefono,
+					persona.per_direccion
 				FROM
 					usuario
 				LEFT JOIN persona ON usuario.per_id = persona.per_id";
@@ -150,6 +151,7 @@ class Usuario{
 				$datos[$i]['aplellidoMaterno']=$v['per_apellidoMaterno'];
 				$datos[$i]['correo']=$v['usu_correo'];
 				$datos[$i]['telefono']=$v['per_telefono'];
+				$datos[$i]['direccion']=$v['per_direccion'];
 				$i++;
 		}
 	 	return $datos;
@@ -167,7 +169,8 @@ class Usuario{
 					persona.per_apellidoPaterno,
 					persona.per_apellidoMaterno,
 					persona.per_fechaNacimiento,
-					persona.per_telefono
+					persona.per_telefono,
+					persona.per_direccion
 				FROM
 					usuario
 				LEFT JOIN persona ON usuario.per_id = persona.per_id
@@ -182,6 +185,7 @@ class Usuario{
 						$datos[$i]['telefono']=$v['per_telefono'];
 						$datos[$i]['privilegio']=$v['pri_id'];
 						$datos[$i]['fechaNacimiento']=$v['per_fechaNacimiento'];
+						$datos[$i]['direccion']=$v['per_direccion'];
 						$i++;
 				}
 	 	return $datos;
@@ -239,7 +243,9 @@ class Usuario{
 						persona.per_telefono,
 						persona.per_apellidoPaterno,
 						persona.per_apellidoMaterno,
-						persona.per_fechaNacimiento						
+						persona.per_fechaNacimiento,
+						persona.per_sexo,
+						persona.per_direccion						
 					FROM usuario
 					LEFT JOIN persona ON persona.per_id = usuario.per_id";
 
@@ -254,12 +260,13 @@ class Usuario{
 					$datos['per_nombre']=$v['per_nombre'];
 					$datos['per_apellidoPaterno']=$v['per_apellidoPaterno'];
 					$datos['per_apellidoMaterno']=$v['per_apellidoMaterno'];
-
 					//formatear fecha
 					require_once('../../class/Util.class.php'); 
 					$objUti=new Util(); 
 					$datos['per_fechaNacimiento']=$objUti->cambiarfecha_mysql_a_normal($v['per_fechaNacimiento']);
 					$datos['per_telefono']=$v['per_telefono'];
+					$datos['per_sexo']=$v['per_sexo'];
+					$datos['per_direccion']=$v['per_direccion'];
 			}
 		 	return json_encode($datos);
 	}

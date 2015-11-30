@@ -1,7 +1,6 @@
 $(document).ready(function(){	
-
 	//Variables Banderas	
-	var a=0,b=0,c=0,d=0,e=0,f=0,g=0, o=0, z=0, rut=0, pacEx=0; //BANDERAS GLOBALES
+	var a=0,b=0,c=0,d=0,e=0,f=0,g=0, h=0, o=0, z=0, rut=0, pacEx=0; //BANDERAS GLOBALES
 	validar('txtUsuario', 'id' ,'letrasUsuario');
 	validar('txtCorreo', 'id' ,'correo');
 	validar('txtIdentificador', 'id' ,'rut');
@@ -23,7 +22,7 @@ $(document).ready(function(){
 		}	
 		
 		//alert("a="+a+"b="+b+"c="+c+"d="+d+"e="+e+"f="+f+"o="+o+"z="+z)
-		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && o==1 && z==1){
+		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && h==1 && o==1 && z==1){
 			var res = retornarJson('./controller/server/controlador_usuario.php',$("#frmAgregarUsuario").serialize()+"&op=agregarUsuario&rut="+rut+"&pacEx="+pacEx);
 			//alert(res);
 			//alert(Object.keys(res).length);
@@ -74,6 +73,7 @@ $(document).ready(function(){
 			$("#txtNombre").blur();
 			$("#txtApellidoPaterno").blur();
 			$("#txtApellidoMaterno").blur();
+			$("#txtDireccion").blur();
 		}			
 	});	
 
@@ -191,7 +191,16 @@ $(document).ready(function(){
 				}
 			}
 	});
-
+	$("#txtDireccion").blur(function(){
+			if( $(this).val()==""){
+				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+				muestraError('errDireccion','Rellene los campos');
+				h=0;			
+			}else{
+				$(this).removeClass("cajamala" );
+				h=1;
+			}
+	});
 	$("#txtIdentificador").blur(function(){
 			if( $(this).val()==""){				
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
@@ -291,7 +300,10 @@ $(document).ready(function(){
 		$(this).removeClass("cajabuena cajamala");	
 		$('#errIdentificador').attr("title", "").hide("slow");				
 	});
-	
+	$("#txtDireccion").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errDireccion').attr("title", "").hide("slow");				
+	});
 	
 });
 

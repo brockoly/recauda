@@ -26,6 +26,7 @@
 	              <th width="10%">Apellido Materno</th>
 	              <th width="10%">Telefono</th>	              
 	              <th width="10%">Correo</th>
+	              <th width="10%">Dirección</th>
 	              <th width="10%">Opciones Usuario</th>
 	            </tr>
             </thead>
@@ -40,6 +41,7 @@
 						<td><?=$datos[$i]['aplellidoMaterno']?></td>
 						<td><?=$datos[$i]['telefono']?></td>
 						<td><?=$datos[$i]['correo']?></td>
+						<td><?=$datos[$i]['direccion']?></td>
 						<td>
 							<img title="Editar Usuario" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarUsuario.php','usu_nombre=<?=$datos[$i]['usuario']?>','auto','auto','Editar Usuario','modalEditarUsuario')" style="cursor: pointer;"/>
 							&nbsp;&nbsp;

@@ -33,13 +33,15 @@
 									$per_telefono = $_POST['txtTelefono'];
 								}
 								$per_procedencia = $_POST['cmbPais'];
+								$per_sexo = $_POST['rdSexo'];
+								$per_direccion = $_POST['txtDireccion'];
 								$pac_id = $objPac->nuevoPac_id($objCon);
 								$pre_id = $_POST['cmbPrevision']; 
 								$ins_id = $_POST['cmbInstitucion'];
 								$nac_id = $_POST['cmbPais'];
-								try{
+								try{									
 							 		$objCon->beginTransaction();
-									$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia);
+									$objPer->setPersona($per_id, $per_nombre, $per_apellidoPaterno, $per_apellidoMaterno, $per_fechaNacimiento, $per_telefono, $per_procedencia, $per_sexo, $per_direccion);
 									$objPac->setPaciente($pac_id);		
 									$objNac->setNacionalidad($nac_id,'');
 									if($_POST['pacEx']==0){
@@ -74,13 +76,15 @@
 									$per_telefono = $_POST['txtTelefono'];
 								}
 								$per_procedencia = $_POST['cmbPais'];
+								$per_sexo = $_POST['rdSexo'];
+								$per_direccion = $_POST['txtDireccion'];
 								$per_id = $_POST['per_id'];
 								//$pac_id = $objPac->nuevoPac_id($objCon);
 								$pre_id = $_POST['cmbPrevision']; 
 								$ins_id = $_POST['cmbInstitucion'];
 								try{
 								 		$objCon->beginTransaction();
-										$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia);
+										$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia, $per_sexo, $per_direccion);
 										$objPac->setPaciente($pac_id);		
 										$objPer->modificarPersona($objCon);
 										$objPac->actualizarPaciente($objCon, $pre_id, $per_id, $ins_id);
