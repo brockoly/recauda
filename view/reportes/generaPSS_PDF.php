@@ -47,6 +47,7 @@ $pdf->AddPage();
 //RECEPCION VARIABLE
 
 $pss_id = $_GET['pss_id'];
+
 //CARGA DE CLASES Y METODOS
 require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 require_once('../../class/Tipo_producto.class.php'); $objTip = new Tipo_producto(); 
@@ -62,9 +63,6 @@ $detallePSS 	= $objPss->verDetallePss($objCon);
 $cabeceraPSS 	= $objPss->cabeceraPSS($objCon);
 $pagos 			= $objPago->listarPagosPSS($objCon, $pss_id);
 $objCon = null;
-/*print_r($cabeceraPSS);
-echo $detallePSS[$i][tip_prod_id];*/
-
 //TABLA DE CONTENIDO HTML
 $html = '
 <table width="690" border="0">
@@ -73,14 +71,14 @@ $html = '
 		<td align="center" style="font-size:10;">
 		<table>
 			<tr>
-			<td height="30px" width="1px" >&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
+				<td height="30px" width="1px" >&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
-			<td>&nbsp;</td>
-			<td width="250px" align="center"><strong style="margin:30px; font-size:10;">PROGRAMA DE SERVICIO DE SALUD (P.S.S.) - Nº: '.$pss_id.' </strong></td>
-			<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td width="250px" align="center"><strong style="margin:30px; font-size:10;">PROGRAMA DE SERVICIO DE SALUD (P.S.S.) - Nº: '.$pss_id.' </strong></td>
+				<td>&nbsp;</td>
 			</tr>
 		</table>
 		</td>
@@ -126,42 +124,44 @@ $html = '
 	</tr>';
 	$total_programa = 0;
 	for ($i=0; $i<count($tipoProducto); $i++) {
-		for($a=0; $a<count($detallePSS); $a++){
-			if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){
-				$html .='
-				<tr>
-					<td colspan="3"><br><br></td>
-				</tr>
-				<tr>
-					<td colspan="3">
-						<table width="100%" cellpadding="1" style="font-size:8;" border="0">
-							<tr>
-								<td align="center" style="border-bottom-width:1px;"><h3>'.strtoupper($tipoProducto[$i][tip_descripcion]).'</h3></td>
-							</tr>
-							<tr>
-								<td style="border-bottom-width:1px;" width="10%">CÓDIGO</td>
-								<td style="border-bottom-width:1px;" width="50%">DESCRIPCIÓN</td>
-								<td style="border-bottom-width:1px;" align="center" width="10%">CANT</td>
-								<td style="border-bottom-width:1px;" align="right" width="15%">V. UNITARIO</td>
-								<td style="border-bottom-width:1px;" align="right" width="15%">V. TOTAL</td>
-							</tr>';
-			
-					$html .='<tr>
-								<td>'.$detallePSS[$a][pro_id].'</td>
-								<td>'.$detallePSS[$a][pro_nom].'</td>
-								<td align="left">'.$detallePSS[$a][det_proCantidad].'</td>
-								<td align="center">'.$detallePSS[$a][det_proUnitario].'</td>
-								<td align="right">'.$detallePSS[$a][total].'</td>
-							</tr>';
+		if(count($detallePSS)!=''){
+			for($a=0; $a<count($detallePSS); $a++){
+				if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){
+					$html .='
+					<tr>
+						<td colspan="3"><br><br></td>
+					</tr>
+					<tr>
+						<td colspan="3">
+							<table width="100%" cellpadding="1" style="font-size:8;" border="0">
+								<tr>
+									<td align="center" style="border-bottom-width:1px;"><h3>'.strtoupper($tipoProducto[$i][tip_descripcion]).'</h3></td>
+								</tr>
+								<tr>
+									<td style="border-bottom-width:1px;" width="10%">CÓDIGO</td>
+									<td style="border-bottom-width:1px;" width="50%">DESCRIPCIÓN</td>
+									<td style="border-bottom-width:1px;" align="center" width="10%">CANT</td>
+									<td style="border-bottom-width:1px;" align="right" width="15%">V. UNITARIO</td>
+									<td style="border-bottom-width:1px;" align="right" width="15%">V. TOTAL</td>
+								</tr>';
 				
-					$subtotal += $detallePSS[$a][total];
-					$html .='<tr>
-								<td style="border-top-width:1px;" align="right" colspan="6"><b>SUBTOTAL</b></td>
-								<td style="border-top-width:1px;" align="right">'.$subtotal.'</td>
-							</tr>
-							</table>
-					</td>
-				</tr>';
+						$html .='<tr>
+									<td>'.$detallePSS[$a][pro_id].'</td>
+									<td>'.$detallePSS[$a][pro_nom].'</td>
+									<td align="left">'.$detallePSS[$a][det_proCantidad].'</td>
+									<td align="center">'.$detallePSS[$a][det_proUnitario].'</td>
+									<td align="right">'.$detallePSS[$a][total].'</td>
+								</tr>';
+					
+						$subtotal += $detallePSS[$a][total];
+						$html .='<tr>
+									<td style="border-top-width:1px;" align="right" colspan="6"><b>SUBTOTAL</b></td>
+									<td style="border-top-width:1px;" align="right">'.$subtotal.'</td>
+								</tr>
+								</table>
+						</td>
+					</tr>';
+				}
 			}
 		}
 	}
@@ -184,40 +184,41 @@ $html .='<tr>
 		</tr>';
 //FIN TOTAL PROGRAMA
 //COMIENZA LA MUESTRA DE BOLETAS O ABONOS SI EXISTEN
-for($i=0; $i<count($pagos); $i++){
-	$html .='<tr>
-				<td style="border-bottom-width:1px;" colspan="3"><br><br></td>
-			</tr>
+for($e=0; $e<count($pagos); $e++){
+$html .='<tr>
+			<td style="border-bottom-width:1px;" colspan="3"><br><br></td>
+		</tr>
+		<tr>
+			<td width="50%" align="left" colspan="3"><h3>ABONOS Y PAGOS</h3></td>
+		</tr>
+		<tr>
+		<td colspan="3">
+		<table width="100%" cellpadding="1" style="font-size:8;">
 			<tr>
-				<td width="50%" align="left" colspan="3"><h3>ABONOS Y PAGOS</h3></td>
-			</tr>
-			<tr>
-			<td colspan="3">
-			<table width="100%" cellpadding="1" style="font-size:8;">
-				<tr>
-					<th>FOLIO</th>
-					<th>FECHA</th>
-					<th>HORA</th>
-					<th>MONTO</th>
-				</tr>';
-			$html .='
-				<tr>
-					<td>'.$pagos[$i][bol_id].'</td>
-					<td>'.$objUtil->cambiarfecha_mysql_a_normal($pagos[$i][bol_fecha]).'</td>
-					<td>'.$pagos[$i][bol_hora].'</td>
-					<td align="center"><table width="50px" align="right"><tr><td>'.$pagos[$i][pag_monto].'</td></tr></table></td>
-				</tr>';
-}
-		$html .='</table>
-				</td>
+				<th>FOLIO</th>
+				<th>FECHA</th>
+				<th>HORA</th>
+				<th>MONTO</th>
 			</tr>';
+		$html .='
+			<tr>
+				<td>'.$pagos[$e][bol_id].'</td>
+				<td>'.$objUtil->cambiarfecha_mysql_a_normal($pagos[$e][bol_fecha]).'</td>
+				<td>'.$pagos[$e][bol_hora].'</td>
+				<td align="center"><table width="50px" align="right"><tr><td>'.$pagos[$e][pag_monto].'</td></tr></table></td>
+			</tr>
+		</table>
+		</td>
+		</tr>';
+}
+		$html .='';
 //TERMINA LA MUESTRA DE BOLETAS
 $html .='</table>';
 
 $pdf->writeHTML($html, true, false, true, false, '');
 $pdf->Output('PSS_'.$pss_id.'.pdf','FI');
 
-DEFINE ('FTP_USER','recaudacion'); 
+/*DEFINE ('FTP_USER','recaudacion'); 
 DEFINE ('FTP_PASS','recaudacion');
 $path = date('Y')."/PSS/";
         $path = explode("/",$path);
@@ -245,5 +246,5 @@ $ftp_server = "192.168.2.103";
 $conn_id = ftp_connect($ftp_server, 21,1) or die("N");
 $login_result = ftp_login($conn_id, "recaudacion", "recaudacion");
 ftp_put($conn_id, date('Y').'/PSS/'.'PSS_'.$pss_id.'.pdf', 'PSS_'.$pss_id.'.pdf', FTP_BINARY);
-unlink('PSS_'.$pss_id.'.pdf');
+unlink('PSS_'.$pss_id.'.pdf');*/
 ?>

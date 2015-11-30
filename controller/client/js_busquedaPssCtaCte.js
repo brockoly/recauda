@@ -26,7 +26,7 @@ $(document).ready(function(){
 				mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a Cerrar el PSS N° '+pss_id+', ¿Desea Continuar?','./controller/server/controlador_pss.php','pss_id='+pss_id+'&op=cerrarPss','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarPssCtaCte');
 			}
 			if($(this).hasClass('detalle')){
-				//ventanaModal('./view/dialog/verDetallePss.php','pss_id='+pss_id,'auto','auto','Detalle de Pss','modalDetallePss');				
+				ventanaModal('./view/dialog/detallePSS.php','pss_id='+pss_id,'auto','auto','Detalle Pss N°'+pss_id,'modalDetallePss')
 			}
 			if($(this).hasClass('valorizar')){	
 				ventanaModal('./view/dialog/valorizarPss.php','pss_id='+pss_id,'auto','auto','Valorizar Pss N°'+pss_id,'modalValorizarPss')
