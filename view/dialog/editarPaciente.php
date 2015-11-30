@@ -40,8 +40,8 @@
 				<tr>
 					<td>Sexo</td>
 					<td>&nbsp;&nbsp;&nbsp;					
-					<input type="radio" id="rdSexo"   name="rdSexo" value="f" checked="<?if($datos[0]['per_sexo']=='f'){echo 'true';}else{echo 'false';}?>" /> Femenino
-					<input type="radio" id="rdSexo"   name="rdSexo" value="m" checked="<?if($datos[0]['per_sexo']=='m'){echo 'true';}else{echo 'false';}?>"/> Masculino
+					<input type="radio" id="rdSexo"   name="rdSexo" value="f" <?if($datos[0]['per_sexo']=='f'){echo "checked='true'";}?> /> Femenino
+					<input type="radio" id="rdSexo"   name="rdSexo" value="m" <?if($datos[0]['per_sexo']=='m'){echo "checked='true'";}?> /> Masculino
 					&nbsp;&nbsp;<img src="./include/img/information.png" id="errSexo" hidden="true"/></td>
 				</tr>
 				<tr>
