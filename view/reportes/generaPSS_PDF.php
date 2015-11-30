@@ -53,6 +53,7 @@ require_once('../../class/Conectar.class.php'); $objCon = new Conectar();
 require_once('../../class/Tipo_producto.class.php'); $objTip = new Tipo_producto(); 
 require_once('../../class/Pss.class.php'); $objPss = new Pss(); 
 require_once('../../class/Util.class.php'); $objUtil = new Util(); 
+require_once('../../class/Pagos.class.php'); $objPago = new Pagos(); 
 
 $objCon->db_connect();
 $objPss->setPss($pss_id, '', '', '', '', '', '');
@@ -60,8 +61,9 @@ $objPss->setPss($pss_id, '', '', '', '', '', '');
 $tipoProducto 	= $objTip->listarTipoProducto($objCon);
 $detallePSS 	= $objPss->verDetallePss($objCon);
 $cabeceraPSS 	= $objPss->cabeceraPSS($objCon);
+$pagos 			= $objPago->listarPagosPSS($objCon, $pss_id);
 $objCon = null;
-/*print_r($detallePSS);
+/*print_r($cabeceraPSS);
 echo $detallePSS[$i][tip_prod_id];*/
 
 //TABLA DE CONTENIDO HTML
@@ -83,7 +85,7 @@ $html = '
 			</tr>
 		</table>
 		</td>
-		<td height="10" width="30%" align="right" style="font-size:10;">Arica, '.date('d-m-Y').'</td>
+		<td height="10" width="30%" align="right" style="font-size:10;">Arica, '.date('d/m/Y').'</td>
 	</tr>
 	<tr>
 		<td colspan="3">&nbsp;</td>
@@ -102,66 +104,66 @@ $html = '
 					<td width="18%"><strong>TELÉFONO</strong></td>
 				</tr>
 				<tr>
-					<td>'.$cabeceraPSS[0][per_nombre].' '.$cabeceraPSS[0][per_apellidoPaterno].' '.$cabeceraPSS[0][per_apellidoMaterno].'</td>
+					<td>'.strtoupper($cabeceraPSS[0][per_nombre]).' '.strtoupper($cabeceraPSS[0][per_apellidoPaterno]).' '.strtoupper($cabeceraPSS[0][per_apellidoMaterno]).'</td>
 					<td>'.$objUtil->calcularEdad($cabeceraPSS[0][per_fechaNacimiento]).'</td>
-					<td>'.$cabeceraPSS[0][per_sexo].'</td>
+					<td>'.strtoupper($cabeceraPSS[0][per_sexo]).'</td>
 					<td>'.$cabeceraPSS[0][per_id].'</td>
 					<td>'.$cabeceraPSS[0][per_telefono].'</td>
 				</tr>
 				<tr>
 					<td><strong>DIRECCIÓN</strong></td>
 					<td><strong>PREVISIÓN</strong></td>
-					<td><strong>C.PAGO</strong></td>
-					<td><strong>N°PROGRAMA</strong></td>
+					<td><strong>INSTITUCIÓN</strong></td>
+					<td><strong>CTA CTE</strong></td>
 				</tr>
 				<tr>
-					<td>DIRECCION</td>
-					<td>PREVISION</td>
-					<td>INSTITUCION</td>
-					<td>CTA CTE</td>
+					<td>'.strtoupper($cabeceraPSS[0][per_direccion]).'</td>
+					<td>'.strtoupper($cabeceraPSS[0][pre_nombre]).'</td>
+					<td>'.strtoupper($cabeceraPSS[0][ins_nombre]).'</td>
+					<td>'.$cabeceraPSS[0][cue_id].'</td>
 				</tr>
 			</table>
 		</td>
 	</tr>';
-	
 	$total_programa = 0;
 	for ($i=0; $i<count($tipoProducto); $i++) {
-		if($detallePSS[$i][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){
-			$html .='
-			<tr>
-				<td colspan="3"><br><br></td>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<table width="100%" cellpadding="1" style="font-size:8;" border="0">
-						<tr>
-							<td align="center" style="border-bottom-width:1px;"><h3>'.strtoupper($tipoProducto[$i][tip_descripcion]).'</h3></td>
-						</tr>
-						<tr>
-							<td style="border-bottom-width:1px;" width="10%">CÓDIGO</td>
-							<td style="border-bottom-width:1px;" width="50%">DESCRIPCIÓN</td>
-							<td style="border-bottom-width:1px;" align="center" width="10%">CANT</td>
-							<td style="border-bottom-width:1px;" align="right" width="15%">V. UNITARIO</td>
-							<td style="border-bottom-width:1px;" align="right" width="15%">V. TOTAL</td>
-						</tr>';
-		
-				$html .='<tr>
-							<td>'.$detallePSS[$i][pro_id].'</td>
-							<td>'.$detallePSS[$i][pro_nom].'</td>
-							<td align="left">'.$detallePSS[$i][det_proCantidad].'</td>
-							<td align="center">'.$detallePSS[$i][det_proUnitario].'</td>
-							<td align="right">'.$detallePSS[$i][total].'</td>
-						</tr>';
+		for($a=0; $a<count($detallePSS); $a++){
+			if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){
+				$html .='
+				<tr>
+					<td colspan="3"><br><br></td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<table width="100%" cellpadding="1" style="font-size:8;" border="0">
+							<tr>
+								<td align="center" style="border-bottom-width:1px;"><h3>'.strtoupper($tipoProducto[$i][tip_descripcion]).'</h3></td>
+							</tr>
+							<tr>
+								<td style="border-bottom-width:1px;" width="10%">CÓDIGO</td>
+								<td style="border-bottom-width:1px;" width="50%">DESCRIPCIÓN</td>
+								<td style="border-bottom-width:1px;" align="center" width="10%">CANT</td>
+								<td style="border-bottom-width:1px;" align="right" width="15%">V. UNITARIO</td>
+								<td style="border-bottom-width:1px;" align="right" width="15%">V. TOTAL</td>
+							</tr>';
 			
-				$subtotal += $detallePSS[$i][total];
-				$html .='<tr>
-							<td style="border-top-width:1px;" align="right" colspan="6"><b>SUBTOTAL</b></td>
-							<td style="border-top-width:1px;" align="right">'.$subtotal.'</td>
-						</tr>
-						</table>
-				</td>
-			</tr>';
-			
+					$html .='<tr>
+								<td>'.$detallePSS[$a][pro_id].'</td>
+								<td>'.$detallePSS[$a][pro_nom].'</td>
+								<td align="left">'.$detallePSS[$a][det_proCantidad].'</td>
+								<td align="center">'.$detallePSS[$a][det_proUnitario].'</td>
+								<td align="right">'.$detallePSS[$a][total].'</td>
+							</tr>';
+				
+					$subtotal += $detallePSS[$a][total];
+					$html .='<tr>
+								<td style="border-top-width:1px;" align="right" colspan="6"><b>SUBTOTAL</b></td>
+								<td style="border-top-width:1px;" align="right">'.$subtotal.'</td>
+							</tr>
+							</table>
+					</td>
+				</tr>';
+			}
 		}
 	}
 $total_programa += $subtotal;
@@ -183,7 +185,7 @@ $html .='<tr>
 		</tr>';
 //FIN TOTAL PROGRAMA
 //COMIENZA LA MUESTRA DE BOLETAS O ABONOS SI EXISTEN
-
+for($i=0; $i<count($pagos); $i++){
 	$html .='<tr>
 				<td style="border-bottom-width:1px;" colspan="3"><br><br></td>
 			</tr>
@@ -192,69 +194,35 @@ $html .='<tr>
 			</tr>
 			<tr>
 			<td colspan="3">
-				<table width="100%" cellpadding="1" style="font-size:8;">
-					<tr>
-						<th>FOLIO</th>
-						<th>FECHA</th>
-						<th>HORA</th>
-						<th>MONTO</th>
-					</tr>';
-				$html .='
-					<tr>
-						<td>1</td>
-						<td>29-11-2015</td>
-						<td>19:00</td>
-						<td align="center"><table width="50px" align="right"><tr><td>150</td></tr></table></td>
-					</tr>';
-				
+			<table width="100%" cellpadding="1" style="font-size:8;">
+				<tr>
+					<th>FOLIO</th>
+					<th>FECHA</th>
+					<th>HORA</th>
+					<th>MONTO</th>
+				</tr>';
+			$html .='
+				<tr>
+					<td>'.$pagos[$i][bol_id].'</td>
+					<td>'.$objUtil->cambiarfecha_mysql_a_normal($pagos[$i][bol_fecha]).'</td>
+					<td>'.$pagos[$i][bol_hora].'</td>
+					<td align="center"><table width="50px" align="right"><tr><td>'.$pagos[$i][pag_monto].'</td></tr></table></td>
+				</tr>';
+}
 		$html .='</table>
 				</td>
 			</tr>';
-	
-
-
-/*if(mysql_num_rows($QRbonos)){
-	$html .='<tr>
-				<td style="border-bottom-width:1px;" colspan="3"><br><br></td>
-			</tr>
-			<tr>
-				<td width="35%" align="left" colspan="3"><h3>BONOS</h3></td>
-			</tr>
-			<tr>
-			<td colspan="3">
-			<table width="100%" cellpadding="1" style="font-size:8;">
-			<tr>
-				<th>FOLIO</th>
-				<th>TIPO</th>
-				<th>FECHA</th>
-				<th>MONTO</th>
-			</tr>';
-			while($RSbonos = mysql_fetch_array($QRbonos)){
-				$html .='
-					<tr>
-						<td>'.$RSbonos['PAGBONfolio'].'</td>
-						<td>'.$RSbonos['tipo'].'</td>
-						<td>'.$RSbonos['PAGBONfecha'].'</td>
-						<td>'.$objUtil->formatearNumero($RSbonos['PAGBONmonto']).'</td>
-					</tr>';
-				}
-			$html .='</table>
-				</td>
-			</tr>';
-	
-}*/
-//TERMINA LA MUESTRA DE BOLETAS O ABONOS
+//TERMINA LA MUESTRA DE BOLETAS
 $html .='</table>';
 
-//Print text using writeHTMLCell()
 $pdf->writeHTML($html, true, false, true, false, '');
-$pdf->Output('PSS_1.pdf','I');
+$pdf->Output('PSS_'.$pss_id.'.pdf','FI');
 
-/*DEFINE ('FTP_USER','recnet'); 
-DEFINE ('FTP_PASS','recnet');
+DEFINE ('FTP_USER','recaudacion'); 
+DEFINE ('FTP_PASS','recaudacion');
 $path = date('Y')."/PSS/";
         $path = explode("/",$path);
-        $conn_id = @ftp_connect("10.6.21.14",21,1);
+        $conn_id = @ftp_connect("192.168.2.103",21,1);
         if(!$conn_id) {
             return false;
         }
@@ -274,9 +242,9 @@ $path = date('Y')."/PSS/";
             }
         }
         @ftp_close($conn_id);
-$ftp_server = "10.6.21.14";
+$ftp_server = "192.168.2.103";
 $conn_id = ftp_connect($ftp_server, 21,1) or die("N");
-$login_result = ftp_login($conn_id, "recnet", "recnet");
-ftp_put($conn_id, date('Y').'/PSS/'.'PSS_'.$cta_cte.'.pdf', 'PSS_'.$cta_cte.'.pdf', FTP_BINARY);
-unlink('PSS_'.$cta_cte.'.pdf');*/
+$login_result = ftp_login($conn_id, "recaudacion", "recaudacion");
+ftp_put($conn_id, date('Y').'/PSS/'.'PSS_'.$pss_id.'.pdf', 'PSS_'.$pss_id.'.pdf', FTP_BINARY);
+unlink('PSS_'.$pss_id.'.pdf');
 ?>
