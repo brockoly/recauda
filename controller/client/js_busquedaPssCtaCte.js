@@ -28,8 +28,8 @@ $(document).ready(function(){
 			if($(this).hasClass('detalle')){
 				alert('detalle')	
 			}
-			if($(this).hasClass('valorizar')){
-				alert('valorizar')	
+			if($(this).hasClass('valorizar')){	
+				ventanaModal('./view/dialog/valorizarPss.php','pss_id='+pss_id,'auto','auto','Valorizar Pss N°'+pss_id,'modalValorizarPss')
 			}
 			if($(this).hasClass('editPss')){
 				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id,'auto','auto','Edición de Pss','modalEditarPss')
