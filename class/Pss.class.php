@@ -151,7 +151,79 @@ class Pss{
 
 		}
 		function verDetallePss($objCon){
-			
+			$datos = array();
+			$i=0;
+			$sql ="SELECT
+				detalleproducto.pro_id,
+				productos.pro_nom,
+				detalleproducto.detProCantidad,
+				detalleproducto.detProUnitario,
+				(detalleproducto.detProUnitario * detalleproducto.detProCantidad) AS total,
+				tipo_producto.tip_prod_id,
+				tipo_producto.tip_descripcion
+				FROM
+				detalleproducto
+				INNER JOIN productos ON detalleproducto.pro_id = productos.pro_id
+				INNER JOIN tipo_producto ON productos.tip_prod_id = tipo_producto.tip_prod_id
+				WHERE detalleproducto.pss_id = '$this->pss_id'";		
+				
+		 	foreach($objCon->consultaSQL($sql, 'ERROR verDetallePss') as $v) {
+		 		$datos[$i]['pro_id']=$v['pro_id'];
+		 		$datos[$i]['pro_nom']=$v['pro_nom'];
+				$datos[$i]['detProCantidad']=$v['detProCantidad'];
+				$datos[$i]['detProUnitario']=$v['detProUnitario'];
+				$datos[$i]['total']=$v['total'];
+				$datos[$i]['tip_prod_id']=$v['tip_prod_id'];
+				$datos[$i]['tip_descripcion']=$v['tip_descripcion'];
+				$i++;
+			}
+		 	return $datos;
+		}
+		function cabeceraPSS($objCon){
+			$datos = array();
+			$i=0;
+			$sql ="SELECT
+				persona.per_id,
+				persona.per_nombre,
+				persona.per_apellidoPaterno,
+				persona.per_apellidoMaterno,
+				persona.per_fechaNacimiento,
+				persona.per_telefono,
+				persona.per_direccion,
+				persona.per_sexo,
+				cuenta_corriente.cue_id,
+				pss.pss_id,
+				prevision.pre_nombre,
+				institucion.ins_nombre
+				FROM
+				persona
+				INNER JOIN paciente ON persona.per_id = paciente.per_id
+				INNER JOIN cuenta_corriente ON paciente.pac_id = cuenta_corriente.pac_id
+				INNER JOIN pss ON cuenta_corriente.cue_id = pss.cue_id
+				INNER JOIN institucion ON pss.pssInsId = institucion.ins_id
+				INNER JOIN prevision ON pss.pssPrevId = prevision.pre_id
+				WHERE pss.pss_id = '$this->pss_id'";		
+				
+		 	foreach($objCon->consultaSQL($sql, 'ERROR cabeceraPSS') as $v) {
+		 		$datos[$i]['per_id']=$v['per_id'];
+		 		$datos[$i]['per_nombre']=$v['per_nombre'];
+				$datos[$i]['per_apellidoPaterno']=$v['per_apellidoPaterno'];
+				$datos[$i]['per_apellidoMaterno']=$v['per_apellidoMaterno'];
+				$datos[$i]['per_fechaNacimiento']=$v['per_fechaNacimiento'];
+				$datos[$i]['per_telefono']=$v['per_telefono'];
+				$datos[$i]['per_direccion']=$v['per_direccion'];
+				$datos[$i]['per_sexo']=$v['per_sexo'];
+				$datos[$i]['cue_id']=$v['cue_id'];
+				$datos[$i]['pss_id']=$v['pss_id'];
+				$datos[$i]['pre_nombre']=$v['pre_nombre'];
+				$datos[$i]['ins_nombre']=$v['ins_nombre'];
+
+
+
+
+				$i++;
+			}
+		 	return $datos;
 
 		}
 }
