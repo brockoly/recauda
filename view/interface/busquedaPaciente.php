@@ -15,6 +15,7 @@
 <script type="text/javascript" src="controller/client/js_busqudaPaciente.js"></script>
 <center><h3>Listado de pacientes</h3></center>
 <div id="btnAgregarPaciente" onclick="ventanaModal('./view/dialog/agregarPaciente.php','','auto','auto','Registro de Paciente','modalAgregarPaciente')"><img src="./include/img/patient.png" width="25" height="25"> Agregar Paciente</div>
+<div id="btnCargaMasiva" onclick=""><img src="./include/img/patient.png" width="25" height="25"> Carga Masiva</div>
 <br><br>
 <center>
 	<table class="display" width="100%" id="tabPaciente">

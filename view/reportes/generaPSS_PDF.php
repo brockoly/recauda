@@ -46,8 +46,7 @@ $pdf->SetFont('helvetica', '', 8, '', true);
 $pdf->AddPage();
 //RECEPCION VARIABLE
 
-$pss_id = '1';
-
+$pss_id = $_GET['pss_id'];
 //CARGA DE CLASES Y METODOS
 require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 require_once('../../class/Tipo_producto.class.php'); $objTip = new Tipo_producto(); 

@@ -26,13 +26,16 @@ $(document).ready(function(){
 				mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a Cerrar el PSS N° '+pss_id+', ¿Desea Continuar?','./controller/server/controlador_pss.php','pss_id='+pss_id+'&op=cerrarPss','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarPssCtaCte');
 			}
 			if($(this).hasClass('detalle')){
-				alert('detalle')	
+				//ventanaModal('./view/dialog/verDetallePss.php','pss_id='+pss_id,'auto','auto','Detalle de Pss','modalDetallePss');				
 			}
 			if($(this).hasClass('valorizar')){
 				alert('valorizar')	
 			}
+			if($(this).hasClass('printer')){	
+				ventanaModal('./view/dialog/imprimirPSS.php','pss_id='+pss_id,'auto','auto','Imprimir Pss','modalImprimirPss');				
+			}
 			if($(this).hasClass('editPss')){
-				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id,'auto','auto','Edición de Pss','modalEditarPss')
+				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id,'auto','auto','Edición de Pss','modalEditarPss');
 			}
 			
 
