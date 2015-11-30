@@ -33,10 +33,10 @@
 
 	function buscarPaciente($objCon, $per_id){
 		$sql="SELECT
-			persona.per_id
+			paciente.per_id
 			FROM
-			persona
-			WHERE persona.per_id = '$per_id'";
+			paciente
+			WHERE paciente.per_id = '$per_id'";
 		$datos = array();
 		foreach ($objCon->consultaSQL($sql,'ERROR buscarPaciente') as $v) {
 			$datos['per_id'] = $v['per_id'];
@@ -182,6 +182,35 @@
 		  WHERE paciente.pac_id='$pac_id'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarPaciente');
 		return $rs;
+	}
+
+	function buscarPersona($objCon, $per_id){
+			$datos = array();
+			$i=0;
+			$sql =" SELECT
+						paciente.pac_id,
+						persona.per_nombre,
+						persona.per_telefono,
+						persona.per_apellidoPaterno,
+						persona.per_apellidoMaterno,
+						persona.per_fechaNacimiento						
+					FROM paciente
+					LEFT JOIN persona ON persona.per_id = paciente.per_id";
+			if(empty($per_id)==false){
+				$sql.=" WHERE paciente.per_id = '$per_id'";
+			}
+		 	foreach($objCon->consultaSQL($sql, 'ERROR buscarUsuario') as $v) {
+					$datos['pac_id']=$v['pac_id'];
+					$datos['per_nombre']=$v['per_nombre'];
+					$datos['per_apellidoPaterno']=$v['per_apellidoPaterno'];
+					$datos['per_apellidoMaterno']=$v['per_apellidoMaterno'];
+					//formatear fecha
+					require_once('../../class/Util.class.php'); 
+					$objUti=new Util(); 
+					$datos['per_fechaNacimiento']=$objUti->cambiarfecha_mysql_a_normal($v['per_fechaNacimiento']);
+					$datos['per_telefono']=$v['per_telefono'];
+			}
+		 	return json_encode($datos);
 	}
 }
 ?>

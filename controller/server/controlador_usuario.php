@@ -30,6 +30,7 @@
 								$rut = $objUti->valida_rut($_POST['rut']);
 								$objPer->setPersona($rut,$_POST['txtNombre'],$_POST['txtApellidoPaterno'],$_POST['txtApellidoMaterno'],
 													$objUti->cambiarfecha_mysql($_POST['txtFechaNacimiento']),$telefono,1);
+								$objPer->buscarIdentificador($objCon);
 								$usuAux=$objUsu->buscarUsuario($objCon);
 
 								if($usuAux!=""){
@@ -42,30 +43,31 @@
 								}
 
 								if($rut!=0){
-									if($objPer->buscarIdentificador($objCon)==$rut){//Retorna 0 si no existe el identificador de persona.
-										$errores['txtIdentificador']="El rut de persona ya existe en nuestros registro";
+									if($objUsu->buscarUsuarioRut($objCon,$rut)!=0){//Retorna 0 si no existe el identificador de persona.
+										$errores['txtIdentificador']="El rut ya existe asociado a un paciente";
 									}
 								}else{						
 								 	$errores['txtIdentificador']="El rut de persona no es valido";
 								}
-
 								if($objUsu->buscarCorreo($objCon)==$_POST['txtCorreo']){//Retorna 0 si no existe el identificador de persona.
 									$errores['txtCorreo']="El correo de usuario ya existe en nuestros registros";
 								}
-
 								if( strlen($errores['txtUsuario'])!=1 || strlen($errores['txtIdentificador'])!=1 || strlen($errores['txtCorreo'])!=1){
 									echo json_encode($errores);
 								}else{	
 									unset($errores['txtUsuario']);
 									unset($errores['txtIdentificador']);
-									unset($errores['txtCorreo']);								
-									
-									try{
+									unset($errores['txtCorreo']);
+									try{										
 								 		$objCon->beginTransaction();
-								 		$objPer->insertarPersona($objCon);								 		
-								 		$objNac->insertarNacionalidadPersona($objCon, $rut);
+								 		if($_POST['pacEx']==0){
+											$objPer->insertarPersona($objCon);
+											$objNac->insertarNacionalidadPersona($objCon, $rut);
+										}else{
+											$objPer->modificarPersona($objCon);
+										}
 								 		$objUsu->insertarUsuario($objCon,$objPer->getPer_id(),$objPri->getPri_id());
-								 		$objCon->commit();						 		
+								 		$objCon->commit();
 								 	} catch (PDOException $e){
 							 			$objCon->rollBack(); 
 							 			echo $e->getMessage();
@@ -185,6 +187,25 @@
 
 								echo $error;
 														 	
+								break;
+
+		case "buscarUsuario":
+								$objCon = new Conectar();
+								$objUsu= new Usuario();
+								$objUti= new Util(); 
+								$objCon->db_connect();
+								$txtRut = $_POST['txtRut'];
+								$per_id = $objUti->valida_rut($txtRut);
+								echo $res = $objUsu->buscarUsuario($objCon, $per_id);
+								break;
+		case "buscarPersona":
+								$objCon = new Conectar();
+								$objUsu= new Usuario();
+								$objUti= new Util(); 
+								$objCon->db_connect();
+								$txtRut = $_POST['txtRut'];
+								$per_id = $objUti->valida_rut($txtRut);
+								echo $res = $objUsu->buscarPersona($objCon, '', $per_id);
 								break;
 
 	}

@@ -41,10 +41,10 @@
 					$tip_pro_id = $objTipoPro->insertarTipoProducto($objCon);
 					if($datosTipo[0]!=''){
 						for($i=0;$i<count($datosTipo);$i++){
-						$objUnidadM->setUnidadMedida($datosTipo[$i],'','');
-						$objUnidadM->insertarUnidadMedidaTProducto($objCon,$tip_pro_id);
+							$objUnidadM->setUnidadMedida($datosTipo[$i],'','');
+							$objUnidadM->insertarUnidadMedidaTProducto($objCon,$tip_pro_id);
 						}
-					}					
+					}
 			 		$objCon->commit();						 		
 				}catch (PDOException $e){
 		 			$objCon->rollBack(); 
