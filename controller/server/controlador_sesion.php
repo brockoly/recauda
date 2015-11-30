@@ -1,9 +1,6 @@
 <?php
 session_start();
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
+	
 //LLAMADA DE CLASES
 require_once('../../class/Conectar.class.php');
 require_once('../../class/Usuario.class.php'); 

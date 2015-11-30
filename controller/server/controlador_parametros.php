@@ -1,8 +1,5 @@
 <?
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
+	
 require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 require_once('../../class/Util.class.php'); $objUtil = new Util;
 require_once('../../class/Institucion.class.php'); $objInst = new Institucion();

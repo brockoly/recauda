@@ -1,8 +1,4 @@
 <?php 
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
 class Valores{
 	 public $val_id;
 	 public $val_nombre;

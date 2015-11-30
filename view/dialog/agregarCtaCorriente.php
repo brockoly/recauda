@@ -1,9 +1,5 @@
 <?php
-	session_start();
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
+	session_start();	
 	unset($_SESSION['pac_id']);
 	$_SESSION['pac_id']=$_POST['pac_id'];
 	//echo $_SESSION['usuario'][1]['nombre_usuario'];	

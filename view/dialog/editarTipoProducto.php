@@ -1,8 +1,5 @@
 <?
-if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
+
 	//LLAMADA DE CLASES
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 	require_once('../../class/Producto.class.php'); $objPro = new Producto();

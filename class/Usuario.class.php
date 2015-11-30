@@ -1,12 +1,9 @@
 <?php 
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
 class Usuario{
 	 private $usu_nombre;
 	 private $usu_clave;
 	 private $usu_correo;
+	 private $usu_estado;
 
 
 	function setUsuario($usuario, $clave, $correo){
@@ -91,8 +88,8 @@ class Usuario{
 	function buscarUsuario($objCon){ // Busca si existe el nombre usuario en la base de datos
 	 	$sql ="SELECT
 				CASE 
-				WHEN usuario.usu_nombre = '$this->usu_nombre' AND usuario.usuEstado = 0 THEN 'Existe Activado'
-				WHEN usuario.usu_nombre = '$this->usu_nombre' AND usuario.usuEstado = 1 THEN 'Existe Desactivado'
+				WHEN usuario.usu_nombre = '$this->usu_nombre' AND usuario.usu_estado = 0 THEN 'Existe Activado'
+				WHEN usuario.usu_nombre = '$this->usu_nombre' AND usuario.usu_estado = 1 THEN 'Existe Desactivado'
 				END AS condicion
 			  FROM recaudacion.usuario
 			  HAVING condicion IS NOT NULL";
@@ -140,9 +137,9 @@ class Usuario{
 					usuario
 				LEFT JOIN persona ON usuario.per_id = persona.per_id";
 	 	if($opcion==1){
-	 		$sql.=" WHERE usuario.usuEstado=1";	//DESACTIVADOS		 	
+	 		$sql.=" WHERE usuario.usu_estado=1";	//DESACTIVADOS		 	
 	 	}else{
-	 		$sql.=" WHERE usuario.usuEstado=0"; //ACTIVOS
+	 		$sql.=" WHERE usuario.usu_estado=0"; //ACTIVOS
 	 	}
 
 	 	foreach($objCon->consultaSQL($sql, 'ERROR desplegarUsuarios') as $v) {
@@ -200,7 +197,7 @@ class Usuario{
 
 	function eliminarUsuario($objCon,$per_id){
 	 	$sql="UPDATE usuario
-			  SET usuario.usuEstado=1
+			  SET usuario.usu_estado=1
 			  WHERE usuario.per_id='$per_id'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarUsuario');
 	 	return $rs;
@@ -208,7 +205,7 @@ class Usuario{
 
 	function restaurarUsuario($objCon){
 	 	$sql="UPDATE usuario
-			  SET usuario.usuEstado=0
+			  SET usuario.usu_estado=0
 			  WHERE usuario.usu_nombre='$this->usu_nombre'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarUsuario');
 	 	return $rs;

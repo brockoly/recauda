@@ -1,8 +1,5 @@
 <?php 
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
+
 class Producto{
 	 public $pro_id;
 	 public $pro_nom;

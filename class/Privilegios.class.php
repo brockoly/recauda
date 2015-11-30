@@ -1,8 +1,5 @@
 <?php 
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
+
 class Privilegio{
 	 private $pri_id;
 	 private $pri_descripcion;

@@ -1,8 +1,5 @@
 <?php
-	if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
+
 	class Paciente{
 
 	private $pac_id;
@@ -66,7 +63,7 @@
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
 			INNER JOIN nacionalidad ON persona.per_procedencia = nacionalidad.nac_id
-			WHERE paciente.pacEstado = '0'";
+			WHERE paciente.pac_estado = '0'";
 		$datos = array();
 		$i = 0;
 		foreach ($objCon->consultaSQL($sql,'Error desplegarPacientes') as $v) {
@@ -94,7 +91,7 @@
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
 			INNER JOIN nacionalidad ON persona.per_procedencia = nacionalidad.nac_id
-			WHERE paciente.pacEstado = '1'";
+			WHERE paciente.pac_estado = '1'";
 		$datos = array();
 		$i = 0;
 		foreach ($objCon->consultaSQL($sql,'Error desplegarPacientes') as $v) {
@@ -175,14 +172,14 @@
 	 }
 	function eliminarPaciente($objCon,$pac_id){
 		$sql="UPDATE paciente
-		  SET paciente.pacEstado=1
+		  SET paciente.pac_estado=1
 		  WHERE paciente.pac_id='$pac_id'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarPaciente');
 		return $rs;
 	}
 	function restaurarPaciente($objCon,$pac_id){
 		$sql="UPDATE paciente
-		  SET paciente.pacEstado=0
+		  SET paciente.pac_estado=0
 		  WHERE paciente.pac_id='$pac_id'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarPaciente');
 		return $rs;

@@ -1,8 +1,4 @@
 <?php
-if ( $_SESSION['usuario'] == null ) {
-		$GoTo = "../../../login/index.php";
-		header(sprintf("Location: %s", $GoTo));
-	}
 	//LLAMADA DE CLASES
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 	require_once('../../class/Nacionalidad.class.php'); $objNac = new Nacionalidad();
@@ -63,12 +59,23 @@ if ( $_SESSION['usuario'] == null ) {
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtApellidoMaterno"   name="txtApellidoMaterno"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errApellidoMaterno" hidden="true"/></td>
 				</tr>
 				<tr>
+					<td>Sexo *</td>
+					<td>&nbsp;&nbsp;&nbsp;					
+					<input type="radio" id="rdSexo"   name="rdSexo" value="f" checked="true" /> Femenino
+					<input type="radio" id="rdSexo"   name="rdSexo" value="m"/> Masculino
+					&nbsp;&nbsp;<img src="./include/img/information.png" id="errSexo" hidden="true"/></td>
+				</tr>
+				<tr>
 					<td>Fecha Nacimiento *</td>
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtFechaNacimientos" name="txtFechaNacimiento"/>&nbsp;&nbsp;<img src="./include/img/eraser.png" id="goma" style="cursor:pointer;"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errFechaNacimiento" hidden="true"/></td>
 				</tr>
 				<tr>
 					<td>Telefono</td>
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtTelefono"  name="txtTelefono"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errTelefono" hidden="true"/></td>
+				</tr>
+				<tr>
+					<td>Dirección *</td>
+					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtDireccion"  name="txtDireccion"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errDireccion" hidden="true"/></td>
 				</tr>
 		</table><br>
 		</fieldset><br>		
