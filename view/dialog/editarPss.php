@@ -46,13 +46,15 @@
       <div id="proTip<?=$tipoProducto[$i]['tip_prod_id']?>">
           <p>
             <center>
-            <fieldset class="cabezeraDatos" style="background-color: #f2f5f7 !important; width: 400px;">
-                <b>Buscar <?=$tipoProducto[$i]['tip_descripcion']?></b> <input type="text" id="<?=$tipoProducto[$i]['tip_prod_id']?>" class="filtroBus">
+            <fieldset class="cabezeraDatos" style="background-color: #f2f5f7 !important; width: 450px;">
+                <b>Buscar <?=$tipoProducto[$i]['tip_descripcion']?></b> 
+                <input type="text" id="<?=$tipoProducto[$i]['tip_prod_id']?>" class="filtroBus">&nbsp;&nbsp;&nbsp;
+                <input placeholder="cant" type="text" class="cantPro" id="cantPro<?=$tipoProducto[$i]['tip_prod_id']?>" style="width:60px" hidden="true">
             </fieldset>
             </center>
             <fieldset class="cabezeraDatos" style="background-color: #DEE2E4 !important;"><legend  class="cuerpoDatos"><?=$tipoProducto[$i]['tip_descripcion']?></legend>
                   <center>
-                    <table width="95%" border="0" id="tblProducto<?=$tipoProducto[$i]['tip_prod_id']?>">
+                    <table width="95%" border="0" id="tblProducto<?=$tipoProducto[$i]['tip_prod_id']?>" hidden="true">
                         <thead>
                           <tr>
                             <th><center>Código</center></th>
