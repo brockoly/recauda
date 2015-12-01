@@ -1,7 +1,8 @@
 $(document).ready(function(){
 		tabla('tabConsultaPagos');
-		$(".buscaPagos").click(function(){
-			alert($(this).attr('id'))
+		$(".buscaPagos").click(function(){	
+			bol_id=$(this).attr('id');
+			ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
 			/*var id=$(this).attr('id');
 			var paciente=$("#Paciente").val();
 			var ctaCorriente=$("#CtaCorriente").val();

@@ -16,8 +16,10 @@ class Pagos{
 				pagos.pag_monto,
 				boleta.bol_fecha,
 				tipo_pago.tip_pag_descripcion,
+				boleta.bol_tipo,
 				boleta.bol_id,
-				boleta.bol_hora
+				boleta.bol_hora,
+				boleta.usu_nombre
 			 FROM
 				pagos
 			 INNER JOIN boleta ON pagos.pag_id = boleta.pag_id
@@ -41,6 +43,8 @@ class Pagos{
 				$datos[$i][tip_pag_descripcion]=$v['tip_pag_descripcion'];
 				$datos[$i][bol_id]=$v['bol_id'];
 				$datos[$i][bol_hora]=$v['bol_hora'];
+				$datos[$i][bol_tipo]=$v['bol_tipo'];
+				$datos[$i][usu_nombre]=$v['usu_nombre'];
 				$i++;
 		    }
 		return $datos;

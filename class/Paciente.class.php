@@ -153,13 +153,15 @@
 			paciente.pac_id,
 			persona.per_sexo,
 			persona.per_direccion,
-			prevision.pre_nombre
+			prevision.pre_nombre,
+			institucion.ins_nombre
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
 			INNER JOIN nacionalidad_persona ON persona.per_id = nacionalidad_persona.per_id
 			INNER JOIN nacionalidad ON nacionalidad_persona.nac_id = nacionalidad.nac_id
-			INNER JOIN prevision ON paciente.pre_id = prevision.pre_id";
+			INNER JOIN prevision ON paciente.pre_id = prevision.pre_id
+			INNER JOIN institucion ON paciente.ins_id = institucion.ins_id";
 		if(empty($per_id)==false){
 			$sql.=" WHERE persona.per_id = '$per_id'";
 		}else{ 
@@ -189,6 +191,7 @@
 				$datos[$i]['per_sexo']=$v['per_sexo'];
 				$datos[$i]['per_direccion']=$v['per_direccion'];
 				$datos[$i]['pre_nombre']=$v['pre_nombre'];
+				$datos[$i]['ins_nombre']=$v['ins_nombre'];
 				$i++;
 		}
 	 	return $datos;

@@ -10,6 +10,11 @@
 					$fecha="$dia/$mes/$ano";
 					return $fecha;
 		}
+		function cambiarfecha_mysql_a_normalGuion($fecha){
+					list($ano,$mes,$dia)=explode("-",$fecha);
+					$fecha="$dia-$mes-$ano";
+					return $fecha;
+		}
 		function valida_rut($rut)
 		{
 			// Agradecimientos a rbarrigav link -> https://gist.github.com/rbarrigav/3881019

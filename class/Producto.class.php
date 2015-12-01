@@ -139,4 +139,5 @@ class Producto{
 		}
 		return json_encode($return_arr);
 	}
+	
 }?>
