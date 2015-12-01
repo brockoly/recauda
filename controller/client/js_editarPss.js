@@ -8,23 +8,40 @@
     var idPro = 0;
     var vacio="";
     validar('cantPro', 'class' ,'numero');
-    $("#btnAgregar").button().click(function(){ 
-        var productosFinal = [productos.length]; 
-        patron = "cantProducto";
-        var z=0;
-        $(".tablaProductosAgregados input[type=text]").each(function (index){             
-            //var valor = $("#"+$(this).attr('id')).val();
-            var productosX = [2];
-            productosX[0]=$(this).attr('id').replace(patron,'');
-            productosX[1]=$("#"+$(this).attr('id')).val();
-            productosFinal[z]=productosX;
-            z++;
-                        
-        })
-        var cont = validarProcesos('controller/server/controlador_pss.php','productosFinal='+productosFinal+'&op=agregarProductoPss');
-        $('#modalEditarPss').dialog('destroy').remove();
-        cargarContenido('./view/interface/busquedaPssCtaCte.php','cue_id='+$("#cue_id").val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado');
-        mensajeUsuario('successMensaje','Exito','<b>PSS modificado con exito</b>');
+    $(".btnAdd").button().click(function(){       
+        if($(this).attr('id')=="btnAgregar1"){//SOLO REGISTRA
+            var productosFinal = [productos.length]; 
+            patron = "cantProducto";
+            var z=0;
+            $(".tablaProductosAgregados input[type=text]").each(function (index){             
+                //var valor = $("#"+$(this).attr('id')).val();
+                var productosX = [2];
+                productosX[0]=$(this).attr('id').replace(patron,'');
+                productosX[1]=$("#"+$(this).attr('id')).val();
+                productosFinal[z]=productosX;
+                z++;                            
+            })
+            var cont = validarProcesos('controller/server/controlador_pss.php','productosFinal='+productosFinal+'&op=agregarProductoPss&cambiarEstado=no');
+            $('#modalEditarPss').dialog('destroy').remove();
+            cargarContenido('./view/interface/busquedaPssCtaCte.php','cue_id='+$("#cue_id").val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado');
+            mensajeUsuario('successMensaje','Exito','<b>PSS modificado con exito</b>');
+        }else if($(this).attr('id')=="btnAgregar2"){
+            var productosFinal = [productos.length]; 
+            patron = "cantProducto";
+            var z=0;
+            $(".tablaProductosAgregados input[type=text]").each(function (index){             
+                var productosX = [2];
+                productosX[0]=$(this).attr('id').replace(patron,'');
+                productosX[1]=$("#"+$(this).attr('id')).val();
+                productosFinal[z]=productosX;
+                z++;                            
+            })
+            var cont = validarProcesos('controller/server/controlador_pss.php','productosFinal='+productosFinal+'&op=agregarProductoPss&cambiarEstado=si');
+            $('#modalEditarPss').dialog('destroy').remove();
+            cargarContenido('./view/interface/busquedaPssCtaCte.php','cue_id='+$("#cue_id").val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado');
+            mensajeUsuario('successMensaje','Exito','<b>PSS modificado con exito</b>');
+        }
+        
 
     });
     	
@@ -59,12 +76,12 @@
             codigo = '<td align="center" class="cuerpoDatosTablas">'+ui.item.id+'</td>';
             descripcion = '<td class="cuerpoDatosTablas" align="center">'+ui.item.value+'</td>';
             $("#cantPro"+id).show("slow");
-            $("#cantPro"+id).focus();     
+            $("#cantPro"+id).focus();  
         }
     });
 
     $(".cantPro").blur(function(){
-        $("#tblProducto"+id).show("slow");
+        $("#tblProducto"+id).show("slow");     
         var x = parseInt($("#cantPro"+id).val());
         var y = parseInt($("#cantProducto"+idPro).val());
         if(isNaN(x)==true){
@@ -81,6 +98,8 @@
             $("#cantPro"+id).hide();            
             productos[productos.length]=idPro;
             validar('proCantAgregar', 'class' ,'numero');
+            $("#btnAgregar2").css( "visibility", "visible" ); 
+            
         }else{
             if(jQuery.inArray( idPro, productos )==-1){
                 cantidad="";
@@ -104,7 +123,8 @@
             patron = "cantProducto";
             productos[j]=$(this).attr('id').replace(patron,'');
             j++;                      
-    });
+    });    
+            
 });
 
 function eliminarFila(idPro){
@@ -125,6 +145,11 @@ function eliminarFila(idPro){
                     productos.splice(i,1); 
                 }
             }   
+        }
+
+        if(productos.length==0){
+
+             $("#btnAgregar2").css( "visibility", "hidden" ); 
         }
         
 }

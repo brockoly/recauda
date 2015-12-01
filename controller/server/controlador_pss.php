@@ -73,6 +73,10 @@
 
 							if(count($productosFinal)>1){
 								$objPss->insertarDetallePss($objCon, $cue_id, $productosFinal);
+								if($_POST['cambiarEstado']=="si"){
+									$objPss->setPss_estado("Cerrado");
+									$objPss->cambiarEstadoPss($objCon);
+								}								
 								$objCon->commit();
 							 	unset($_SESSION['pss_id']);
 							    unset($_SESSION['cue_id']);
