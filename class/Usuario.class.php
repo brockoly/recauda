@@ -7,17 +7,17 @@ class Usuario{
 
 
 	function setUsuario($usuario, $clave, $correo){
-	 		$this->usu_nombre=$usuario;
-	 		$this->usu_clave=$clave;
-	 		$this->usu_correo=$correo;
+	 		$this->usu_nombre=trim($usuario);
+	 		$this->usu_clave=trim($clave);
+	 		$this->usu_correo=trim($correo);
 	}
 
 	function setUsu_usuario($usuario){
-	 		$this->usu_nombre=$usuario;
+	 		$this->usu_nombre=trim($usuario);
 	}
 
 	function setUsu_correo($correo){
-	 		$this->usu_correo=$correo;
+	 		$this->usu_correo=trim($correo);
 	}
 
 	function inicioSistema($objCon){

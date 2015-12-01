@@ -45,7 +45,7 @@
 
 								if($rut!=0){
 									if($objUsu->buscarUsuarioRut($objCon,$rut)!=0){//Retorna 0 si no existe el identificador de persona.
-										$errores['txtIdentificador']="El rut ya existe asociado a un paciente";
+										$errores['txtIdentificador']="El rut ya existe asociado a una persona";
 									}
 								}else{						
 								 	$errores['txtIdentificador']="El rut de persona no es valido";

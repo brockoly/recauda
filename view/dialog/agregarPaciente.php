@@ -15,7 +15,7 @@
 ?>
 
 <script type="text/javascript" src="controller/client/js_agregarPaciente.js"></script>
-<script type="text/javascript">calendario('txtFechaNacimientos', '<?=$fecha?>')</script>
+<script type="text/javascript">calendario('txtFechaNac', '<?=$fecha?>')</script>
 <form id="frmDatosPaciente" name="frmDatosPaciente">
 <fieldset style="width: 450px;"><legend>Datos Paciente</legend>
 <center>
@@ -59,7 +59,7 @@
 				</tr>
 		<tr>
 			<td>Fecha Nac *</td>
-			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtFechaNac" name="txtFechaNac" readonly="true" />&nbsp;&nbsp;<img src="./include/img/Information.png" id="errFechaNac" hidden="true"  /></td>
+			<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtFechaNac" name="txtFechaNac" readonly="true"/>&nbsp;&nbsp;<img src="./include/img/Information.png" id="errFechaNac" hidden="true"  /></td>
 		</tr>
 		<tr>
 			<td>Telefono </td>

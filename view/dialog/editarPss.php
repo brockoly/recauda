@@ -21,6 +21,7 @@
   $tipoProducto=$objTip_pro->listarTipoProducto($objCon);
   $productos_PSS=$objPss->verDetallePss($objCon);
   $objCon=null;
+  echo count($productos_PSS);
 ?>
 <script type="text/javascript" src="controller/client/js_editarPss.js"></script>
 <fieldset class="cabezeraDatos"><legend class="cuerpoDatos">Datos PSS N ° <?=$_POST['pss_id']?></legend>
@@ -88,7 +89,10 @@
     } 
   ?>
 </div><br>
-<center><input type="button" value="Guardar PSS"  id="btnAgregar"></center>
+<center>
+  <input type="button" value="Guardar PSS"  id="btnAgregar1"  class="btnAdd"> 
+  <input type="button"   id="btnAgregar2" class="btnAdd" value="Guardar y Cerrar PSS" <?php if(count($productos_PSS)==0){ ?> style="visibility:hidden;" <?php }?>>
+</center>
 <input type="hidden" value="<?=$_SESSION['cue_id']?>" id="cue_id">
 <input type="hidden" value="<?=$_POST['Paciente']?>" id="Paciente">
 <input type="hidden" value="<?=$_POST['CtaCorriente']?>" id="CtaCorriente">

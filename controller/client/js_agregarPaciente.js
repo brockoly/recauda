@@ -1,7 +1,11 @@
 $(document).ready(function(){
 	validar('txtNombres', 'id','letras');
+	validar('txtApellidoPat', 'id' ,'letras');
+	validar('txtApellidoMat', 'id' ,'letras');
+	validar('txtTelefono', 'id' ,'numero');
+	validar('txtDireccion', 'id' ,'todo');
 	var a=0, b=0, c=0, d=0, e=0, f=0, g=0, h=0, rut = 0, id = 0, pacEx = 0; /*BANDERAS GLOBALES*/
-	calendario('txtFechaNac');
+	
 	$("#btnAgregarPacienteModal").button().click(function(){
 		if( $("#txtFechaNac").val()==""){
 			$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -26,6 +30,9 @@ $(document).ready(function(){
 				mensajeUsuario('alertMensaje','Advertencia','El paciente ya se encuentra en nuestros registros');
 			}
 		}else{
+			$('#txtRut').blur();
+			$('#txtIdentificador').blur();
+			$("#txtNombres").blur();
 			$("#txtApellidoPat").blur();
 			$("#txtApellidoMat").blur();
 			$("#cmbPais").blur();
@@ -37,10 +44,12 @@ $(document).ready(function(){
 	});
 	$('#cmbPais').change(function(){
 		if($("#cmbPais option:selected").text() == 'Chile'){
+
 			$('#trIdentificador').show();
 			$('#tdRut').remove();
 			$('#tdIdentificador').remove();
 			$('<td id="tdRut">&nbsp;&nbsp;&nbsp;<input type="text" id="txtRut" name="txtRut" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
+			validar('txtRut', 'id','rut');
 			$('#txtRut').Rut({
 			   	on_error: function(){  
 							$("#txtRut").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -83,6 +92,28 @@ $(document).ready(function(){
 								$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
 							}
 							$('#txtDireccion').val(arrExistente.per_direccion);
+							$("#txtNombres").blur();
+							$("#txtApellidoPat").blur();
+							$("#txtApellidoMat").blur();
+							$("#cmbPais").blur();
+							$("#cmbPrevision").blur();
+							$("#cmbInstitucion").blur();
+							$("#txtDireccion").blur();
+							$("#txtNombres").focus();
+							$("#txtApellidoPat").focus();
+							$("#txtApellidoMat").focus();
+							$("#cmbPais").focus();
+							$("#txtDireccion").focus();
+							
+							if( $("#txtFechaNac").val()==""){
+								$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
+								muestraError('errFechaNac','Ingrese una Fecha.');
+								e=0;			
+							}else{
+								$("#txtFechaNac").removeClass("cajamala");	
+								$('#errFechaNac').attr("title", "").hide("slow");	
+								e=1;
+							}
 						}else{
 							$(this).removeClass("cajamala" );
 							a=1;
@@ -95,6 +126,12 @@ $(document).ready(function(){
 				$('#errRut').attr("title", "").hide("slow");				
 			});
 		}else if ($("#cmbPais option:selected").val() > 1){
+			$('#txtNombres').val("");
+			$('#txtApellidoPat').val("");
+			$('#txtApellidoMat').val("");
+			$('#txtFechaNac').val("");
+			$('#txtTelefono').val("");
+			$('#txtDireccion').val("");
 			$('#trIdentificador').show();
 			$('#tdIdentificador').remove();
 			$('#tdRut').remove();

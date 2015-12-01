@@ -60,6 +60,22 @@
 					 			echo $e->getMessage();
 						}
 				break;
+				case "valorizarPss":
+						$pss_id=$_POST['pss_id'];					 							
+						try{
+							$objCon->db_connect();
+							$objCon->beginTransaction();
+							$objPss->setPss_id($pss_id);
+							$objPss->setPss_estado("Valorizado");
+							$objPss->cambiarEstadoPss($objCon);				
+						 	$objCon->commit();						 	
+						 	echo "PSS valorizado con exito.";
+													 		
+						}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			echo $e->getMessage();
+						}
+				break;
 
 				case "agregarProductoPss":
 						session_start();
@@ -73,6 +89,10 @@
 
 							if(count($productosFinal)>1){
 								$objPss->insertarDetallePss($objCon, $cue_id, $productosFinal);
+								if($_POST['cambiarEstado']=="si"){
+									$objPss->setPss_estado("Cerrado");
+									$objPss->cambiarEstadoPss($objCon);
+								}								
 								$objCon->commit();
 							 	unset($_SESSION['pss_id']);
 							    unset($_SESSION['cue_id']);

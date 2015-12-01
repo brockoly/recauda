@@ -7,6 +7,7 @@ $(document).ready(function(){
 	validar('txtApellidoPaterno', 'id' ,'letras');
 	validar('txtApellidoMaterno', 'id' ,'letras');
 	validar('txtTelefono', 'id' ,'numero');
+	validar('txtDireccion', 'id' ,'todo');
 	
 	//BOTON AGREGAR USUARIO.
 	$("#btnEditarUsuario").button().click(function(){

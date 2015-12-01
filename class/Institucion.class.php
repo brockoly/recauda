@@ -7,7 +7,7 @@
 
 		function setInstitucion($ins_id,$ins_nombre){
 			$this->ins_id=$ins_id;
-			$this->ins_nombre=$ins_nombre;
+			$this->ins_nombre=trim($ins_nombre);
 		}
 		function buscarMaximoId($objCon){//
 
