@@ -11,13 +11,19 @@
   $objCon->db_connect();
   $objPss->setPss_id($_POST['pss_id']);
 
-  $pss            = $objPss->buscarPss($objCon,"");
-  $paciente       = $objPac->getInformacionPaciente($objCon, "", "", $pss[0]['cue_id']);
-  $tipoProducto   = $objTip_pro->listarTipoProducto($objCon);
-  $detallePSS     = $objPss->verDetallePss($objCon);
+  $pss              = $objPss->buscarPss($objCon,"");
+  $paciente         = $objPac->getInformacionPaciente($objCon, "", "", $pss[0]['cue_id']);
+  $tipoProducto     = $objTip_pro->listarTipoProducto($objCon);
+  $detallePSS       = $objPss->verDetallePss($objCon);
   $objPrev->setPrevision($paciente[0]['prevision_id'],'');
-  $instituciones  = $objPrev->obtenerInstitucionesPrevision($objCon);
+  $instituciones    = $objPrev->obtenerInstitucionesPrevision($objCon);
   $objCon=null;
+
+  $arrTiposPSS = Array();
+  for($i=0; $i<count($detallePSS);$i++){
+      $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
+  }
+ 
 ?>
 <script type="text/javascript" src="controller/client/js_valorizarPSS.js"></script>
 <fieldset class="cabezeraDatos"><legend class="cuerpoDatos">Datos Paciente</legend>
@@ -71,8 +77,10 @@
   <?
   $total_programa = 0;
   if(count($detallePSS)>0){
-     for ($i=0; $i<count($tipoProducto); $i++) {?>
-     <center>
+     for ($i=0; $i<count($tipoProducto); $i++) {
+      if($arrTiposPSS[$i]==$tipoProducto[$i]['tip_prod_id']){ ?>
+
+      <center>
       <table width="95%" id="tblValorizacion" border="0">
         <h3><?=strtoupper($tipoProducto[$i][tip_descripcion]);?></h3>
         <tr class="cuerpoDatosTablas">
@@ -85,7 +93,7 @@
       <?$subtotal = 0;
       for($a=0; $a<count($detallePSS); $a++){
         if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){          
-    ?>
+      ?>
           <tr>
             <td><?=$detallePSS[$a][pro_id];?></td>
             <td><?=$detallePSS[$a][pro_nom];?></td>
@@ -96,18 +104,12 @@
           <? $subtotal += $detallePSS[$a][total];
         }
       }$total_programa += $subtotal; ?>
-     <!--  <? 
-          if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){ ?>
-            <tr>
-              <td align="right" colspan="4"><b>SUBTOTAL</b></td>
-              <td align="right"><input type="text" readonly="readonly" style="text-align:right; border:none; background:none" id="txtSubtotal<?=$tipoProducto[$i][tip_prod_id];?>" name="<?=$tipoProducto[$i][tip_prod_id];?>" value="<?=$subtotal;?>" /></td>
-            </tr>  
-         <? }
-      ?>  --> 
-</table>
-        <br/>
+      </table>
+      <br/>
       </center>
-      <?
+
+      <?}
+      
     }
   ?>
 <center>
@@ -133,6 +135,7 @@
 </fieldset><br/>
 <center>
 <input type="button" id="btnGuardarValorizacion" value="Guardar"/>
+<input type="button" id="btnGuardarVCambEsta" value="Guardar Y Cambiar Estado"/>
 </center>
 <br/>
 <input type="hidden" value="<?=$_SESSION['cue_id']?>" id="cue_id">

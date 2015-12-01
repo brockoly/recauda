@@ -37,8 +37,12 @@ $(document).ready(function(){
 			if($(this).hasClass('editPss')){
 				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'auto','auto','Edición de Pss','modalEditarPss');
 			}
-			
-
+			if($(this).hasClass('pagar')){
+				mensajeUsuario('alertMensaje','No no nooo','Este opción aun esta en desarrollo.');
+			}
+			if($(this).hasClass('ordenAtencion')){
+				mensajeUsuario('alertMensaje','No no nooo','Este opción aun esta en desarrollo.');
+			}
 			/*var id=$(this).attr('id');
 			var paciente=$("#Paciente").val();
 			var ctaCorriente=$("#CtaCorriente").val();
