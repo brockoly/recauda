@@ -27,7 +27,7 @@
 <table>
 	<tr>
 		<td>Id:</td>
-		<td>&nbsp;&nbsp;&nbsp;<input type="text" class="campoNumero" id="txtId" readonly="true" style="border:none; background: none;" value="<?=$productoActual[0]['pro_id'];?>" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errId" hidden="true"  /></td>
+		<td>&nbsp;&nbsp;&nbsp;<input type="text" class="" id="txtId" readonly="true" style="border:none; background: none;" value="<?=$productoActual[0]['pro_id'];?>" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errId" hidden="true"  /></td>
 	</tr>
 	<tr>
 		<td>Descripción:</td>
