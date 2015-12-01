@@ -15,7 +15,7 @@
 	if(isset($_POST['Identificador']) && $_POST['Identificador']!=""){
 		$identificador = "";
 		$identificador=$objUtil->valida_rut($_POST['Identificador']);
-		if($identificador!=""){
+		if($identificador!=0){
 			$datos=$objCue->buscarCuentaSola($objCon, "", "","", $identificador);
 		}else{
 			$datos=$objCue->buscarCuentaSola($objCon, "", "","", $_POST['Identificador']);	

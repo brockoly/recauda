@@ -1,9 +1,9 @@
 $(document).ready(function(){
-	rut="";
-	extranjero="";
-	identificador=0;
-	bandera=0;
-	buscar=0;
+	var rut="";
+	var extranjero="";
+	var identificador=0;
+	var bandera=-1;
+	var buscar=0;
 	
 	$("#extranjero").on( 'change', function() {
 	    if($(this).is(':checked')) {
@@ -11,10 +11,12 @@ $(document).ready(function(){
 	       	$( "#filtroBusquedaIde").off();
 	       	rut=$('#filtroBusquedaIde').val(); 
 	       	$('#filtroBusquedaIde').val("");
-	       	$('#filtroBusquedaIde').val(extranjero);
+	       	$('#filtroBusquedaIde').val(extranjero);	       	
+		 	$("#filtroBusquedaIde").removeClass("cajamala" );
 	       	bandera=0;	
-	    }else {
-	    	bandera=1;
+	    }else {	    	
+		 	$("#filtroBusquedaIde").removeClass("cajamala" );
+	    	bandera=-1;
 	    	$( "#filtroBusquedaIde").off();
 	    	validar('filtroBusquedaIde', 'id','rut');	
 	    	extranjero=$('#filtroBusquedaIde').val(); 
@@ -24,7 +26,7 @@ $(document).ready(function(){
 							//muestraError('errRut','El rut ingresado es incorrecto');
 							//a=0;
 							//rut=0;
-							bandera=0;
+							bandera=-1;
 						  },
 	  			on_success: function(){
 	  						$("#filtroBusquedaIde").removeClass("cajamala" );
@@ -64,7 +66,7 @@ $(document).ready(function(){
 											//muestraError('errRut','El rut ingresado es incorrecto');
 											//a=0;
 											//rut=0;
-											bandera=0;
+											bandera=-1;
 										  },
 					  			on_success: function(){
 					  						rut=$("#filtroBusquedaIde").val();
@@ -99,7 +101,16 @@ $(document).ready(function(){
 		 		case "Identificador":
 		 				if(bandera==1){
 		 					cargarContenido('view/interface/busquedaNuevaCtaCorriente.php','Identificador='+identificador,'#contenidoBuscado');
-		 				} 				
+		 				}
+		 				if(bandera==0){
+		 						if($("#filtroBusquedaIde").val()==""){
+		 							$("#filtroBusquedaIde").addClass("cajamala" );
+		 						}else{
+		 							$("#filtroBusquedaIde").removeClass("cajamala" );
+		 							cargarContenido('view/interface/busquedaNuevaCtaCorriente.php','Identificador='+$("#filtroBusquedaIde").val(),'#contenidoBuscado');	 					
+		 						}
+		 						
+		 					}
 		 			break;
 		 	}
 		}else{

@@ -10,7 +10,15 @@
 		$datos=$objPac->getInformacionPaciente($objCon,'',$_POST['Paciente'],'');
 	}	
 	if(isset($_POST['Identificador']) && $_POST['Identificador']!=""){
-		$datos=$objPac->getInformacionPaciente($objCon,$objUtil->valida_rut($_POST['Identificador']),'','');
+		$identificador = "";
+		$identificador=$objUtil->valida_rut($_POST['Identificador']);
+		echo $identificador;
+		if($identificador!=0){
+			$datos=$objPac->getInformacionPaciente($objCon,$identificador,'','');
+		}else{
+			$datos=$objPac->getInformacionPaciente($objCon,$_POST['Identificador'],'','');
+		}	
+
 	}
 	$objCon=null;
 ?>

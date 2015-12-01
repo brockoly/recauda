@@ -73,7 +73,6 @@
         if(isNaN(y)==true){
             y=1;
         }
-
         if(productos.length==0){                    
             cantidad="";
             cantidad = '<td class="cuerpoDatosTablas" align="center" width="10%"><input  class="proCantAgregar" type="text" style="width:60px" id="cantProducto'+idPro+'"  onblur="verificaEntero('+idPro+')" value="'+x+'" /></td><td width="3%">&nbsp&nbsp<img class="eliminarFila'+idPro+'" onclick="eliminarFila('+idPro+')" src="./include/img/delete.png" width="16" height="16" id="'+idPro+'"/></td>';
@@ -97,9 +96,15 @@
                $("#cantPro"+id).hide();
             }
         }
-        //alert(productos)
+        
     });
-
+    /******************Lleno el arreglo para cuando viene de php******************************/
+    var j=0;
+    $(".tablaProductosAgregados input[type=text]").each(function (index){
+            patron = "cantProducto";
+            productos[j]=$(this).attr('id').replace(patron,'');
+            j++;                      
+    });
 });
 
 function eliminarFila(idPro){

@@ -52,7 +52,7 @@
 ?>			</table>
 </div>
 </form>
-<input type="hidden" value="<?=$_SESSION['cue_id']?>" id="cue_id">
+<input type="hidden" value="<?=$_POST['cue_id']?>" id="cue_id">
 <input type="hidden" value="<?=$_POST['Paciente']?>" id="Paciente">
 <input type="hidden" value="<?=$_POST['CtaCorriente']?>" id="CtaCorriente">
 <input type="hidden" value="<?=$_POST['Identificador']?>" id="Identificador">
