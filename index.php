@@ -65,7 +65,7 @@ if ( $_SESSION['usuario'] == null ) {
 			<li><a href="#"><i class="icon-search"></i>CONSULTA</a>
 				<ul class="sub-menu">				
 					<li class="change"><a href="#">PAGOS</a></li>
-					<li class="change"><a href="#">BOLETA</a></li>					
+					<li class="change" onclick="cargarContenido('view/interface/consultaBoleta.php','','#contenidoCargado')"><a href="#">BOLETA</a></li>					
 					<li class="change"><a href="#">PAGARÉ</a></li>
 					<li class="change"><a href="#">ARQUEO ESPONTANEO</a></li>
 				</ul>
