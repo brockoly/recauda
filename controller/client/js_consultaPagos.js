@@ -1,5 +1,4 @@
 $(document).ready(function(){
-	/*muestraError('information', 'Para gestionar los pagos, busque al paciente mediante los filtros.');*/
 	var rut="";
 	var extranjero="";
 	var identificador=0;
@@ -11,14 +10,14 @@ $(document).ready(function(){
 	       	rut=$('#filtroBusquedaIde').val(); 
 	       	$('#filtroBusquedaIde').val("");
 	       	$('#filtroBusquedaIde').val(extranjero);
-		 	$("#filtroBusquedaIde").removeClass("cajamala" );
-	       	bandera=0;	
+	       	bandera=0;
+	       	$("#filtroBusquedaIde").removeClass("cajamala" );
 	    }else {
-	    	$("#filtroBusquedaIde").removeClass("cajamala" );
-	    	bandera=-1;
+	    	bandera=1;
 	    	$( "#filtroBusquedaIde").off();
 	    	validar('filtroBusquedaIde', 'id','rut');	
-	    	extranjero=$('#filtroBusquedaIde').val(); 
+	    	extranjero=$('#filtroBusquedaIde').val();
+	    	$("#filtroBusquedaIde").removeClass("cajamala" );
 	    	$('#filtroBusquedaIde').Rut({
 			   	on_error: function(){  
 							$("#filtroBusquedaIde").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -39,33 +38,33 @@ $(document).ready(function(){
 			$('#filtroBusquedaIde').val(rut); 
 	    }
 	});
-	$( "#opcionesGestion" ).selectmenu({
+	$( "#opcionesBusquedaPagos" ).selectmenu({
 	  change: function( event, ui ) {
-	  	switch($("#opcionesGestion").val()){
+	  	switch($("#opcionesBusquedaPagos").val()){
 	 		case "CtaCorriente":
 	 				$('<input type="text" id="filtroBusquedaCta" name="filtroBusquedaCta" class="inputValidar" />').appendTo('.inputs');
 	 				$(".tdOcultos").show('slow');
-	 				$("#filtroBusquedaPac").remove();
+	 				$("#filtroBusquedaBol").remove();
 	 				$("#filtroBusquedaIde").remove();
 	 				$(".divOcultos").hide();	
 	 				$("#extranjero").prop('checked', false);
 	 				validar('filtroBusquedaCta', 'id','numero');
 	 			break;
-	 		case "Paciente":
-	 				$('<input type="text" id="filtroBusquedaPac" placeholder="Mínimo 3 caracteres" name="filtroBusquedaPac"  class="inputValidar"/>').appendTo('.inputs');
+	 		case "Boleta":
+	 				$('<input type="text" id="filtroBusquedaBol" placeholder="Id de Boleta" name="filtroBusquedaBol"  class="inputValidar"/>').appendTo('.inputs');
 	 				$(".tdOcultos").show('slow');
 	 				$("#filtroBusquedaCta").remove();
 	 				$("#filtroBusquedaIde").remove();
 	 				$(".divOcultos").hide();
 	 				$("#extranjero").prop('checked', false);
-	 				validar('filtroBusquedaPac', 'id','letras');		
+	 				validar('filtroBusquedaBol', 'id','numero');		
 	 			break;
 	 		case "Identificador":
-	 				$('<input type="text" value="'+rut+'" placeholder="Ej: xx.xxx.xxx-x" id="filtroBusquedaIde" name="filtroBusquedaIde" style="margin-top: 20px;" class="inputValidar"/>').appendTo('.inputs');
+	 				$('<input type="text" value="'+rut+'" id="filtroBusquedaIde" name="filtroBusquedaIde" style="margin-top: 20px;" class="inputValidar"/>').appendTo('.inputs');
 	 				$(".divOcultos").show('slow');
 	 				$(".tdOcultos").show('slow');
 	 				$("#filtroBusquedaCta").remove();
-	 				$("#filtroBusquedaPac").remove();
+	 				$("#filtroBusquedaBol").remove();
 	 				$("#extranjero").prop('checked', false);
 	 				validar('filtroBusquedaIde', 'id','rut');
 					$('#filtroBusquedaIde').Rut({
@@ -74,6 +73,7 @@ $(document).ready(function(){
 											//muestraError('errRut','El rut ingresado es incorrecto');
 											//a=0;
 											//rut=0;
+
 											bandera=-1;
 										  },
 					  			on_success: function(){
@@ -89,7 +89,7 @@ $(document).ready(function(){
 	 		case "0":
 	 				$(".tdOcultos").hide();
 	 				$("#filtroBusquedaCta").remove();	
-	 				$("#filtroBusquedaPac").remove();
+	 				$("#filtroBusquedaBol").remove();
 	 				$("#filtroBusquedaIde").remove();
 	 				$(".divOcultos").hide();
 	 				$("#extranjero").prop('checked', false);
@@ -99,18 +99,18 @@ $(document).ready(function(){
 	});
 	$("#btnBusqueda").button().click(function(){
 	 	
-		 	switch($("#opcionesGestion").val()){
+		 	switch($("#opcionesBusquedaPagos").val()){
 		 		case "CtaCorriente":
 		 			if($(".inputValidar").val().length>0){
-		 				cargarContenido('view/interface/busquedaGestionDePago.php','CtaCorriente='+$("#filtroBusquedaCta").val(),'#contenidoBuscado');
+		 				cargarContenido('view/interface/busquedaConsultaPagos.php','CtaCorriente='+$("#filtroBusquedaCta").val(),'#contenidoBuscado');
 		 				$(".inputValidar").removeClass("cajamala" );
 		 			}else{
 		 				$(".inputValidar").removeClass("cajabuena" ).addClass( "cajamala" );
 		 			}
 		 			break;
-		 		case "Paciente":
-		 				if($(".inputValidar").val().length>2){
-		 					cargarContenido('view/interface/busquedaGestionDePago.php','Paciente='+$("#filtroBusquedaPac").val(),'#contenidoBuscado');
+		 		case "Boleta":
+		 				if($(".inputValidar").val().length>0	){
+		 					cargarContenido('view/interface/busquedaConsultaPagos.php','Boleta='+$("#filtroBusquedaBol").val(),'#contenidoBuscado');
 		 					$(".inputValidar").removeClass("cajamala" );
 		 				}else{
 		 					$(".inputValidar").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -118,17 +118,19 @@ $(document).ready(function(){
 		 			break;
 		 		case "Identificador":
 		 				if(bandera==1){
-		 					cargarContenido('view/interface/busquedaGestionDePago.php','Identificador='+identificador,'#contenidoBuscado');
+		 					cargarContenido('view/interface/busquedaConsultaPagos.php','Identificador='+identificador,'#contenidoBuscado');
 		 				}else{
 		 					if(bandera==0){
 		 						if($("#filtroBusquedaIde").val()==""){
 		 							$("#filtroBusquedaIde").addClass("cajamala" );
 		 						}else{
 		 							$("#filtroBusquedaIde").removeClass("cajamala" );
-		 							cargarContenido('view/interface/busquedaGestionDePago.php','Identificador='+$("#filtroBusquedaIde").val(),'#contenidoBuscado');	 					
-		 						}		 						
+		 							cargarContenido('view/interface/busquedaConsultaPagos.php','Identificador='+$("#filtroBusquedaIde").val(),'#contenidoBuscado');	 					
+		 						}
+		 						
 		 					}
-		 				}	
+		 				}
+
 		 			break;
 		 	}
 		 	

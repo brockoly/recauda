@@ -64,7 +64,7 @@ if ( $_SESSION['usuario'] == null ) {
 		<? //}?>
 			<li><a href="#"><i class="icon-search"></i>CONSULTA</a>
 				<ul class="sub-menu">				
-					<li class="change"><a href="#">PAGOS</a></li>
+					<li class="change"><a href="#" onclick="cargarContenido('view/interface/consultaPagos.php','','#contenidoCargado')">PAGOS</a></li>
 					<li class="change"><a href="#">BOLETA</a></li>					
 					<li class="change"><a href="#">PAGARÉ</a></li>
 					<li class="change"><a href="#">ARQUEO ESPONTANEO</a></li>
@@ -80,7 +80,6 @@ if ( $_SESSION['usuario'] == null ) {
 					</li>
 				</ul>
 			</li>
-			<li><a  href="#"><i class="icon-money"></i>COTIZACIÓN</a></li>
 			<? if($_SESSION['usuario'][0]['tipo_usuario'] == 'Administrador'){?>
 			<li><a href="#"><i class="icon-home"></i>MANTENEDORES</a>
 				<ul class="sub-menu">

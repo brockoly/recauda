@@ -35,7 +35,7 @@ $(document).ready(function(){
 				ventanaModal('./view/dialog/imprimirPSS.php','pss_id='+pss_id,'auto','auto','Imprimir Pss','modalImprimirPss');				
 			}
 			if($(this).hasClass('editPss')){
-				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id,'auto','auto','Edición de Pss','modalEditarPss');
+				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'auto','auto','Edición de Pss','modalEditarPss');
 			}
 			
 

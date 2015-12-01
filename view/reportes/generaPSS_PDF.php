@@ -60,7 +60,7 @@ $objPss->setPss($pss_id, '', '', '', '', '', '');
 $tipoProducto 	= $objTip->listarTipoProducto($objCon);
 $detallePSS 	= $objPss->verDetallePss($objCon);
 $cabeceraPSS 	= $objPss->cabeceraPSS($objCon);
-$pagos 			= $objPago->listarPagosPSS($objCon, $pss_id);
+$pagos 			= $objPago->listarPagosPSS($objCon, $pss_id,'');
 $objCon = null;
 /*print_r($cabeceraPSS);
 echo $detallePSS[$i][tip_prod_id];*/
@@ -221,7 +221,7 @@ DEFINE ('FTP_USER','recaudacion');
 DEFINE ('FTP_PASS','recaudacion');
 $path = date('Y')."/PSS/";
         $path = explode("/",$path);
-        $conn_id = @ftp_connect("192.168.2.103",21,1);
+        $conn_id = @ftp_connect("10.2.21.108",21,1);
         if(!$conn_id) {
             return false;
         }
@@ -241,7 +241,7 @@ $path = date('Y')."/PSS/";
             }
         }
         @ftp_close($conn_id);
-$ftp_server = "192.168.2.103";
+$ftp_server = "10.2.21.108";
 $conn_id = ftp_connect($ftp_server, 21,1) or die("N");
 $login_result = ftp_login($conn_id, "recaudacion", "recaudacion");
 ftp_put($conn_id, date('Y').'/PSS/'.'PSS_'.$pss_id.'.pdf', 'PSS_'.$pss_id.'.pdf', FTP_BINARY);
