@@ -140,24 +140,26 @@
 	 	$datos = array();
 		$i=0;
 	 	$sql ="SELECT
-				persona.per_id AS Identificador,
-				persona.per_nombre AS Nombre,
-				persona.per_apellidoPaterno AS Apellido_Paterno,
-				persona.per_apellidoMaterno AS Apellido_Materno,
-				persona.per_fechaNacimiento AS fecha_nac,
-				nacionalidad.nac_nombre AS Nacionalidad,
-				paciente.pre_id AS prevision_id,
-				paciente.ins_id AS inst_id,
-				nacionalidad_persona.nac_id,
-				persona.per_telefono,
-				paciente.pac_id,
-				persona.per_sexo,
-				persona.per_direccion
-				FROM
-				persona
-				INNER JOIN paciente ON persona.per_id = paciente.per_id
-				INNER JOIN nacionalidad_persona ON persona.per_id = nacionalidad_persona.per_id
-				INNER JOIN nacionalidad ON nacionalidad_persona.nac_id = nacionalidad.nac_id";
+			persona.per_id AS Identificador,
+			persona.per_nombre AS Nombre,
+			persona.per_apellidoPaterno AS Apellido_Paterno,
+			persona.per_apellidoMaterno AS Apellido_Materno,
+			persona.per_fechaNacimiento AS fecha_nac,
+			nacionalidad.nac_nombre AS Nacionalidad,
+			paciente.pre_id AS prevision_id,
+			paciente.ins_id AS inst_id,
+			nacionalidad_persona.nac_id,
+			persona.per_telefono,
+			paciente.pac_id,
+			persona.per_sexo,
+			persona.per_direccion,
+			prevision.pre_nombre
+			FROM
+			persona
+			INNER JOIN paciente ON persona.per_id = paciente.per_id
+			INNER JOIN nacionalidad_persona ON persona.per_id = nacionalidad_persona.per_id
+			INNER JOIN nacionalidad ON nacionalidad_persona.nac_id = nacionalidad.nac_id
+			INNER JOIN prevision ON paciente.pre_id = prevision.pre_id";
 		if(empty($per_id)==false){
 			$sql.=" WHERE persona.per_id = '$per_id'";
 		}else{ 
@@ -186,6 +188,7 @@
 				$datos[$i]['pac_id']=$v['pac_id'];
 				$datos[$i]['per_sexo']=$v['per_sexo'];
 				$datos[$i]['per_direccion']=$v['per_direccion'];
+				$datos[$i]['pre_nombre']=$v['pre_nombre'];
 				$i++;
 		}
 	 	return $datos;

@@ -1,20 +1,11 @@
 $(document).ready(function(){	
 	validar('txtId', 'id' ,'numero');
-	validar('campoValor', 'name' ,'numero')
+	validar('campoValor', 'class' ,'numero');
+	validar('campoNumero', 'class' ,'numero');
+	validar('campoDesc', 'class' ,'todo');
 	var a=0,b=0,c=0,d=0;
 	$('#trUnidadMedida').hide();
 	$('#btnAddProducto').button().click(function(){
-		var arrDatosPre=[];
-		var i = 0;
-		$('#tblUM :input').each(function() {
-			var res = $(this).attr('id');
-			var dat = res.split("_");
-			var prevision = dat[0];
-			var idPre = dat[1];
-			arrDatosPre[i] = idPre+'='+$(this).val()+'|'+prevision; 
-			i++;
-		});
-		//alert(arrDatosPre);
 		var pro_id = $('#txtId').val(); ;
 		var pro_nom = $('#txtDescripcion').val();
 		var tip_pro_id = $('#cmbTipoProducto').val();
@@ -23,7 +14,28 @@ $(document).ready(function(){
 		}else{
 			var uni_id = $('#cmbUnidadM').val();
 		}
-		//alert("a="+a+"b="+b+"c="+c+"d="+d);
+		if(a==1 && b==1 && c==1 && d==1){
+			var datosEnviar = [];
+			var i = 0;
+			var z=0;
+			$('#tblUM :input').each(function() {
+				var datos = [3];
+	            datos[0]=$(this).attr('id'); //pre_id
+	            datos[1]=$(this).attr('name'); //ins_id
+	            datos[2]=$(this).val(); //val_monto
+	            datosEnviar[z]=datos;
+	            z++;		
+			});
+			var res = validarProcesos('controller/server/controlador_producto.php','op=addProducto&pro_nom='+pro_nom+'&pro_id='+pro_id+'&tip_pro_id='+tip_pro_id+'&uni_id='+uni_id+'&datosEnviar='+datosEnviar);
+			if(res=='bien'){
+				mensajeUsuario('successMensaje','Éxito','Producto agregado exitosamente.');
+				cargarContenido('view/interface/busquedaProducto.php','','#contenidoCargado');
+				$('#modalAgregarProducto').dialog('destroy').remove();
+			}else{
+				alert(res);	
+			}
+			
+		}
 		$('#txtId').blur();
 		$('#txtDescripcion').blur();
 		$('#cmbTipoProducto').blur();
@@ -31,18 +43,6 @@ $(document).ready(function(){
 			var res = $(this).attr('id');
 			$('#'+res).blur();
 		});
-		if(a==1 && b==1 && c==1 && d==1){
-			var res = validarProcesos('controller/server/controlador_producto.php','op=addProducto'+'&datosPre='+arrDatosPre+'&pro_id='+pro_id+'&pro_nom='+pro_nom+'&tip_pro_id='+tip_pro_id+'&uni_id='+uni_id);
-			if(res=='bien'){
-				mensajeUsuario('successMensaje','Éxito','Producto agregado exitosamente.');
-				cargarContenido('view/interface/busquedaProducto.php','','#contenidoCargado');
-				$('#modalAgregarProducto').dialog('destroy').remove();
-			}else{
-				$('#txtId').blur();
-				$('#txtDescripcion').blur();
-				$('#cmbTipoProducto').blur();
-			}
-		}
 	});	
 	$('#cmbTipoProducto').change(function(){
 		if($("#cmbTipoProducto option:selected").val() == 0){

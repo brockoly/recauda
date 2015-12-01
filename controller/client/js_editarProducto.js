@@ -1,6 +1,7 @@
 $(document).ready(function(){	
 	validar('txtId', 'id' ,'numero');
-	validar('campoValor', 'name' ,'numero');
+	validar('campoValor', 'class' ,'numero');
+	validar('campoDesc', 'class' ,'todo')
 	$('#trUnidadMedida').hide();
 	var producto = $("#cmbTipoProducto option:selected").val();
 	var unidad = $('#uni_id').val();
@@ -12,17 +13,13 @@ $(document).ready(function(){
 	}
 	var a=0,b=0,c=0,d=0;
 	$('#btnAddProductoE').button().click(function(){
-		var arrDatosPre=[];
-		var i = 0;
+		$('#txtId').blur();
+		$('#txtDescripcion').blur();
+		$('#cmbTipoProducto').blur();
 		$('#tblUM :input').each(function() {
 			var res = $(this).attr('id');
-			var dat = res.split("_");
-			var prevision = dat[0];
-			var idPre = dat[1];
-			arrDatosPre[i] = idPre+'='+$(this).val()+'|'+prevision; 
-			i++;
+			$('#'+res).blur();
 		});
-		//alert(arrDatosPre);
 		var pro_id = $('#txtId').val(); ;
 		var pro_nom = $('#txtDescripcion').val();
 		var tip_pro_id = $('#cmbTipoProducto').val();
@@ -31,25 +28,28 @@ $(document).ready(function(){
 		}else{
 			var uni_id = $('#cmbUnidadM').val();
 		}
-		//alert("a="+a+"b="+b+"c="+c+"d="+d);
-		$('#txtId').blur();
-		$('#txtDescripcion').blur();
-		$('#cmbTipoProducto').blur();
-		$('#tblUM :input').each(function() {
-			var res = $(this).attr('id');
-			$('#'+res).blur();
-		});
+		//alert('a='+a+' b='+b+' c='+c+' d='+d);
 		if(a==1 && b==1 && c==1 && d==1){
-			var res = validarProcesos('controller/server/controlador_producto.php','op=editarProducto'+'&datosPre='+arrDatosPre+'&pro_id='+pro_id+'&pro_nom='+pro_nom+'&tip_pro_id='+tip_pro_id+'&uni_id='+uni_id);
+			var datosEnviar = [];
+			var i = 0;
+			var z=0;
+			$('#tblUM :input').each(function() {
+				var datos = [3];
+	            datos[0]=$(this).attr('id'); //pre_id
+	            datos[1]=$(this).attr('name'); //ins_id
+	            datos[2]=$(this).val(); //val_monto
+	            datosEnviar[z]=datos;
+	            z++;		
+			});
+			var res = validarProcesos('controller/server/controlador_producto.php','op=editarProducto&pro_nom='+pro_nom+'&pro_id='+pro_id+'&tip_pro_id='+tip_pro_id+'&uni_id='+uni_id+'&datosEnviar='+datosEnviar);
+			//alert(res);
 			if(res=='bien'){
 				mensajeUsuario('successMensaje','Éxito','Producto editado exitosamente.');
 				cargarContenido('view/interface/busquedaProducto.php','','#contenidoCargado');
 				$('#modalEditarProducto').dialog('destroy').remove();
 			}else{
-				$('#txtId').blur();
-				$('#txtDescripcion').blur();
-				$('#cmbTipoProducto').blur();
-			}
+				alert(res);	
+			}			
 		}
 	});	
 	var i = 0;

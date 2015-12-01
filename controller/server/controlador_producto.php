@@ -8,31 +8,27 @@
 
 	switch($_POST['op']) {
 		case "addProducto":		
-			$datos = explode(',', $_POST['datosPre']);
-			$datos2 = array();
-			for($i=0; $i<count($datos);$i++){
-				$datos2[$i] = explode('=',$datos[$i]);
-			}
-			$datos3 = array();
-			for($i=0; $i<count($datos2);$i++){
-				$datos3[$i] = explode('|',$datos2[$i][1]);
-			}
-			$arrDatos = array();
-			$cont=0;
-			for($i=0; $i<count($datos3); $i++){
-				$arrDatos[$cont]['id']=$datos2[$i][0];
-				$arrDatos[$cont]['prevision']=$datos3[$i][1];
-				$arrDatos[$cont]['valor']=$datos3[$i][0];
+			$objCon->db_connect();
+			$datos = $_POST['datosEnviar'];
+			$datos = explode(',',$datos);
+			
+			$nuevoArr = array();
+			$cont = 0;
+			for($i=0;$i<count($datos);$i++){
+				$nuevoArr[$cont]['pre_id'] = $datos[$i]; 
+				$nuevoArr[$cont]['ins_id'] = $datos[$i+1];
+				$nuevoArr[$cont]['val_monto'] = $datos[$i+2];
+				$i=$i+2;
 				$cont++;
 			}
-			$objCon->db_connect();
 			try{
 		 		$objCon->beginTransaction();
 		 		$objPro->setProducto($_POST['pro_id'],$_POST['pro_nom'],'0');
 				$objPro->agregarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
-				for($i=0; $i<count($arrDatos);$i++){
-					$objValores->setValores($arrDatos[$i]['id'],$arrDatos[$i]['prevision'],$arrDatos[$i]['valor']);
-					$objValores->agregarValores($objCon, $_POST['pro_id'], $arrDatos[$i]['id']);
+				for($i=0; $i<count($nuevoArr);$i++){
+					$val_id = $objValores->buscarMaximoId($objCon);
+					$objValores->setValores($val_id,$nuevoArr[$i]['val_monto']);
+					$objValores->agregarValores($objCon, $_POST['pro_id'], $nuevoArr[$i]['pre_id'], $nuevoArr[$i]['ins_id']);	
 				}
 		 		$objCon->commit();	
 		 		echo 'bien';					 		
@@ -67,38 +63,34 @@
 					$e->getMessage();
 			}
 		break;
-		case "editarProducto":		
-			$datos = explode(',', $_POST['datosPre']);
-			$datos2 = array();
-			for($i=0; $i<count($datos);$i++){
-				$datos2[$i] = explode('=',$datos[$i]);
-			}
-			$datos3 = array();
-			for($i=0; $i<count($datos2);$i++){
-				$datos3[$i] = explode('|',$datos2[$i][1]);
-			}
-			$arrDatos = array();
-			$cont=0;
-			for($i=0; $i<count($datos3); $i++){
-				$arrDatos[$cont]['id']=$datos2[$i][0];
-				$arrDatos[$cont]['prevision']=$datos3[$i][1];
-				$arrDatos[$cont]['valor']=$datos3[$i][0];
+		case "editarProducto":
+			$objCon->db_connect();
+			$datos = $_POST['datosEnviar'];
+			$datos = explode(',',$datos);
+			
+			$nuevoArr = array();
+			$cont = 0;
+			for($i=0;$i<count($datos);$i++){
+				$nuevoArr[$cont]['pre_id'] = $datos[$i]; 
+				$nuevoArr[$cont]['ins_id'] = $datos[$i+1];
+				$nuevoArr[$cont]['val_monto'] = $datos[$i+2];
+				$i=$i+2;
 				$cont++;
 			}
-			$objCon->db_connect();
 			try{
 		 		$objCon->beginTransaction();
 		 		$objPro->setProducto($_POST['pro_id'],$_POST['pro_nom'],'0');
 				$objPro->editarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
-				for($i=0; $i<count($arrDatos);$i++){
-					$objValores->setValores($arrDatos[$i]['id'],$arrDatos[$i]['prevision'],$arrDatos[$i]['valor']);
-					$valores = $objValores->buscarValoresProducto($objCon, $_POST['pro_id']);
-					if($valores[$i]['val_id']!=$arrDatos[$i]['id']){
-						$objValores->agregarValores($objCon, $_POST['pro_id'], $arrDatos[$i]['id']);
+				for($i=0; $i<count($nuevoArr);$i++){
+					$val_id = $objValores->buscarMaximoId($objCon);
+					$objValores->setValores($val_id,$nuevoArr[$i]['val_monto']);
+					$valores = $objValores->buscarValoresProducto($objCon, $_POST['pro_id'], $nuevoArr[$i]['pre_id'],$nuevoArr[$i]['ins_id']);
+					if($valores[0]==''){
+						$objValores->agregarValores($objCon, $_POST['pro_id'], $nuevoArr[$i]['pre_id'], $nuevoArr[$i]['ins_id']);
 					}else{
-						$objValores->editarValores($objCon, $_POST['pro_id'], $arrDatos[$i]['id']);
-					}					
-				}	
+						$objValores->editarValores($objCon, $_POST['pro_id'], $nuevoArr[$i]['pre_id'], $nuevoArr[$i]['ins_id']);
+					}
+				}
 		 		$objCon->commit();	
 		 		echo 'bien';					 		
 			}catch (PDOException $e){

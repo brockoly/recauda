@@ -110,6 +110,28 @@
 			}
 			return $datos;
 		}
+		function listarPrevisionInstitucion($objCon){
+
+			$sql="SELECT
+				institucion.ins_nombre,
+				prevision.pre_nombre,
+				institucion.ins_id,
+				prevision.pre_id
+				FROM
+				institucion_prevision
+				INNER JOIN prevision ON institucion_prevision.pre_id = prevision.pre_id
+				INNER JOIN institucion ON institucion.ins_id = institucion_prevision.ins_id";
+			$datos = array();
+			$i=0;
+			foreach ($objCon->consultaSQL($sql, 'ERROR obtenerPrevisiones') as $v) {
+				$datos[$i]['ins_nombre']=$v['ins_nombre'];
+				$datos[$i]['pre_nombre']=$v['pre_nombre'];
+				$datos[$i]['ins_id']=$v['ins_id'];
+				$datos[$i]['pre_id']=$v['pre_id'];
+				$i++;
+			}
+			return $datos;
+		}
 		function buscaPrevision($objCon){//
 
 		 	$sql="SELECT pre_nombre
