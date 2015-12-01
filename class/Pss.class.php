@@ -10,17 +10,17 @@ class Pss{
 	   private $pss_insId;
 
 		function setPss($pss_id, $pss_fecha, $pss_hora, $pss_saldo, $pss_estado, $pss_prevId, $pss_insId){
-		    $this->pss_id=$pss_id;
-		    $this->pss_fecha=$pss_fecha;
-		    $this->pss_hora=$pss_hora;
-		    $this->pss_saldo=$pss_saldo;
-		    $this->pss_estado=$pss_estado;
-		    $this->pss_prevId=$pss_prevId;
-		    $this->pss_insId=$pss_insId;
+		    $this->pss_id=trim($pss_id);
+		    $this->pss_fecha=trim($pss_fecha);
+		    $this->pss_hora=trim($pss_hora);
+		    $this->pss_saldo=trim($pss_saldo);
+		    $this->pss_estado=trim($pss_estado);
+		    $this->pss_prevId=trim($pss_prevId);
+		    $this->pss_insId=trim($pss_insId);
 		}
 
 		function setPss_estado($pss_estado){
-			$this->pss_estado=$pss_estado;
+			$this->pss_estado=trim($pss_estado);
 		}
 
 		function setPss_id($pss_id){

@@ -161,6 +161,10 @@ function verificaEntero(idPro){
         }else{
             if($("#cantProducto"+idPro).val()==""){
                 $("#cantProducto"+idPro).val("1");
+            }else{
+                 if($("#cantProducto"+idPro).val()=="0"){
+                    $("#cantProducto"+idPro).val("1");
+                 }
             }
         }         
 }

@@ -5,8 +5,8 @@
 		private $pre_nombre;
 
 		function setPrevision($pre_id,$pre_nombre){
-			$this->pre_id=$pre_id;
-			$this->pre_nombre=$pre_nombre;
+			$this->pre_id=trim($pre_id);
+			$this->pre_nombre=trim($pre_nombre);
 		}
 		function actualizarPrevision($conexion){
 

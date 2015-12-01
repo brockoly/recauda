@@ -16,9 +16,9 @@
 	$previsiones = $objPrev->obtenerPrevisiones($objCon);
 	$instituciones = $objIns->obtenerInstituciones($objCon);
 	$objCon=null;
-	$fecha = date("d-m-Y");
+	$fecha = date("d")."/".date("m")."/".date("Y");
 ?>
-<script type="text/javascript">calendario('txtFechaNacimientos', '<?=$fecha?>')</script>
+<script type="text/javascript">calendario('txtFechaNac', '<?=$fecha?>')</script>
 <script type="text/javascript" src="controller/client/js_editarPaciente.js"></script>
 <center>
 <form id="frmDatosPaciente">
@@ -46,10 +46,10 @@
 				</tr>
 				<tr>
 					<td>Fecha Nac. *</td>
-					<td>&nbsp;&nbsp;&nbsp;<input type="text" readonly="true" id="txtFechaNac"  name="txtFechaNac" value="<?=$objUtil->cambiarfecha_mysql_a_normal($datos[0]['fecha_nac'])?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
+					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtFechaNac" readonly="true" name="txtFechaNac" value="<?=$objUtil->cambiarfecha_mysql_a_normal($datos[0]['fecha_nac'])?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
 				</tr>
 				<tr>
-					<td>Telefono *</td>
+					<td>Telefono </td>
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtTelefono"  name="txtTelefono" value="<?=$datos[0]['per_telefono']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
 				</tr>
 		<tr>

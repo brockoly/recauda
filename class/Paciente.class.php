@@ -19,10 +19,10 @@
 
 	 function actualizarPaciente($objCon, $pre_id, $per_id, $ins_id){
 	 	$sql ="UPDATE paciente 
-	 			SET pre_id = '$pre_id', 
+	 		   SET pre_id = '$pre_id', 
 		 			per_id = '$per_id', 
 		 			ins_id = '$ins_id'
-	 			WHERE per_id = '$per_id'";		
+	 		   WHERE per_id = '$per_id'";		
 		$rs = $objCon->ejecutarSQL($sql, 'ERROR actualizarPaciente');
 	 	return $rs;
 	 }	
@@ -124,15 +124,15 @@
 	}
 	 function nuevoPac_id($objCon){
 	 	$sql="SELECT
-			COUNT(paciente.pac_id)+1 AS MAX
-			FROM
-			paciente";
-		foreach ($objCon->consultaSQL($sql,'ERROR nuevoPac_id') as $v) {
-	 		if($v['MAX']==""){
-	 			$datos = 1;	
-	 		}else{ $datos = $v['MAX'];}
-	 		
-	 	}
+				COUNT(paciente.pac_id)+1 AS MAX
+				FROM
+				paciente";
+				foreach ($objCon->consultaSQL($sql,'ERROR nuevoPac_id') as $v) {
+			 		if($v['MAX']==""){
+			 			$datos = 1;	
+			 		}else{ $datos = $v['MAX'];}
+			 		
+			 	}
 	 	return $datos;
 	 }
 
@@ -164,7 +164,7 @@
 			$sql.=" WHERE persona.per_id = '$per_id'";
 		}else{ 
 			if(empty($pac_nombre)==false){ 
-				$sql.=" WHERE CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ', per_apellidoMaterno) LIKE REPLACE('%$pac_nombre%', ' ', '%')";
+				$sql.=" WHERE CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ', per_apellidoMaterno) LIKE REPLACE('%".trim($pac_nombre)."%', ' ', '%')";
 			}else{
 				if(empty($cue_id)==false){
 					$sql.=" WHERE paciente.pac_id IN (SELECT cuenta_corriente.pac_id FROM cuenta_corriente WHERE cue_id = $cue_id)";

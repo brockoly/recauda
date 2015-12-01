@@ -67,7 +67,7 @@
 				</tr>
 				<tr>
 					<td>Fecha Nacimiento *</td>
-					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtFechaNacimientos" name="txtFechaNacimiento"/>&nbsp;&nbsp;<img src="./include/img/eraser.png" id="goma" style="cursor:pointer;"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errFechaNacimiento" hidden="true"/></td>
+					<td>&nbsp;&nbsp;&nbsp;<input type="text" readonly="true" id="txtFechaNacimientos" name="txtFechaNacimiento"/>&nbsp;&nbsp;<img src="./include/img/eraser.png" id="goma" style="cursor:pointer;"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errFechaNacimiento" hidden="true"/></td>
 				</tr>
 				<tr>
 					<td>Telefono</td>

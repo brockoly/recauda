@@ -7,7 +7,7 @@ class Privilegio{
 
 	 function setPrivilegio($id, $nombre){
 	 		$this->pri_id=$id;
-	 		$this->pri_descripcion=$nombre;
+	 		$this->pri_descripcion=trim($nombre);
 	 }
 	 function getPri_id(){
 	 		return($this->pri_id);

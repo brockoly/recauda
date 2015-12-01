@@ -8,6 +8,7 @@ $(document).ready(function(){
 	validar('txtApellidoPaterno', 'id' ,'letras');
 	validar('txtApellidoMaterno', 'id' ,'letras');
 	validar('txtTelefono', 'id' ,'numero');
+	validar('txtDireccion', 'id' ,'todo');
     
 	//BOTON AGREGAR USUARIO
 
@@ -208,24 +209,27 @@ $(document).ready(function(){
 				o=0;			
 			}else{
 				rut=$.Rut.quitarFormato($("#txtIdentificador").val());				
-				var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut); 
-				
+				var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut);
+
 				if(resUsu2.length>2){
 					pacEx=1;
 					c=1;
 					d=1;
 					e=1;
 					g=1;
-					var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut));												
-					$('#txtNombre').val(arrExistente.per_nombre);
-					$('#txtApellidoPaterno').val(arrExistente.per_apellidoPaterno);
-					$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
-					$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
-					$('#txtTelefono').val(arrExistente.per_telefono);
-					if(arrExistente.per_sexo=='m'){
-						$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
-					}					
-					$('#txtDireccion').val(arrExistente.per_direccion);
+					var resUsu3 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut);
+					if(resUsu3.length<2){
+						var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut));												
+						$('#txtNombre').val(arrExistente.per_nombre);
+						$('#txtApellidoPaterno').val(arrExistente.per_apellidoPaterno);
+						$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
+						$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
+						$('#txtTelefono').val(arrExistente.per_telefono);
+						if(arrExistente.per_sexo=='m'){
+							$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
+						}					
+						$('#txtDireccion').val(arrExistente.per_direccion);
+					}
 				}else{
 					pacEx=0;
 				}
