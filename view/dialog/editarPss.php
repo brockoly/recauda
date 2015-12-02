@@ -72,11 +72,11 @@
                         	for($p=0; $p<count($productos_PSS); $p++){
                         		if($tipoProducto[$i]['tip_prod_id']==$productos_PSS[$p]['tip_prod_id']){
 						?>	
-								<tr id='eliminarPro<?=$productos_PSS[$p]['pro_id']?>'>
-			                        <td align="center" class="cuerpoDatosTablas"><?=$productos_PSS[$p]['pro_id']?></td>
-				                    <td class="cuerpoDatosTablas" align="center"><?=$productos_PSS[$p]['pro_nom']?></td>
-				                    <td class="cuerpoDatosTablas" align="center" width="10%"><input  class="proCantAgregar" type="text" style="width:60px" id="cantProducto<?=$productos_PSS[$p]['pro_id']?>" onblur="verificaEntero(<?=$productos_PSS[$p]['pro_id']?>)"  value="<?=$productos_PSS[$p]['det_proCantidad']?>" /></td><td width="3%">&nbsp&nbsp<img class="eliminarFila<?=$productos_PSS[$p]['pro_id']?> bd" onclick="eliminarFila(<?=$productos_PSS[$p]['pro_id']?>)" src="./include/img/delete.png" width="16" height="16" id="<?=$productos_PSS[$p]['pro_id']?>"/></td>
-			                    </tr>
+							                <tr id='eliminarPro<?=$productos_PSS[$p]['pro_id']?>'>
+		                             <td align="center" class="cuerpoDatosTablas"><?=$productos_PSS[$p]['pro_id']?></td>
+				                         <td class="cuerpoDatosTablas" align="center"><?=$productos_PSS[$p]['pro_nom']?></td>
+				                         <td class="cuerpoDatosTablas" align="center" width="10%"><input  class="proCantAgregar" type="text" style="width:60px" id="cantProducto<?=$productos_PSS[$p]['pro_id']?>" onblur="verificaEntero(<?=$productos_PSS[$p]['pro_id']?>)"  value="<?=$productos_PSS[$p]['det_proCantidad']?>" /></td><td width="3%">&nbsp&nbsp<img class="eliminarFila<?=$productos_PSS[$p]['pro_id']?> bd" onclick="eliminarFila(<?=$productos_PSS[$p]['pro_id']?>)" src="./include/img/delete.png" width="16" height="16" id="<?=$productos_PSS[$p]['pro_id']?>"/></td>
+		                          </tr>
                         <?  }}}?> 
                     </table>
                   </center>

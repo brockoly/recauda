@@ -70,7 +70,8 @@ class Tipo_Producto{
 			tipo_producto.tip_prod_id,
 			tipo_producto.tip_descripcion
 			FROM tipo_producto
-			WHERE tipo_producto.tip_pro_estado='0'";
+			WHERE tipo_producto.tip_pro_estado='0'
+			ORDER BY tipo_producto.tip_descripcion ASC";
 	 	$datos = array();
 			$i=0;
 			foreach ($objCon->consultaSQL($sql, 'ERROR listarTipoProducto') as $v) {

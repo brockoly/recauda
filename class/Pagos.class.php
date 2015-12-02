@@ -19,11 +19,16 @@ class Pagos{
 				boleta.bol_tipo,
 				boleta.bol_id,
 				boleta.bol_hora,
-				boleta.usu_nombre
+				boleta.usu_nombre,				
+				CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ',persona.per_apellidoMaterno) AS 'nombre'
 			 FROM
 				pagos
 			 INNER JOIN boleta ON pagos.pag_id = boleta.pag_id
-			 INNER JOIN tipo_pago ON pagos.tip_pag_id = tipo_pago.tip_pag_id";
+			 INNER JOIN tipo_pago ON pagos.tip_pag_id = tipo_pago.tip_pag_id
+			 INNER JOIN usuario ON usuario.usu_nombre = boleta.usu_nombre
+			 INNER JOIN persona ON persona.per_id = usuario.per_id
+			 ";
+
 
 			if(empty($bol_id)==false){
 				$sql.=" WHERE boleta.bol_id = '$bol_id'";
@@ -45,6 +50,7 @@ class Pagos{
 				$datos[$i][bol_hora]=$v['bol_hora'];
 				$datos[$i][bol_tipo]=$v['bol_tipo'];
 				$datos[$i][usu_nombre]=$v['usu_nombre'];
+				$datos[$i][nombre]=$v['nombre'];
 				$i++;
 		    }
 		return $datos;

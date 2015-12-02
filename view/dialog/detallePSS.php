@@ -14,6 +14,12 @@
   $tipoProducto=  $objTip_pro->listarTipoProducto($objCon);
   $detallePSS   = $objPss->verDetallePss($objCon);
   $objCon=null;
+
+
+  $arrTiposPSS = Array();
+  for($i=0; $i<count($detallePSS);$i++){
+      $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
+  }
 ?>
 <script type="text/javascript" src="controller/client/js_editarPss.js"></script>
 <fieldset class="cabezeraDatos"><legend class="cuerpoDatos">Datos Paciente</legend>
@@ -34,10 +40,9 @@
   $total_programa = 0;
   if(count($detallePSS)>0){
      for ($i=0; $i<count($tipoProducto); $i++) {
-      for($a=0; $a<count($detallePSS); $a++){
-        if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){
-          $subtotal = 0;
-    ?>
+      if(in_array($tipoProducto[$i]['tip_prod_id'], $arrTiposPSS)){ 
+
+?>
       <center>
         <h3><?=strtoupper($tipoProducto[$i][tip_descripcion]);?></h3>
         <table width="95%" border="0">
@@ -48,6 +53,12 @@
             <td align="right" width="15%">V. UNITARIO</td>
             <td align="right" width="15%">V. TOTAL</td>
           </tr>
+      <? $subtotal = 0;
+
+
+      for($a=0; $a<count($detallePSS); $a++){
+        if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){          
+    ?>
           <tr>
             <td><?=$detallePSS[$a][pro_id];?></td>
             <td><?=$detallePSS[$a][pro_nom];?></td>
@@ -55,9 +66,9 @@
             <td align="center"><?=$detallePSS[$a][det_proUnitario];?></td>
             <td align="right"><?=$detallePSS[$a][total];?></td>
           </tr>
-
           <? $subtotal += $detallePSS[$a][total];
-               $total_programa += $subtotal;
+        }
+      }$total_programa += $subtotal;
            ?>
           <tr>
             <td align="right" colspan="4"><b>SUBTOTAL</b></td>
@@ -69,7 +80,7 @@
         <?
         }
       }
-    }
+    
   ?>
 <center>
   <table width="95%">

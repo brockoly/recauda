@@ -49,4 +49,4 @@ for($a=0; $a<count($datosDetallePss); $a++){
 	echo "<br>";
 }*/
 ?>
-<iframe id="pss" width="800" height="500" src="<?=$url?>"></iframe>
+<iframe id="pss" width="340" height="780" src="<?=$url?>"></iframe>

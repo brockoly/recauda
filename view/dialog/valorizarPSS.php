@@ -76,10 +76,12 @@
   <br>
   <?
   $total_programa = 0;
-  if(count($detallePSS)>0){
-     for ($i=0; $i<count($tipoProducto); $i++) {
-      if($arrTiposPSS[$i]==$tipoProducto[$i]['tip_prod_id']){ ?>
+  if(count($detallePSS)>0){ //verifica si hay productos que listar
+     for ($i=0; $i<count($tipoProducto); $i++) {//ciclo para recorrer los tipos de productos
 
+      if(in_array($tipoProducto[$i]['tip_prod_id'], $arrTiposPSS)){ 
+        ?>
+    
       <center>
       <table width="95%" id="tblValorizacion" border="0">
         <h3><?=strtoupper($tipoProducto[$i][tip_descripcion]);?></h3>
@@ -91,6 +93,8 @@
             <td align="right" width="15%">V. TOTAL</td>
         </tr>
       <?$subtotal = 0;
+
+      
       for($a=0; $a<count($detallePSS); $a++){
         if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){          
       ?>

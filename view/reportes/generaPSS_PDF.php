@@ -42,6 +42,7 @@ $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->setLanguageArray($l);
 $pdf->setFontSubsetting(true);
 $pdf->SetFont('helvetica', '', 8, '', true);
+//$pdf->setPrintFooter(false); //oculta el footer de pagina 1 de 2 bla bla bla...
 //CREA UNA PAGINA
 $pdf->AddPage();
 //RECEPCION VARIABLE
@@ -62,6 +63,11 @@ $detallePSS 	= $objPss->verDetallePss($objCon);
 $cabeceraPSS 	= $objPss->cabeceraPSS($objCon);
 $pagos 			= $objPago->listarPagosPSS($objCon, $pss_id,'');
 $objCon = null;
+
+$arrTiposPSS = Array();
+  for($i=0; $i<count($detallePSS);$i++){
+      $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
+  }
 /*print_r($cabeceraPSS);
 echo $detallePSS[$i][tip_prod_id];*/
 
@@ -125,9 +131,8 @@ $html = '
 		</td>
 	</tr>';
 	$total_programa = 0;
-	for ($i=0; $i<count($tipoProducto); $i++) {
-		for($a=0; $a<count($detallePSS); $a++){
-			if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){
+     for ($i=0; $i<count($tipoProducto); $i++) {
+      if(in_array($tipoProducto[$i]['tip_prod_id'], $arrTiposPSS)){ 
 				$html .='
 				<tr>
 					<td colspan="3"><br><br></td>
@@ -145,7 +150,9 @@ $html = '
 								<td style="border-bottom-width:1px;" align="right" width="15%">V. UNITARIO</td>
 								<td style="border-bottom-width:1px;" align="right" width="15%">V. TOTAL</td>
 							</tr>';
-			
+							$subtotal=0;
+			for($a=0; $a<count($detallePSS); $a++){
+        		if($detallePSS[$a][tip_prod_id]==$tipoProducto[$i][tip_prod_id]){
 					$html .='<tr>
 								<td>'.$detallePSS[$a][pro_id].'</td>
 								<td>'.$detallePSS[$a][pro_nom].'</td>
@@ -155,8 +162,10 @@ $html = '
 							</tr>';
 				
 					$subtotal += $detallePSS[$a][total];
+				}
+			}$total_programa+=$subtotal;
 					$html .='<tr>
-								<td style="border-top-width:1px;" align="right" colspan="6"><b>SUBTOTAL</b></td>
+								<td style="border-top-width:1px;" align="right" colspan="4"><b>SUBTOTAL</b></td>
 								<td style="border-top-width:1px;" align="right">'.$subtotal.'</td>
 							</tr>
 							</table>
@@ -164,7 +173,7 @@ $html = '
 				</tr>';
 			}
 		}
-	}
+	
 $total_programa += $subtotal;
 
 $html .='<tr>

@@ -226,8 +226,10 @@ class Pss{
 				detalleproducto
 				INNER JOIN productos ON detalleproducto.pro_id = productos.pro_id
 				INNER JOIN tipo_producto ON productos.tip_prod_id = tipo_producto.tip_prod_id
-				WHERE detalleproducto.pss_id = '$this->pss_id'";		
-				
+				WHERE detalleproducto.pss_id = '$this->pss_id'
+				ORDER BY 	tipo_producto.tip_descripcion ASC,
+							detalleproducto.det_proUnitario ASC";
+							
 		 	foreach($objCon->consultaSQL($sql, 'ERROR verDetallePss') as $v) {
 		 		$datos[$i]['pro_id']=$v['pro_id'];
 		 		$datos[$i]['pro_nom']=$v['pro_nom'];
@@ -282,5 +284,14 @@ class Pss{
 			}
 		 	return $datos;
 		}
+
+		function actualizarSaldo($objCon, $pss_id, $pss_saldo){
+			$sql="UPDATE pss
+				  SET pss.pss_saldo=$pss_saldo
+				  WHERE pss_id=$pss_id";
+			$rs=$objCon->ejecutarSQL($sql,'ERROR AL actualizarSaldoPss');
+		 	return $rs;
+		}
+
 }
 ?>

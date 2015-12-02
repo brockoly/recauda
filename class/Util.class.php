@@ -81,5 +81,9 @@
 				$anio_dif--;
 			return $anio_dif;
 		}
+		function formatDinero($monto){
+			$montoFormat=number_format($monto,0);
+  			return str_replace(',', '.', $montoFormat);
+		}
 	}
 ?>
