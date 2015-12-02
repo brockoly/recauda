@@ -10,39 +10,48 @@
 				case "editar":
 						$objPre->setPrevision($_POST['txtIdPre'], $_POST['txtPrevision']);					
 						$objCon->db_connect();
-						$usuAux=$objPre->buscaPrevision($objCon);
-						
-						if($usuAux!=""){
-							echo "Este nombre ya existe en la base de datos";
-						}else{
-
-							try{
-							 		$objCon->beginTransaction();
-							 		$objPre->modificarPrevision($objCon);
-							 		$objCon->commit();						 		
-							}catch (PDOException $e){
-								 			$objCon->rollBack(); 
-								 			$e->getMessage();
+						$prevision=$objPre->buscaPrevision($objCon, 1);
+						$bandera=-1;
+						if($prevision=="Existe con id"){
+							 $bandera=0;									
+						}else{  
+							if($prevision=="Existe sin id"){
+								$bandera=1;
+							}else{
+								$bandera=0;
 							}
+						}
+						
+						if($bandera==0){
+							try{
+						 		$objCon->beginTransaction();
+						 		$objPre->modificarPrevision($objCon);
+						 		$objCon->commit();						 		
+							}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			$e->getMessage();
+							}
+						}else{
+							echo "Este nombre ya existe en la base de datos";
 						}
 				break;
 
 				case "agregar":
-						$objPre->setPrevision($_POST['txtIdPre'], $_POST['txtPrevision']);					
+						$objPre->setPrevision( '', $_POST['txtPrevision']);					
 						$objCon->db_connect();
-						$usuAux=$objPre->buscaPrevision($objCon);
+						$prevision=$objPre->buscaPrevision($objCon, 2);
 						
-						if($usuAux!=""){
+						if($prevision!=""){
 							echo "Este nombre ya existe en la base de datos";
 						}else{
 
 							try{
-							 		$objCon->beginTransaction();
-							 		$objPre->insertarPrevision($objCon);
-							 		$objCon->commit();						 		
+						 		$objCon->beginTransaction();
+						 		$objPre->insertarPrevision($objCon);
+						 		$objCon->commit();						 		
 							}catch (PDOException $e){
-								 			$objCon->rollBack(); 
-								 			$e->getMessage();
+					 			$objCon->rollBack(); 
+					 			$e->getMessage();
 							}
 						}
 				break;

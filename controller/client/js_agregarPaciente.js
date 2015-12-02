@@ -137,15 +137,16 @@ $(document).ready(function(){
 			$('#tdRut').remove();
 			$('<td id="tdIdentificador">&nbsp;&nbsp;&nbsp;<input type="text" id="txtIdentificador" name="txtIdentificador" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
 			$('#txtIdentificador').blur(function(){
-			if( $(this).val()==""){
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errRut','Rellene los campos');
-				a=0;			
-			}else{		
-				$(this).removeClass("cajamala" );
-				id = $('#txtIdentificador').val();
-				a=1;
-			}
+				if( $(this).val().trim()==""){
+					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+					muestraError('errRut','Rellene los campos');
+					a=0;			
+				}else{		
+					$(this).removeClass("cajamala" );
+					id = $('#txtIdentificador').val();
+					a=1;
+				}
+				$(this).val($(this).val().trim());
 			});
 			$('#txtIdentificador').focus(function(){
 				$(this).removeClass("cajabuena cajamala");	
@@ -194,55 +195,59 @@ $(document).ready(function(){
 		}
 	});
 	$("#txtNombres").blur(function(){
-		if( $(this).val()==""){
+		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errNombres','Rellene los campos');
 			b=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<35){					
 				$(this).removeClass("cajamala" );
 				b=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errNombres','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errNombres','Mínimo 2 caracteres, Máximo 35 caracteres');
 				b=0;
 			}
 		}
+		$(this).val($(this).val().trim());
 	});
 	$("#txtApellidoPat").blur(function(){
-		if( $(this).val()==""){
+		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoPat','Rellene los campos');
 			c=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<35){					
 				$(this).removeClass("cajamala" );
 				c=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errApellidoPat','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errApellidoPat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				c=0;
 			}
 		}
+		$(this).val($(this).val().trim());
 	});
+
 	$("#txtApellidoMat").blur(function(){
-		if( $(this).val()==""){
+		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoMat','Rellene los campos');
 			d=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<35){					
 				$(this).removeClass("cajamala" );
 				d=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errApellidoMat','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errApellidoMat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				d=0;
 			}
 		}
+		$(this).val($(this).val().trim());
 	});
 	$("#txtDireccion").blur(function(){
-			if( $(this).val()==""){
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errDireccion','Rellene los campos');
 				h=0;			
@@ -250,6 +255,7 @@ $(document).ready(function(){
 				$(this).removeClass("cajamala" );
 				h=1;
 			}
+			$(this).val($(this).val().trim());
 	});
 	/*VALIDACIONES ONFOCUS ------------------------------*/
 	$("#txtNombres").focus(function(){

@@ -125,7 +125,7 @@ class Usuario{
 	function desplegarUsuarios($objCon,$opcion){ 
 	 	$datos = array();
 		$i=0;
-		$sql =" SELECT 
+		$sql =" SELECT
 					usuario.usu_nombre,
 					usuario.per_id,
 					usuario.usu_correo,
@@ -133,10 +133,12 @@ class Usuario{
 					persona.per_apellidoPaterno,
 					persona.per_apellidoMaterno,
 					persona.per_telefono,
-					persona.per_direccion
+					persona.per_direccion,
+					privilegios.pri_descripcion
 				FROM
-					usuario
-				LEFT JOIN persona ON usuario.per_id = persona.per_id";
+				usuario
+				LEFT JOIN persona ON usuario.per_id = persona.per_id
+				INNER JOIN privilegios ON usuario.pri_id = privilegios.pri_id";
 	 	if($opcion==1){
 	 		$sql.=" WHERE usuario.usu_estado=1";	//DESACTIVADOS		 	
 	 	}else{
@@ -145,6 +147,7 @@ class Usuario{
 
 	 	foreach($objCon->consultaSQL($sql, 'ERROR desplegarUsuarios') as $v) {
 				$datos[$i]['usuario']=$v['usu_nombre'];
+				$datos[$i]['privilegio']=$v['pri_descripcion'];
 				$datos[$i]['rut']=$v['per_id'];
 				$datos[$i]['nombre']=$v['per_nombre'];
 				$datos[$i]['apellidoPaterno']=$v['per_apellidoPaterno'];

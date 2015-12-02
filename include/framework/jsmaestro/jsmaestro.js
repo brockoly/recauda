@@ -482,7 +482,10 @@ function validar(id, atributo,tipo){
 			case 'correo' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 								break;
 		}
-
+		$('[name="'+id+'"]').bind('copy paste cut', function (e) {
+		        e.preventDefault();
+		        return false;
+		});
 	}else{
 		if(atributo=='id'){
 			switch(tipo){
@@ -499,6 +502,10 @@ function validar(id, atributo,tipo){
 				case 'correo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 									break;
 			}
+			$('#'+id).bind('copy paste cut', function (e) {
+		        e.preventDefault();
+		        return false;
+		    });
 		}
 		if(atributo=='class'){
 			switch(tipo){
@@ -515,6 +522,10 @@ function validar(id, atributo,tipo){
 				case 'correo' 	: 	$('.'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 									break;
 			}
+			$('.'+id).bind('copy paste cut', function (e) {
+		        e.preventDefault();
+		        return false;
+		    });
 		}
 	}
 	

@@ -41,6 +41,7 @@ $fecha = "01/01/".(date("Y")-18);
 					</td>
 				</tr>
 				<tr>
+					<?php if($datos[0]['usuario']!=$_SESSION['usuario'][1]['nombre_usuario']){ ?>
 					<td>Privilegio *</td>
 					<td>&nbsp;&nbsp;
 						<select id="cmbPrivilegios" name="cmbPrivilegios">
@@ -51,6 +52,7 @@ $fecha = "01/01/".(date("Y")-18);
 						</select>
 						<img src="./include/img/information.png" id="errPrivilegio" hidden="true"/>
 					</td>
+					<?php }else{ ?> <input type="hidden" id="txtCorreo" name="cmbPrivilegios" value="<?=$datos[0]['privilegio']?>"> <? }?>
 				</tr>				
 		</table>
 		<br>
@@ -87,5 +89,4 @@ $fecha = "01/01/".(date("Y")-18);
 		</fieldset><br>		
 		<center><input type="button" id="btnEditarUsuario" value="Modificar Usuario"/></center>
 </form>
-
 

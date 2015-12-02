@@ -1,7 +1,8 @@
 $(document).ready(function(){
 
 	$("#btnAgregarCon").button().click(function(){
-		if($("#txtConvenioAgre").val()!=""){
+		if($("#txtConvenioAgre").val().trim()!=""){
+			$("#txtConvenioAgre").val($("#txtConvenioAgre").val().trim())
 			var arrayPrevisiones="";
 			$('input[name="prevision[]"]:checked').each(function() {
 				arrayPrevisiones += $(this).val() + ",";
@@ -11,18 +12,23 @@ $(document).ready(function(){
 				var res = validarProcesos('controller/server/controlador_convenio.php','ins_nombre='+$("#txtConvenioAgre").val()+'&arregloPrevisiones='+arrayPrevisiones+'&op=agregarConvenio');
 				if(res!=""){
 					$("#txtConvenioAgre").addClass("cajamala");
-					muestraError("errAgregarConvenio", res);
+					muestraError("errConvenio", res);
 				}else{
 					cargarContenido('./view/interface/busquedaConvenio.php','','#contenidoCargado');
 					mensajeUsuario('successMensaje','Éxito','Institución vinculada con éxito.');
 					$('#modalAgregarConvenio').dialog('destroy').remove();
 				}
 			}else{
-				muestraError("errAgregarConvenio", "Seleccione al menos una previsión");				
+				muestraError("errAgregarConvenio", "Seleccione al menos una previsión");
+				if($("#txtConvenioAgre").val().trim()!=""){
+					$('#txtConvenioAgre').removeClass("cajamala");	
+					$('#errConvenio').attr("title", "").hide("slow");					
+				}
 			}
 		}else{
+			$("#txtConvenioAgre").val($("#txtConvenioAgre").val().trim())
 			$("#txtConvenioAgre").addClass("cajamala");
-			muestraError("errAgregarConvenio", "Rellene los campos");
+			muestraError("errConvenio", "Rellene los campos");
 		}				
 	});
 });
