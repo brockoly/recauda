@@ -4,7 +4,8 @@ $(document).ready(function(){
 	validar('txtApellidoMat', 'id' ,'letras');
 	validar('txtTelefono', 'id' ,'numero');
 	validar('txtDireccion', 'id' ,'todo');
-	var a=0, b=0, c=0, d=0, e=0, f=0, g=0, h=0, rut = 0, id = 0, pacEx = 0; /*BANDERAS GLOBALES*/
+
+	var a=0, b=0, c=0, d=0, e=0, f=0, g=0, h=0, rut = 0, id = 0, pacEx = 0, rn=0; /*BANDERAS GLOBALES*/
 	
 	$("#btnAgregarPacienteModal").button().click(function(){
 		if( $("#txtFechaNac").val()==""){
@@ -16,9 +17,24 @@ $(document).ready(function(){
 			e=1;
 		}
 		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && g==1 && h==1){
-			var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
-			if(resPac ==0){	
-				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rut='+rut+'&pacEx='+pacEx);
+			if(rn!=1){
+				var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
+				//alert(resPac)
+				if(resPac ==0){	
+					var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rut='+rut+'&pacEx='+pacEx);
+					if(cont ='bien'){ 
+						mensajeUsuario('successMensaje','Exito','Paciente creado exitosamente');
+						cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
+						$('#modalAgregarPaciente').dialog('destroy').remove();
+					}else {
+						mensajeUsuario('errorMensaje','Error','A ocurrido un problema al momento de agregar paciente');
+					}
+				}else{
+					mensajeUsuario('alertMensaje','Advertencia','El paciente ya se encuentra en nuestros registros');
+				}
+			}else{
+				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rn=R.N');
+				//alert(cont);
 				if(cont ='bien'){ 
 					mensajeUsuario('successMensaje','Exito','Paciente creado exitosamente');
 					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
@@ -26,8 +42,6 @@ $(document).ready(function(){
 				}else {
 					mensajeUsuario('errorMensaje','Error','A ocurrido un problema al momento de agregar paciente');
 				}
-			}else{
-				mensajeUsuario('alertMensaje','Advertencia','El paciente ya se encuentra en nuestros registros');
 			}
 		}else{
 			$('#txtRut').blur();
@@ -47,7 +61,31 @@ $(document).ready(function(){
 			$('#trIdentificador').show();
 			$('#tdRut').remove();
 			$('#tdIdentificador').remove();
-			$('<td id="tdRut">&nbsp;&nbsp;&nbsp;<input type="text" id="txtRut" name="txtRut" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
+			$('<td id="tdRut">&nbsp;&nbsp;&nbsp;<input type="text" id="txtRut" name="txtRut" />&nbsp;&nbsp;<input type="checkbox" id="RN">R.N&nbsp;&nbsp;&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
+			$("#RN").on( 'change', function(){
+			    if($(this).is(':checked')){
+			    	$("#txtRut").val("R.N");
+			   		$("#txtRut").prop('disabled', true);
+			   		$("#txtRut").removeClass("cajabuena cajamala");	
+					$('#errRut').attr("title", "").hide("slow");
+					/********************************/
+					$("#txtIdentificador").val("R.N");
+			   		$("#txtIdentificador").prop('disabled', true);
+			   		$("#txtIdentificador").removeClass("cajabuena cajamala");	
+					$('#errRut').attr("title", "").hide("slow");
+					/********************************/
+					rn=1;
+					a=1;
+			   	}else{
+			   		$("#txtRut").prop('disabled', false);
+			   		$("#txtRut").val("");
+			   		$("#txtIdentificador").prop('disabled', false);
+			   		$("#txtIdentificador").val("");
+			   		rn=0;
+			   		a=0;
+			   	}
+			
+			});
 			validar('txtRut', 'id','rut');
 			$('#txtRut').Rut({
 			   	on_error: function(){  
@@ -57,57 +95,59 @@ $(document).ready(function(){
 							rut=0;
 						  },
 	  			on_success: function(){
-	  						a=1;	
-							rut=$.Rut.quitarFormato($("#txtRut").val());												
-							var resUsu2 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut); 
-							var resPac2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
+	  						a=1;
+	  						if(rn==0){	
+								rut=$.Rut.quitarFormato($("#txtRut").val());												
+								var resUsu2 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut); 
+								var resPac2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
 
-							if(resPac2!=0){
-								$("#txtRut").removeClass("cajabuena" ).addClass( "cajamala" );
-								muestraError('errRut','Identificador ya existente en nuestros registros');
-								a=0;			
-							}else{
-								if(resUsu2.length>2){
-									pacEx =1;
-									b=1;
-									c=1;
-									d=1;
-									e=1;
-									var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+$('#txtRut').val()));							
-									$('#txtNombres').val(arrExistente.per_nombre);
-									$('#txtApellidoPat').val(arrExistente.per_apellidoPaterno);
-									$('#txtApellidoMat').val(arrExistente.per_apellidoMaterno);
-									$('#txtFechaNac').val(arrExistente.per_fechaNacimiento);
-									$('#txtTelefono').val(arrExistente.per_telefono);
-									if(arrExistente.per_sexo=='m'){
-										$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
-									}
-									$('#txtDireccion').val(arrExistente.per_direccion);
-									$("#txtNombres").blur();
-									$("#txtApellidoPat").blur();
-									$("#txtApellidoMat").blur();
-									$("#cmbPais").blur();
-									$("#cmbPrevision").blur();
-									$("#cmbInstitucion").blur();
-									$("#txtDireccion").blur();
-									$("#txtNombres").focus();
-									$("#txtApellidoPat").focus();
-									$("#txtApellidoMat").focus();
-									$("#cmbPais").focus();
-									$("#txtDireccion").focus();
-									
-									if( $("#txtFechaNac").val()==""){
-										$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
-										muestraError('errFechaNac','Ingrese una Fecha.');
-										e=0;			
-									}else{
-										$("#txtFechaNac").removeClass("cajamala");	
-										$('#errFechaNac').attr("title", "").hide("slow");	
-										e=1;
-									}
+								if(resPac2!=0){
+									$("#txtRut").removeClass("cajabuena" ).addClass( "cajamala" );
+									muestraError('errRut','Identificador ya existente en nuestros registros');
+									a=0;			
 								}else{
-									$(this).removeClass("cajamala" );
-									a=1;
+									if(resUsu2.length>2){
+										pacEx =1;
+										b=1;
+										c=1;
+										d=1;
+										e=1;
+										var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+$('#txtRut').val()));							
+										$('#txtNombres').val(arrExistente.per_nombre);
+										$('#txtApellidoPat').val(arrExistente.per_apellidoPaterno);
+										$('#txtApellidoMat').val(arrExistente.per_apellidoMaterno);
+										$('#txtFechaNac').val(arrExistente.per_fechaNacimiento);
+										$('#txtTelefono').val(arrExistente.per_telefono);
+										if(arrExistente.per_sexo=='m'){
+											$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
+										}
+										$('#txtDireccion').val(arrExistente.per_direccion);
+										$("#txtNombres").blur();
+										$("#txtApellidoPat").blur();
+										$("#txtApellidoMat").blur();
+										$("#cmbPais").blur();
+										$("#cmbPrevision").blur();
+										$("#cmbInstitucion").blur();
+										$("#txtDireccion").blur();
+										$("#txtNombres").focus();
+										$("#txtApellidoPat").focus();
+										$("#txtApellidoMat").focus();
+										$("#cmbPais").focus();
+										$("#txtDireccion").focus();
+										
+										if( $("#txtFechaNac").val()==""){
+											$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
+											muestraError('errFechaNac','Ingrese una Fecha.');
+											e=0;			
+										}else{
+											$("#txtFechaNac").removeClass("cajamala");	
+											$('#errFechaNac').attr("title", "").hide("slow");	
+											e=1;
+										}
+									}else{
+										$(this).removeClass("cajamala" );
+										a=1;
+									}
 								}
 							}
 						
@@ -134,8 +174,34 @@ $(document).ready(function(){
 			$('#txtDireccion').val("");
 			$('#trIdentificador').show();
 			$('#tdIdentificador').remove();
-			$('#tdRut').remove();
-			$('<td id="tdIdentificador">&nbsp;&nbsp;&nbsp;<input type="text" id="txtIdentificador" name="txtIdentificador" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
+			$('#tdRut').remove();			
+			$('<td id="tdIdentificador">&nbsp;&nbsp;&nbsp;<input type="text" id="txtIdentificador" name="txtIdentificador" />&nbsp;&nbsp;<input type="checkbox" id="RN">R.N&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
+			
+			$("#RN").on( 'change', function(){
+			    if($(this).is(':checked')){
+			    	$("#txtRut").val("R.N");
+			   		$("#txtRut").prop('disabled', true);
+			   		$("#txtRut").removeClass("cajabuena cajamala");	
+					$('#errRut').attr("title", "").hide("slow");
+					/********************************/
+					$("#txtIdentificador").val("R.N");
+			   		$("#txtIdentificador").prop('disabled', true);
+			   		$("#txtIdentificador").removeClass("cajabuena cajamala");	
+					$('#errRut').attr("title", "").hide("slow");
+					/********************************/
+					rn=1;
+					a=1;
+			   	}else{
+			   		$("#txtRut").prop('disabled', false);
+			   		$("#txtRut").val("");
+			   		$("#txtIdentificador").prop('disabled', false);
+			   		$("#txtIdentificador").val("");
+			   		rn=0;
+			   		a=0;
+			   	}
+			
+			});
+
 			$('#txtIdentificador').blur(function(){
 				var valor = eliminarEspacio($(this).val());
 				$(this).val(valor);
@@ -144,16 +210,18 @@ $(document).ready(function(){
 					muestraError('errRut','Rellene los campos');
 					a=0;			
 				}else{
-					id = $('#txtIdentificador').val();
-					rut=-1;
-					var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
-					if(resPac==0){
-						$(this).removeClass("cajabuena cajamala");	
-						$('#errRut').attr("title", "").hide("slow");
-						a=1;
-					}else{
-						$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-						muestraError('errRut','El identificador ya se encuentra en nuestros registros');
+					if(rn==0){
+						id = $('#txtIdentificador').val();
+						rut=-1;
+						var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
+						if(resPac==0){
+							$(this).removeClass("cajabuena cajamala");	
+							$('#errRut').attr("title", "").hide("slow");
+							a=1;
+						}else{
+							$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+							muestraError('errRut','El identificador ya se encuentra en nuestros registros');
+						}
 					}	
 					
 				}

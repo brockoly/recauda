@@ -4,7 +4,73 @@ $(document).ready(function(){
 	validar('txtApellidoMat', 'id' ,'letras');
 	validar('txtTelefono', 'id' ,'numero');
 	validar('txtDireccion', 'id' ,'todo');
-	var a=1, b=1, c=1, d=1, e=1, f=1, g=1, h=1, rut = 1, id = 1, pacEx = 1;
+	var a=1, b=1, c=1, d=1, e=1, f=1, g=1, h=1, rut = 1, id = 1, pacEx = 1; 
+
+	if($('#naci_id').val()==1){
+		var o=0;
+		$("#txtIdentificador").Rut({
+		  on_error: function(){
+			  						 $("#txtIdentificador").removeClass("cajabuena" ).addClass( "cajamala" );
+									 muestraError('errIdentificador','El rut ingresado es incorrecto');
+									 o=0;
+									 rut=0;
+							  },
+		  on_success: function(){ //alert("Valido rut")
+			  						 rut=$.Rut.quitarFormato($("#txtIdentificador").val());
+			  						 rut=$.Rut.quitarFormato($("#txtIdentificador").val());
+			  						 var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut);
+			  						 if(resUsu2.length>2){
+			  						 	$("#txtIdentificador").removeClass("cajabuena" ).addClass( "cajamala" );
+										muestraError('errIdentificador','El rut ingresado es ya está en nuestro registros.');
+										o=0;
+			  						 }else{
+			  						 	var resUsu3 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut);
+			  						 	if(resUsu3>2){
+			  						 		$("#txtIdentificador").removeClass("cajabuena" ).addClass( "cajamala" );
+											muestraError('errIdentificador','El rut ingresado es ya está en nuestro registros.');
+			  						 	}else{
+			  						 		alert()
+			  						 	 	$('#txtIdentificador').removeClass("cajabuena cajamala");	
+									 	    $('#errIdentificador').attr("title", "").hide("slow");
+									 	    o=1
+			  						 	}			  						 	
+			  						 }
+			  						 		
+								},
+		  format_on: 'keyup'
+		});
+	}else{
+		if (typeof($('#naci_id').val()) === "undefined") {
+    		//alert("objetoso no esta definido.");
+		}else{
+			var o=0;
+			$('#txtIdentificador').blur(function(){
+				var valor = eliminarEspacio($(this).val());
+				$(this).val(valor);
+				if( $(this).val().trim()==""){
+					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+					muestraError('errIdentificador','Rellene los campos');
+					o=0;			
+				}else{
+						id = $('#txtIdentificador').val();
+						rut=-1;
+						var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
+						alert(resPac)
+						if(resPac==0){
+							$(this).removeClass("cajabuena cajamala");	
+							$('#errIdentificador').attr("title", "").hide("slow");
+							o=1;
+						}else{
+							$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+							muestraError('errIdentificador','El identificador ya se encuentra en nuestros registros');
+							o=0;
+						}
+				}
+				$(this).val($(this).val().trim());
+			});
+		}
+	}
+	alert(o)
 	$('#btnEditarPaciente').button().click(function(){
 		if( $("#txtFechaNac").val()==""){
 			$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -15,12 +81,22 @@ $(document).ready(function(){
 			e=1;
 		}
 		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && g==1 && h==1){
-			var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=modificarPaciente');
-			if(cont='bien'){
-				mensajeUsuario('successMensaje','Exito','Paciente modificado exitosamente');
-				cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
-				$('#modalEditarPaciente').dialog('destroy').remove();
+			if (o=="undefined"){
+				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=modificarPaciente');
+				if(cont='bien'){
+					mensajeUsuario('successMensaje','Exito','Paciente modificado exitosamente');
+					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
+					$('#modalEditarPaciente').dialog('destroy').remove();
+				}
+			}else{
+				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=modificarPaciente');
+				if(cont='bien'){
+					mensajeUsuario('successMensaje','Exito','Paciente modificado exitosamente');
+					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
+					$('#modalEditarPaciente').dialog('destroy').remove();
+				}
 			}
+			
 		}else{
 			$("#txtNombres").blur();
 			$("#txtApellidoPat").blur();

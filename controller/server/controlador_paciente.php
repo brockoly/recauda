@@ -41,18 +41,47 @@
 								$nac_id = $_POST['cmbPais'];
 								try{									
 							 		$objCon->beginTransaction();
-									$objPer->setPersona($per_id, $per_nombre, $per_apellidoPaterno, $per_apellidoMaterno, $per_fechaNacimiento, $per_telefono, $per_procedencia, $per_sexo, $per_direccion);
-									$objPac->setPaciente($pac_id);		
-									$objNac->setNacionalidad($nac_id,'');
-									if($_POST['pacEx']==0){
-										$objPer->insertarPersona($objCon);
-										$objNac->insertarNacionalidadPersona($objCon, $per_id);
-									}else{
-										$objPer->modificarPersona($objCon);
-									}									
-									$objPac->insertarPaciente($objCon, $pre_id, $per_id, $ins_id);									
-							 		$objCon->commit();
-							 		echo "bien";						 		
+							 		if(isset($_POST['rn']) && $_POST['rn']!=""){
+							 			$datosRN = $objPac->ultimoRN($objCon);
+							 			if(count($datosRN)==0){
+							 				$max="RN1";
+							 			}else{
+								 			$max=0;
+								 			for($i=0; $i<count($datosRN); $i++){								 				
+								 				$ide = $datosRN[$i]['rn'];
+								 				$tamStr = strlen($ide);
+								 				//echo "MAX: ".$max." actual: ".$ide[$tamStr-1];
+								 				if($max<$ide[$tamStr-1]){									 					
+									 				$max = $ide[$tamStr-1];
+								 				}
+								 			}
+								 			$max++;
+								 		}
+								 		$max = "RN".$max;								 		
+										//echo "/*********".$max."**********/";
+							 			$objPer->setPersona($max, $per_nombre, $per_apellidoPaterno, $per_apellidoMaterno, $per_fechaNacimiento, $per_telefono, $per_procedencia, $per_sexo, $per_direccion);
+							 			$pac_id = $objPac->nuevoPac_id($objCon);
+							 			$pac_id;
+							 			$objPac->setPaciente($pac_id);
+							 			$objNac->setNacionalidad($nac_id,'');	
+							 			$objPer->insertarPersona($objCon);
+										$objNac->insertarNacionalidadPersona($objCon, $max);
+										$objPac->insertarPaciente($objCon, $pre_id, $max, $ins_id);
+										echo "bien";
+							 		}else{
+										$objPer->setPersona($per_id, $per_nombre, $per_apellidoPaterno, $per_apellidoMaterno, $per_fechaNacimiento, $per_telefono, $per_procedencia, $per_sexo, $per_direccion);
+										$objPac->setPaciente($pac_id);		
+										$objNac->setNacionalidad($nac_id,'');
+										if($_POST['pacEx']==0){
+											$objPer->insertarPersona($objCon);
+											$objNac->insertarNacionalidadPersona($objCon, $per_id);
+										}else{
+											$objPer->modificarPersona($objCon);
+										}									
+										$objPac->insertarPaciente($objCon, $pre_id, $per_id, $ins_id);
+										echo "bien";	
+									}								
+							 		$objCon->commit();					 		
 							 	} catch (PDOException $e){
 						 			$objCon->rollBack(); 
 						 			echo $e->getMessage();

@@ -15,7 +15,7 @@
 <script type="text/javascript" src="controller/client/js_busqudaPaciente.js"></script>
 <center><h3>Listado de pacientes</h3></center>
 <div id="btnAgregarPaciente" onclick="ventanaModal('./view/dialog/agregarPaciente.php','','auto','auto','Registro de Paciente','modalAgregarPaciente')"><img src="./include/img/patient.png" width="25" height="25"> Agregar Paciente</div>
-<div id="btnCargaMasiva" onclick=""><img src="./include/img/patient.png" width="25" height="25"> Carga Masiva</div>
+<div id="btnCargaMasiva" onclick="mensajeUsuario('alertMensaje','No no nooo','Este opción aun esta en desarrollo.');"><img src="./include/img/patient.png" width="25" height="25"> Carga Masiva</div>
 <br><br>
 <center>
 	<table class="display" width="100%" id="tabPaciente">
@@ -35,7 +35,19 @@
             	<?
             		for ($i=0; $i<count($pacientes); $i++) { ?> 
 					<tr>
-						<td><? if($pacientes[$i]['Nacionalidad']=='Chile'){echo $objUtil->formatRut($pacientes[$i]['Identificador']);}else{echo $pacientes[$i]['Identificador'];}?></td>
+						<td>
+							<? 
+								if($pacientes[$i]['nac_id']==1){ 
+									if(preg_match("/RN/i", "".$pacientes[$i]['Identificador'])==1) {
+										echo $pacientes[$i]['Identificador'];
+									}else{
+										echo $objUtil->formatRut($pacientes[$i]['Identificador']);
+									}
+								}else{
+									echo $pacientes[$i]['Identificador'];
+								}
+							?>
+						</td>
 						<td><?= $pacientes[$i]['Nombre']?></td>
 						<td><?= $pacientes[$i]['Apellido_Paterno']?></td>
 						<td><?= $pacientes[$i]['Apellido_Materno']?></td>

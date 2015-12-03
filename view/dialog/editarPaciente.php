@@ -24,6 +24,14 @@
 		<input type="hidden" name="per_id" value="<?=$datos[0]['Identificador'];?>">
 		<fieldset style="width: 500px;"><legend>Datos Personales</legend>
 		<table>
+			<?php if(preg_match("/RN/i", "".$datos[0]['Identificador'])==1) {?>
+					<tr>
+						<td>Identificador * <input type="hidden" id="naci_id" value="<?=$datos[0]['nac_id'];?>"/></td>
+						<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtIdentificador" name="txtIdentificador" value="<?=$datos[0]['Identificador'];?>"/>
+						&nbsp;&nbsp;<img src="./include/img/information.png" id="errIdentificador" hidden="true"/>
+						</td>
+					</tr>
+			<?php }?>
 				<tr>
 					<td>Nombres *</td>
 					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtNombres" name="txtNombres" value="<?=$datos[0]['Nombre'];?>"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errNombres" hidden="true"/></td>

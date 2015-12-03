@@ -60,7 +60,8 @@
 			nacionalidad.nac_nombre AS Nacionalidad,
 			paciente.pac_id,
 			persona.per_sexo,
-			persona.per_direccion
+			persona.per_direccion,
+			nacionalidad.nac_id
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -75,6 +76,7 @@
 			$datos[$i][Apellido_Materno]= $v['Apellido_Materno'];
 			$datos[$i][fecha_nac]= $v['fecha_nac'];
 			$datos[$i][Nacionalidad]= $v['Nacionalidad'];
+			$datos[$i][nac_id]= $v['nac_id'];
 			$datos[$i][pac_id]= $v['pac_id'];
 			if($v['per_sexo']=='m'){
 				$datos[$i][sexo]= 'Masculino';
@@ -122,9 +124,9 @@
 		}
 		return $datos;
 	}
-	 function nuevoPac_id($objCon){
+	function nuevoPac_id($objCon){
 	 	$sql="SELECT
-				COUNT(paciente.pac_id)+1 AS MAX
+				MAX(paciente.pac_id)+1 AS MAX
 				FROM
 				paciente";
 				foreach ($objCon->consultaSQL($sql,'ERROR nuevoPac_id') as $v) {
@@ -134,9 +136,20 @@
 			 		
 			 	}
 	 	return $datos;
-	 }
+	}
+	function ultimoRN($objCon){
+		$datos = array();
+		$i=0;
+	 	$sql="  SELECT persona.per_id 
+	 			FROM persona
+	 			WHERE per_id LIKE '%RN%'";
+				foreach ($objCon->consultaSQL($sql,'ERROR ultimoRN') as $v) {
+			 		$datos[$i]['rn']=$v['per_id'];
+			 	}
+	 	return $datos;
+	}
 
-	 function getInformacionPaciente($objCon, $per_id, $pac_nombre, $cue_id){
+	function getInformacionPaciente($objCon, $per_id, $pac_nombre, $cue_id){
 	 	$datos = array();
 		$i=0;
 	 	$sql ="SELECT
