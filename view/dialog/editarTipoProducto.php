@@ -17,9 +17,14 @@
 <script type="text/javascript" src="controller/client/js_editarTipoProducto.js"></script>
 <center>
 <form id="frmEditarTipoProducto">
-		<input type="hidden" name="tip_prod_id" id="tip_prod_id" value="<?=$_POST['tip_prod_id']?>">
+		<input type="hidden" name="tip_prod_idOriginal" id="tip_prod_idOriginal" value="<?=$_POST['tip_prod_id']?>">
+		<input type="hidden" name="tip_descripcionOriginal" id="tip_descripcionOriginal" value="<?=$_POST['tip_descripcion']?>">
 		<fieldset style="width: 400px;"><legend>Producto</legend>
 		<table>
+				<tr>
+					<td>Código</td>
+					<td>&nbsp;&nbsp;&nbsp;<input value="<?=$_POST['tip_prod_id']?>" type="text" id="txtCodigoTipoProducto" onkeyup ="validar('txtCodigoTipoProducto', 'id' ,'numero')" name="txtCodigoTipoProducto"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errCodigoTipoProducto" hidden="true"/></td>
+				</tr>
 				<tr>
 					<td>Nombre</td>
 					<td>&nbsp;&nbsp;&nbsp;<input value="<?=$_POST['tip_descripcion']?>" type="text" id="txtNombreTipoProducto" onkeyup ="validar('txtNombreTipoProducto', 'id' ,'letras')" name="txtNombreTipoProducto"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errTipoProducto" hidden="true"/></td>
