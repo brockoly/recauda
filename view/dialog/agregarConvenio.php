@@ -26,8 +26,8 @@
 						} 
 						?>
 					
-				</td></tr>
-				<tr><td align="middle" colspan="2"><br><img src="./include/img/alert.png" id="errAgregarConvenio" hidden="true" /></td></tr>
+				</td><td><img src="./include/img/alert.png" id="errAgregarConvenio" hidden="true" /></td></tr>
+				<tr><td align="middle" colspan="2"><br></td></tr>
 				<tr>
 					<td align="middle" colspan="2"><br><input type="button" value="Agregar Convenio" id="btnAgregarCon"/></td>
 				</tr>

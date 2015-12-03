@@ -2,11 +2,12 @@
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar();
 	require_once('../../class/Tipo_Producto.class.php');$objTipoPro = new Tipo_Producto();
 	require_once('../../class/Unidad_Medida.class.php');$objUnidadM = new Unidad_Medida();
+	require_once('../../class/Util.class.php');$objUti = new Util();
 
 	switch($_POST['op']) {
 		case "editarTipo":
 			$datos = explode(',', $_POST['datosE']);
-			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],$_POST['tip_prod_id'],'');				
+			$objTipoPro->setTipoProducto($objUti->eliminaEspacios($_POST['tip_descripcion']),$_POST['tip_prod_id'],'');				
 			$objCon->db_connect();
 			$producto=$objTipoPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){
@@ -31,7 +32,7 @@
 		break;
 		case "agregarTipo":
 			$datosTipo = explode(',', $_POST['datos']);
-			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],'','');				
+			$objTipoPro->setTipoProducto($objUti->eliminaEspacios($_POST['tip_descripcion']),'','');				
 			$objCon->db_connect();
 			$producto=$objTipoPro->buscarTipoProducto($objCon);
 			if(is_null($producto)==true){

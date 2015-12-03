@@ -21,6 +21,7 @@ session_start();
             <thead>
 	            <tr>
 	              <th width="10%">Usuario</th>
+	              <th width="7%">Privilegio</th>
 	              <th width="10%">Rut</th>
 	              <th width="10%">Nombre</th>
 	              <th width="10%">Apellido Paterno</th>
@@ -36,6 +37,7 @@ session_start();
 	        ?> 
 	        	<tr>
 	        			<td><?=$datos[$i]['usuario']?></td>
+	        			<td><?=$datos[$i]['privilegio']?></td>
 						<td><?=$objUtil->formatRut($datos[$i]['rut'])?></td>
 						<td><?=$datos[$i]['nombre']?></td>
 						<td><?=$datos[$i]['apellidoPaterno']?></td>

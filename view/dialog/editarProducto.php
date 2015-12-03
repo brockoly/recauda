@@ -15,14 +15,15 @@
 	$valoresProductos = $objVal->buscarValoresProducto($objCon, $_POST['pro_id'], '', '');
 	$previsionesInst = $objPrev->listarPrevisionInstitucion($objCon);
 	$objCon=null;
+	//var_dump(highlight_string(print_r($valoresProductos, true) ));
 	if(count($productos) ==0){ ?>
 		<label style="color: red; border-color: 1px solid black;">No hay tipos de productos, porfavor agregue uno para comenzar</label>
 		<br/>
 	<? }else{
 ?>
 <script type="text/javascript" src="controller/client/js_editarProducto.js"></script>
-<fieldset style="width: 400px;"><legend>Datos Producto</legend>
 <center>
+<fieldset style="width: 500px;"><legend>Datos Producto</legend>
 <input type="hidden" value="<?=$_POST['pro_id'];?>" id="pro_id_actual"/>
 <table>
 	<tr>
@@ -50,37 +51,37 @@
 		
 	</tr>
 </table>
-</center><br><br>
+<br>
 </fieldset>
+</center>
 <br><br>
-<fieldset style="width: 400px;"><legend>Valores</legend>
+<fieldset style="width: 500px;"><legend>Valores</legend>
 <center>
-<table id="tblUM">
+<table id="tblUM" width="100%">
 	<tr>
-		<td width="35%"><b>Institución</b></td>
-		<td width="35%"><b>Previsión</b></td>
-		<td width="30%">
-		&nbsp;&nbsp;&nbsp; <b>Valor</b>
+		<td width="35%"><b>&nbsp;&nbsp;&nbsp;&nbsp;Institución</b></td>
+		<td width="35%"><b>&nbsp;&nbsp;&nbsp;&nbsp;Previsión</b></td>
+		<td width="20%">&nbsp;&nbsp;&nbsp; <b>Valor</b>
 		</td>
 	</tr>
 	<? 	
 	
 	for ($i=0; $i<count($previsionesInst); $i++) { 
-		$pre_nombre = str_replace(' ','', $previsionesInst[$i]['pre_nombre']);
+		$pre_nombre = $previsionesInst[$i]['pre_nombre'];//str_replace(' ','', $previsionesInst[$i]['pre_nombre']);
 	?>
 	
 	<tr>
-		<td><?=$previsionesInst[$i]['ins_nombre']?></td>
-		<td><?=$pre_nombre?></td>
+		<td>&nbsp;&nbsp;&nbsp;&nbsp;<?=$previsionesInst[$i]['ins_nombre']?></td>
+		<td>&nbsp;&nbsp;&nbsp;&nbsp;<?=$pre_nombre?></td>
 		<td>
-		&nbsp;&nbsp;&nbsp;<input type="text" class="campoValor" style="width:100px;" value="<? if($previsionesInst[$i]['pre_id'] == $valoresProductos[$i]['pre_id']){ echo $valoresProductos[$i]['val_monto'];} ?>" name="<?=$previsionesInst[$i]['ins_id']?>" id="<?=$previsionesInst[$i]['pre_id']?>" />
+		&nbsp;&nbsp;&nbsp;<input type="text" class="campoValor" style="width:70px;" value="<? if($previsionesInst[$i]['pre_id'] == $valoresProductos[$i]['pre_id']){ echo $valoresProductos[$i]['val_monto']; }else{ echo "0";} ?>" name="<?=$previsionesInst[$i]['ins_id']?>" id="<?=$previsionesInst[$i]['pre_id']?>" />
 			<img src="./include/img/information.png" id="err<?=$previsionesInst[$i]['pre_id']?>" hidden="true"/>
 		</td>
 	</tr>
 	<? }?>
 </table>
-</center><br><br>
+</center><br>
 <center><input type="button" id="btnAddProductoE" value="Editar Producto"/></center>
-<br><br>
+<br>
 </fieldset>
 <? }?>

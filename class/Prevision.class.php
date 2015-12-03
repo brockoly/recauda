@@ -132,16 +132,32 @@
 			}
 			return $datos;
 		}
-		function buscaPrevision($objCon){//
-
-		 	$sql="SELECT pre_nombre
-				  FROM prevision
-				  WHERE pre_nombre='$this->pre_nombre'";
-			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR obtenerPrevisiones') as $v) {
-				$datos=$v['pre_nombre'];
-		    }
-			return $datos;		 	
+		function buscaPrevision($objCon, $opcion){//
+				if($opcion==1){
+						$sql =" SELECT
+								CASE 
+								WHEN prevision.pre_nombre = '$this->pre_nombre' AND prevision.pre_id = '$this->pre_id' THEN 'Existe con id'
+								WHEN prevision.pre_nombre = '$this->pre_nombre' AND prevision.pre_id <>'$this->pre_id'THEN 'Existe sin id'
+								END AS condicion
+					   	    FROM recaudacion.prevision";
+					 	foreach ($objCon->consultaSQL($sql,'ERROR buscaPrevision') as $v) {
+					 		if(is_null($v['condicion'])==false){
+					 			$datos = $v['condicion'];
+					 		}
+					 	}
+					 	return $datos;
+				}
+				if($opcion==2){
+					 	$sql =" SELECT prevision.pre_nombre 
+					 			FROM  prevision
+								WHERE prevision.pre_nombre = '$this->pre_nombre'";
+					 	foreach ($objCon->consultaSQL($sql,'ERROR buscaPrevision') as $v) {
+					 		if(is_null($v['pre_nombre'])==false){
+					 			$datos ="Existe";
+					 		}
+					 	}
+					 	return $datos;	 	
+				}
 		}
 		
 		function eliminarAsociacion($objCon, $insId){

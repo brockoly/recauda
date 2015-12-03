@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	validar('tip_descripcion', 'id' ,'letras')
 	tablaMinima('tblTipoProducto');
 	tablaMinima('tblTipoProductoEliminado');
 	
@@ -9,7 +10,9 @@ $(document).ready(function(){
 	       	arrDatosUM[i] = $(this).val(); 
 	       	i++;
    		});
-		//alert(arrDatosUM); 
+		//alert(arrDatosUM);
+		var valor = eliminarEspacio($("#tip_descripcion").val());
+		$("#tip_descripcion").val(valor);
 		if($("#tip_descripcion").val()!=""){
 			var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#tip_descripcion").val()+"&op=agregarTipo"+'&datos='+arrDatosUM);
 			if(res=="existe"){

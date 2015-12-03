@@ -65,7 +65,7 @@
                       }
                 });
         },
-        minLength: 2,
+        minLength: 1,
         select: function(event, ui){
             id = 0;
             idPro = ui.item.id;
