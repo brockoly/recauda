@@ -29,6 +29,13 @@ class Producto{
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL editarProducto');
 	 	return $rs;
 	} 
+	function actualizarTipoProducto($objCon,$tip_prod_id,$nuevo){
+		$sql="UPDATE productos
+			  SET productos.tip_prod_id=$nuevo
+			  WHERE productos.tip_prod_id=$tip_prod_id";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR AL editarProducto');
+	 	return $rs;
+	} 
 	function cambiarEstadoProducto($objCon){
 		$sql="UPDATE productos
 			  SET productos.pro_estado='$this->pro_estado'

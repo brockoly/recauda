@@ -49,6 +49,13 @@ class Unidad_Medida{
 		$rs=$objCon->ejecutarSQL($sql,'ERROR actualizarUnidadMedida');
 	 	return $rs;
 	}
+	function actualizarTipoProMedida($objCon, $tip_prod_id, $nuevo){
+		$sql="UPDATE unidad_de_medida
+			  SET unidad_de_medida.tip_prod_id=$nuevo
+			  WHERE unidad_de_medida.tip_prod_id=$tip_prod_id";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR actualizarUnidadMedida');
+	 	return $rs;
+	}
 	function cambiarEstadoUnidadMedida($objCon,$estado){
 		$sql="UPDATE unidad_de_medida
 			  SET unidad_de_medida.uni_estado='$estado'
