@@ -110,7 +110,6 @@ $(document).ready(function(){
 									a=1;
 								}
 							}
-							alert(rut)
 						
 				},
 	  			format_on: 'keyup'
