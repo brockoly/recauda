@@ -92,7 +92,7 @@ $pdf->SetAutoPageBreak(TRUE, 15);
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->setLanguageArray($l);
 $pdf->setFontSubsetting(true);
-$pdf->SetFont('helvetica', '', 8, '', true);
+$pdf->SetFont('helvetica', '', 9, '', true);
 $pdf->setPrintFooter(false);
 //CREA UNA PAGINA
 $pdf->AddPage();

@@ -519,3 +519,34 @@ function validar(id, atributo,tipo){
 	}
 	
 }
+function recargarTiempoRestante(){	
+	alert("hola");
+/*	momento = new Date(fechax+" "+horax);
+	hora = momento.getHours();
+	minuto = momento.getMinutes();
+	segundo = momento.getSeconds();
+
+   	momento2 = new Date(); 
+   	hora2 = momento2.getHours() ;
+   	minuto2 = momento2.getMinutes() ;
+   	segundo2 = momento2.getSeconds() ;
+
+
+	str_segundo = new String (segundo2) ;
+   	if (str_segundo.length == 1) 
+      	segundo2 = "0" + segundo2 ;
+
+   	str_minuto = new String (minuto2) ;
+   	if (str_minuto.length == 1) 
+      	minuto2 = "0" + minuto2 ;
+
+   	str_hora = new String (hora2) ;
+   	if (str_hora.length == 1) 
+      	hora2 = "0" + hora2 ;
+
+   	horaImprimible = hora2 + " : " + minuto2 + " : " + segundo2 ;
+   	//alert(horaImprimible);
+	$("#lblTime").text(horaImprimible);
+	setTimeout("recargarTiempoRestante()",1000) ;
+*/
+}

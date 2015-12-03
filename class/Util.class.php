@@ -85,5 +85,53 @@
 			$montoFormat=number_format($monto,0);
   			return str_replace(',', '.', $montoFormat);
 		}
+
+
+		
+		function diferenciaTiempo($fecha, $hora){
+			$fecha= $fecha." ".$hora.":00";
+			$hoy= date("Y-m-d H:i:s");			
+			//return $hoy." - ".$fecha;
+			//return (strtotime($hoy))-(strtotime($fecha));
+			$seconds = strtotime($fecha) - strtotime($hoy);
+			$seconds2 = strtotime($hoy) - strtotime($fecha);
+			$days2    = floor($seconds2 / 86400);
+			$hours2   = floor(($seconds2 - ($days2 * 86400)) / 3600);
+			$minutes2 = floor(($seconds2 - ($days2 * 86400) - ($hours2 * 3600))/60);
+			$seconds2 = floor(($seconds2 - ($days2 * 86400) - ($hours2 * 3600) - ($minutes2*60)));
+			$days    = floor($seconds / 86400);
+			$hours   = floor(($seconds - ($days * 86400)) / 3600);
+			$minutes = floor(($seconds - ($days * 86400) - ($hours * 3600))/60);
+			$seconds = floor(($seconds - ($days * 86400) - ($hours * 3600) - ($minutes*60)));
+			$cerohrs="";
+			$ceromin="";
+			$ceroseg="";
+			if($hours<10){
+				$cerohrs="0";
+			}else{
+				$cerohrs="";
+			}
+			if($minutes<10){
+				$ceromin="0";
+			}else{
+				$ceromin="";
+			}
+			if($seconds<10){
+				$ceroseg="0";
+			}else{
+				$ceroseg="";
+			}
+			if($days2==0){
+				if($seconds2>=0 && $minutes2>=0 && $hours2>=0){
+					return $cerohrs.$hours.":".$ceromin.$minutes.":".$ceroseg.$seconds;
+					//return "IN- ".$cerohrs.$hours.":".$ceromin.$minutes.":".$ceroseg.$seconds." - - Fecha 1: ".$days." - ".$hours.":".$minutes.":".$seconds." - Fecha 2: ".$days2." - ".$hours2.":".$minutes2.":".$seconds2;	;								
+				}/*else{
+					return "OUT - 00:00:00 - - Fecha 1: ".$days." - ".$hours.":".$minutes.":".$seconds." - Fecha 2: ".$days2." - ".$hours2.":".$minutes2.":".$seconds2;	
+				}*/
+			}else{
+				return "00:00:00";
+				//return "OUT2 - 00:00:00 - - Fecha 1: ".$days." - ".$hours.":".$minutes.":".$seconds." - Fecha 2: ".$days2." - ".$hours2.":".$minutes2.":".$seconds2;	
+			}
+		}
 	}
 ?>
