@@ -7,8 +7,8 @@
 			$objCon->db_connect();
 			try{
 		 		$objCon->beginTransaction();
-		 		$objUnidadM->setUnidadMedida('',$_POST['uni_nombre'],'0');
-				$res = $objUnidadM->buscarUnidadMedida($objCon,$_POST['uni_nombreAct']);
+		 		$objUnidadM->setUnidadMedida('',$objUti->eliminaEspacios($_POST['uni_nombre']),'0');
+				$res = $objUnidadM->buscarUnidadMedida($objCon,$objUti->eliminaEspacios($_POST['uni_nombreAct']);
 		 		$objCon->commit();	
 		 		echo count($res);					 		
 			}catch (PDOException $e){
@@ -20,7 +20,7 @@
 			$objCon->db_connect();
 			try{
 		 		$objCon->beginTransaction();
-		 		$objUnidadM->setUnidadMedida('',$_POST['uni_nombre'],'0');
+		 		$objUnidadM->setUnidadMedida('',$objUti->eliminaEspacios($_POST['uni_nombre']),'0');
 				$objUnidadM->insertarUnidadMedida($objCon);
 		 		$objCon->commit();	
 		 		echo 'bien';					 		
@@ -33,7 +33,7 @@
 			$objCon->db_connect();
 			try{
 		 		$objCon->beginTransaction();
-		 		$objUnidadM->setUnidadMedida($_POST['uni_id'],$_POST['uni_nombre'],'0');
+		 		$objUnidadM->setUnidadMedida($_POST['uni_id'],$objUti->eliminaEspacios($_POST['uni_nombre']),'0');
 				$objUnidadM->actualizarUnidadMedida($objCon);
 		 		$objCon->commit();	
 		 		echo 'bien';					 		

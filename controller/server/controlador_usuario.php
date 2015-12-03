@@ -18,7 +18,7 @@
 								$objPer= new Persona();
 								$objPri= new Privilegio();
 								$objNac= new Nacionalidad();
-								$objUti= new Util();
+								$objUtil= new Util();
 								$objCon->db_connect();
 								$errores['txtUsuario']=0;
 								$errores['txtIdentificador']=0;
@@ -28,9 +28,9 @@
 								($_POST['txtTelefono']=="") ? $telefono=0 : $telefono = $_POST['txtTelefono'];
 								$objPri->setPrivilegio($_POST['cmbPrivilegios'], '');
 								$objNac->setNacionalidad(1,"");								
-								$rut = $objUti->valida_rut($_POST['rut']);
-								$objPer->setPersona($rut,$_POST['txtNombre'],$_POST['txtApellidoPaterno'],$_POST['txtApellidoMaterno'],
-													$objUti->cambiarfecha_mysql($_POST['txtFechaNacimiento']),$telefono,1,$_POST['rdSexo'],$_POST['txtDireccion']);
+								$rut = $objUtil->valida_rut($_POST['rut']);
+								$objPer->setPersona($rut,$objUtil->eliminaEspacios($_POST['txtNombre']),$objUtil->eliminaEspacios($_POST['txtApellidoPaterno']),$objUtil->eliminaEspacios($_POST['txtApellidoMaterno']),
+													$objUtil->cambiarfecha_mysql($_POST['txtFechaNacimiento']),$telefono,1,$_POST['rdSexo'],$objUtil->eliminaEspacios($_POST['txtDireccion']));
 								$objPer->buscarIdentificador($objCon);
 								$usuAux=$objUsu->buscarUsuario($objCon);
 
@@ -86,14 +86,14 @@
 								$objPer= new Persona();
 								$objPri= new Privilegio();
 								$objUtil= new Util();
-								$objCon->db_connect();							
+								$objCon->db_connect();													
 
 								($_POST['txtTelefono']=="") ? $telefono=0 : $telefono = $_POST['txtTelefono'];
 								$objPri->setPrivilegio($_POST['cmbPrivilegios'], '');
 
 								$fecha = $objUtil->cambiarfecha_mysql($_POST['txtFechaNacimiento']);
-								$objUsu->setUsuario($_SESSION['usu_nombre'], '',$_POST['txtCorreo']);
-								$objPer->setPersona($_SESSION['rut'],$_POST['txtNombre'],$_POST['txtApellidoPaterno'],$_POST['txtApellidoMaterno'],	$fecha ,$telefono,1, '',$_POST['txtDireccion']);
+								$objUsu->setUsuario($objUtil->eliminaEspacios($_SESSION['usu_nombre']), '',$objUtil->eliminaEspacios($_POST['txtCorreo']));
+								$objPer->setPersona($_SESSION['rut'],$objUtil->eliminaEspacios($_POST['txtNombre']),$objUtil->eliminaEspacios($_POST['txtApellidoPaterno']),$objUtil->eliminaEspacios($_POST['txtApellidoMaterno']),$fecha ,$telefono,1, '',$objUtil->eliminaEspacios($_POST['txtDireccion']));
 								
 								$correoAux = $objUsu->buscarCorreo($objCon);
 								if($correoAux=="Existe con usuario"){
@@ -126,7 +126,7 @@
 							
 								try{
 							 		$objCon->beginTransaction();
-							 		$objUsu->eliminarUsuario($objCon, $_POST['per_id']);
+							 		$objUsu->eliminarUsuario($objCon, 	$_POST['per_id']);
 							 		$objCon->commit();
 							 		echo "<b>Usuario eliminado con exito</b>";					 		
 							 	} catch (PDOException $e){

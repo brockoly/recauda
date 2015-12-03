@@ -1,7 +1,8 @@
 $(document).ready(function(){
 
 	$("#btnModificarCon").button().click(function(){
-		if($("#txtConvenio").val()!=""){
+		if($("#txtConvenio").val().trim()!=""){
+			$("#txtConvenio").val($("#txtConvenio").val().trim());
 			var res = validarProcesos('./controller/server/controlador_convenio.php',$("#frmEditarUsuario").serialize()+"&op=editar");
 			//alert(res)
 			if(res!=""){

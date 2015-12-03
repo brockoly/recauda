@@ -2,13 +2,14 @@
 	
 		require_once('../../class/Conectar.class.php'); $objCon = new Conectar();
 		require_once('../../class/Nacionalidad.class.php');$objNac = new Nacionalidad();
+		require_once('../../class/Util.class.php');$objUtil = new Util();
 
 
 
 		switch($_POST['op']) {
 
 				case "editar":
-						$objNac->setNacionalidad($_POST['txtIdNac'], $_POST['txtNacionalidad']);					
+						$objNac->setNacionalidad($_POST['txtIdNac'], $objUtil->eliminaEspacios($_POST['txtNacionalidad']));					
 						$objCon->db_connect();
 						$usuAux=$objNac->buscaNacionalidad($objCon);
 						
@@ -28,7 +29,7 @@
 				break;
 
 				case "agregar":
-						$objNac->setNacionalidad($_POST['txtIdNac'], $_POST['txtNacionalidad']);					
+						$objNac->setNacionalidad($_POST['txtIdNac'], $objUtil->eliminaEspacios($_POST['txtNacionalidad']));					
 						$objCon->db_connect();
 						$usuAux=$objNac->buscaNacionalidad($objCon);
 						

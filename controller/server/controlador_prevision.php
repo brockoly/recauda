@@ -8,7 +8,7 @@
 		switch($_POST['op']) {
 
 				case "editar":
-						$objPre->setPrevision($_POST['txtIdPre'], $_POST['txtPrevision']);					
+						$objPre->setPrevision($_POST['txtIdPre'],  $objUti->eliminaEspacios($_POST['txtPrevision']));					
 						$objCon->db_connect();
 						$prevision=$objPre->buscaPrevision($objCon, 1);
 						$bandera=-1;
@@ -37,7 +37,7 @@
 				break;
 
 				case "agregar":
-						$objPre->setPrevision( '', $_POST['txtPrevision']);					
+						$objPre->setPrevision( '',  $objUti->eliminaEspacios($_POST['txtPrevision']));					
 						$objCon->db_connect();
 						$prevision=$objPre->buscaPrevision($objCon, 2);
 						

@@ -23,7 +23,7 @@
 			}
 			try{
 		 		$objCon->beginTransaction();
-		 		$objPro->setProducto($_POST['pro_id'],$_POST['pro_nom'],'0');
+		 		$objPro->setProducto($_POST['pro_id'], $objUti->eliminaEspacios($_POST['pro_nom']),'0');
 				$objPro->agregarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
 				for($i=0; $i<count($nuevoArr);$i++){
 					$val_id = $objValores->buscarMaximoId($objCon);
@@ -79,7 +79,7 @@
 			}
 			try{
 		 		$objCon->beginTransaction();
-		 		$objPro->setProducto($_POST['pro_id'],$_POST['pro_nom'],'0');
+		 		$objPro->setProducto($_POST['pro_id'], $objUti->eliminaEspacios($_POST['pro_nom']),'0');
 				$objPro->editarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
 				for($i=0; $i<count($nuevoArr);$i++){
 					$val_id = $objValores->buscarMaximoId($objCon);

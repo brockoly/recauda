@@ -424,7 +424,7 @@ function tooltipImg(div, mensaje){
     });	
 }
 function validaEmail( email ) {
-    expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    expr = /^([a-zA-Z0-9Ññ_\.\-])+\@(([a-zA-Z0-9Ññ\-])+\.)+([a-zA-Z0-9Ññ]{2,4})+$/;
 	if ( !expr.test(email) ){// INCORRECTO , ENTRA
 		return false;
 	}else{
@@ -529,4 +529,9 @@ function validar(id, atributo,tipo){
 		}
 	}
 	
+}
+
+function eliminarEspacio(string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+		string = string.replace(/\s+/g, ' ');
+		return string
 }

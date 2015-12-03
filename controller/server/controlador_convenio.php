@@ -1,17 +1,18 @@
 <?php 
 		require_once('../../class/Conectar.class.php'); $objCon = new Conectar();
 		require_once('../../class/Institucion.class.php');$objIns = new Institucion();
+		require_once('../../class/Util.class.php');$objUtil = new Util();
 
 
 
 		switch($_POST['op']) {
 
 				case "editar":
-						$objIns->setInstitucion($_POST['txtIdCon'], $_POST['txtConvenio']);					
+						$objIns->setInstitucion($_POST['txtIdCon'], $objUtil->eliminaEspacios($_POST['txtConvenio']));					
 						$objCon->db_connect();
-						$usuAux=$objIns->buscaInstitucion($objCon);
+						$institucion=$objIns->buscaInstitucion($objCon);
 						
-						if($usuAux!=""){
+						if($institucion!=""){
 							echo "Este nombre ya existe en la base de datos";
 						}else{
 
@@ -29,7 +30,7 @@
 				case "agregarConvenio":
 						$objCon->db_connect();
 						$id=$objIns->buscarMaximoId($objCon);											
-						$objIns->setInstitucion($id,$_POST['ins_nombre']);
+						$objIns->setInstitucion($id,$objUtil->eliminaEspacios($_POST['ins_nombre']));
 						$arreglox= explode(",", $_POST['arregloPrevisiones']);
 						$usuAux=$objIns->buscaInstitucion($objCon);				
 						if($usuAux!=""){

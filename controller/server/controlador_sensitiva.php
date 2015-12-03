@@ -6,11 +6,10 @@
 	require_once('../../class/Valores.class.php');$objValores = new Valores();
 	
 	switch($_POST['op']) {
-		case "busquedaSensitivaPro":
-								
+		case "busquedaSensitivaPro":								
 			$objCon->db_connect();
 			try{
-		 		$objPro->setProducto("",$_POST['term'],"");
+		 		$objPro->setProducto("", $objUti->eliminaEspacios($_POST['term']),"");
 		 		echo $objPro->buscarProductoSensitiva($objCon,$_POST['tip_pro']);
 			}catch (PDOException $e){
 				$e->getMessage();

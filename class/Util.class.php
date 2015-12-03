@@ -81,5 +81,19 @@
 				$anio_dif--;
 			return $anio_dif;
 		}
+
+		function eliminaEspacios($string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+			
+			$cadena = preg_replace('/\s+/', ' ', trim($string));
+			return $cadena;
+		}
+
+		function eliminaTodoEspacios($string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+			
+			$cadena = preg_replace('/\s+/', '', trim($string));
+			return $cadena;
+		}
+
+		
 	}
 ?>

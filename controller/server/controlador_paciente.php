@@ -21,12 +21,12 @@
 								if($_POST['cmbPais']==1){
 									$per_id	= $objUti->valida_rut($_POST['rut']);
 								}else{
-									$per_id	= $_POST['txtIdentificador'];
+									$per_id	= $objUti->eliminaEspacios($_POST['txtIdentificador']);
 								}
-								$per_nombre	= $_POST['txtNombres'];
-								$per_apellidoPaterno	= $_POST['txtApellidoPat'];
-								$per_apellidoMaterno	= $_POST['txtApellidoMat'];
-								$per_fechaNacimiento	= $objUti->cambiarfecha_mysql($_POST['txtFechaNac']);
+								$per_nombre	=  $objUti->eliminaEspacios($_POST['txtNombres']);
+								$per_apellidoPaterno	=  $objUti->eliminaEspacios($_POST['txtApellidoPat']);
+								$per_apellidoMaterno	=  $objUti->eliminaEspacios($_POST['txtApellidoMat']);
+								$per_fechaNacimiento	=  $objUti->cambiarfecha_mysql($_POST['txtFechaNac']);
 								if($_POST['txtTelefono'] ==""){
 									$per_telefono = 0;
 								}else{
@@ -34,7 +34,7 @@
 								}
 								$per_procedencia = $_POST['cmbPais'];
 								$per_sexo = $_POST['rdSexo'];
-								$per_direccion = $_POST['txtDireccion'];
+								$per_direccion =  $objUti->eliminaEspacios($_POST['txtDireccion']);
 								$pac_id = $objPac->nuevoPac_id($objCon);
 								$pre_id = $_POST['cmbPrevision']; 
 								$ins_id = $_POST['cmbInstitucion'];
@@ -66,10 +66,10 @@
 								$objPrev = new Prevision;
 								$objInst = new Institucion;
 								$objCon->db_connect();
-								$per_nombre	= $_POST['txtNombres'];
-								$per_apellidoPaterno	= $_POST['txtApellidoPat'];
-								$per_apellidoMaterno	= $_POST['txtApellidoMat'];
-								$per_fechaNacimiento	= $objUti->cambiarfecha_mysql($_POST['txtFechaNac']);
+								$per_nombre	=  $objUti->eliminaEspacios($_POST['txtNombres']);
+								$per_apellidoPaterno	=  $objUti->eliminaEspacios($_POST['txtApellidoPat']);
+								$per_apellidoMaterno	=  $objUti->eliminaEspacios($_POST['txtApellidoMat']);
+								$per_fechaNacimiento	=  $objUti->cambiarfecha_mysql($_POST['txtFechaNac']);
 								if($_POST['txtTelefono'] ==0){
 									$per_telefono = 0;
 								}else{
@@ -77,7 +77,7 @@
 								}
 								$per_procedencia = $_POST['cmbPais'];
 								$per_sexo = $_POST['rdSexo'];
-								$per_direccion = $_POST['txtDireccion'];
+								$per_direccion =  $objUti->eliminaEspacios($_POST['txtDireccion']);
 								$per_id = $_POST['per_id'];
 								//$pac_id = $objPac->nuevoPac_id($objCon);
 								$pre_id = $_POST['cmbPrevision']; 
@@ -101,10 +101,10 @@
 								$objUti= new Util(); 
 								$objCon->db_connect();
 								$txtRut = $_POST['txtRut'];
-								$txtIdentificador =  $_POST['txtIdentificador'];
+								$txtIdentificador =   $objUti->eliminaTodoEspacios($_POST['txtIdentificador']);
 								if($txtRut > 0){
 									$per_id = $objUti->valida_rut($txtRut);
-								}else if($txtIdentificador > 0){
+								}else if($txtIdentificador !=""){
 									$per_id = $txtIdentificador;
 								}
 								echo $res = $objPac->buscarPaciente($objCon, $per_id);

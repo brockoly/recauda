@@ -141,7 +141,8 @@ $(document).ready(function(){
 					c=0;
 				}
 			}
-			$(this).val($(this).val().trim());
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 	});
 
 	$("#txtApellidoPaterno").blur(function(){
@@ -159,7 +160,8 @@ $(document).ready(function(){
 					d=0;
 				}
 			}
-			$(this).val($(this).val().trim());
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 	});
 
 	$("#txtApellidoMaterno").blur(function(){
@@ -177,7 +179,8 @@ $(document).ready(function(){
 					e=0;
 				}
 			}
-			$(this).val($(this).val().trim());
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 	});
 
 	$("#txtTelefono").blur(function(){
@@ -195,7 +198,10 @@ $(document).ready(function(){
 					g=0;	
 				}
 			}
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 	});
+
 	$("#txtDireccion").blur(function(){
 			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
@@ -205,38 +211,21 @@ $(document).ready(function(){
 				$(this).removeClass("cajamala" );
 				h=1;
 			}
-			$(this).val($(this).val().trim());
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 	});
+
 	$("#txtIdentificador").blur(function(){
 			if($(this).val().trim()==""){				
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errIdentificador','Rellene los campos');
+				$('#txtNombre').val("");
+				$('#txtApellidoPaterno').val("");
+				$('#txtApellidoMaterno').val("");
+				$('#txtFechaNacimientos').val("");
+				$('#txtTelefono').val("");
+				$('#txtDireccion').val("");	
 				o=0;			
-			}else{
-				rut=$.Rut.quitarFormato($("#txtIdentificador").val());				
-				var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut);
-				if(resUsu2.length>2){
-					pacEx=1;
-					c=1;
-					d=1;
-					e=1;
-					g=1;
-					var resUsu3 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut);
-					if(resUsu3.length<2){
-						var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut));												
-						$('#txtNombre').val(arrExistente.per_nombre);
-						$('#txtApellidoPaterno').val(arrExistente.per_apellidoPaterno);
-						$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
-						$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
-						$('#txtTelefono').val(arrExistente.per_telefono);
-						if(arrExistente.per_sexo=='m'){
-							$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
-						}					
-						$('#txtDireccion').val(arrExistente.per_direccion);
-					}
-				}else{
-					pacEx=0;
-				}
 			}
 	});
 
@@ -247,9 +236,57 @@ $(document).ready(function(){
 								 o=0;
 								 rut=0;
 							  },
-		  on_success: function(){ 
+		  on_success: function(){ //alert("Valido rut")
 		  						rut=$.Rut.quitarFormato($("#txtIdentificador").val());
 		  						o=1;
+		  						rut=$.Rut.quitarFormato($("#txtIdentificador").val());				
+									var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut);
+									if(resUsu2.length>2){
+										pacEx=1;
+										c=1;
+										d=1;
+										e=1;
+										g=1;
+										var resUsu3 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut);
+										if(resUsu3.length<3){
+											var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut));												
+											$('#txtNombre').val(arrExistente.per_nombre);
+											$('#txtApellidoPaterno').val(arrExistente.per_apellidoPaterno);
+											$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
+											$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
+											$('#txtTelefono').val(arrExistente.per_telefono);
+											if(arrExistente.per_sexo=='m'){
+												$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
+											}
+											$("#txtIdentificador").removeClass("cajabuena cajamala");	
+											$('#errIdentificador').attr("title", "").hide("slow");
+											$(this).removeClass("cajabuena cajamala");	
+											$('#errIdentificador').attr("title", "").hide("slow");				
+											$('#txtDireccion').val(arrExistente.per_direccion);
+											$("#txtUsuario").blur();
+											$("#txtCorreo").blur();
+											$("#txtNombre").blur();
+											$("#txtApellidoPaterno").blur();
+											$("#txtApellidoMaterno").blur();
+											$("#txtDireccion").blur();
+											$("#txtApellidoPaterno").focus();
+											$("#txtApellidoMaterno").focus();
+											$("#txtDireccion").focus();
+											$("#txtNombre").focus();
+											if($("#txtFechaNacimientos").val()==""){
+												$("#txtFechaNacimientos").addClass("cajamala");
+												muestraError('errFechaNacimiento','Rellene los campos');
+												f=0;	
+											}else{
+												$("#txtFechaNacimientos").removeClass("cajamala" );
+												f=1;
+											}
+											$('#errFechaNacimiento').removeClass("cajamala");	
+											$('#errFechaNacimiento').attr("title", "").hide("slow");
+										}
+									}else{
+										pacEx=0;
+									}
 		  					    },
 		  format_on: 'keyup'
 

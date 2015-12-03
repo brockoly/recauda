@@ -46,7 +46,7 @@ if ( $_SESSION['usuario'] == null ) {
 </div>
 </center>
 </head>
-<body bgcolor="#E6E6FA">
+<body bgcolor="#E6E6FA" ondrop="return false">
 <div class="mainWrap">
 <a id="touch-menu" class="mobile-menu" href="#"><i class="icon-reorder"></i>Menu</a>
 	<nav>

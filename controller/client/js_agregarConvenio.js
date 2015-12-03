@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 	$("#btnAgregarCon").button().click(function(){
 		if($("#txtConvenioAgre").val().trim()!=""){
-			$("#txtConvenioAgre").val($("#txtConvenioAgre").val().trim())
+			$("#txtConvenioAgre").val($("#txtConvenioAgre").val().trim());
 			var arrayPrevisiones="";
 			$('input[name="prevision[]"]:checked').each(function() {
 				arrayPrevisiones += $(this).val() + ",";
