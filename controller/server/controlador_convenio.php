@@ -99,6 +99,20 @@
 						}
 						
 				break;
+				case "guardarConvenioPSS":
+						$objCon->db_connect();											
+						try{
+						 		$objCon->beginTransaction();
+						 		$objIns->setInstitucion($_POST['ins_id'],'');
+						 		$objIns->modificarConvenioPSS($objCon, $_POST['pss_id']);
+						 		$objCon->commit();
+						 		echo "Convenio guardado";						 		
+						}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			$e->getMessage();
+						}
+						
+				break;
 
 		}
 ?>

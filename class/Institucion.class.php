@@ -174,5 +174,12 @@
 			$rs=$objCon->ejecutarSQL($sql,'ERROR AL eliminarAsociacion');
 		 	return $rs;
 		}
+		function modificarConvenioPSS($objCon, $pss_id){
+			 	$sql="UPDATE pss
+					  SET pss.pss_insId ='$this->ins_id'
+					  WHERE pss.pss_id=$pss_id";
+				$rs=$objCon->ejecutarSQL($sql,'ERROR AL modificarConvenioPSS');
+			 	return $rs;
+		}
 	}
 ?>

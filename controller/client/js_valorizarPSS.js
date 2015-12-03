@@ -56,27 +56,34 @@ $(document).ready(function(){
 	});
 
 	$('#btnGuardarVCambEsta').button().click(function(){
-		if(a==0){
-			$('#tblValorizacion  [name="txtValor"]').each(function(){
-				var idVal = $(this).attr('id');
-				var val = $(this).val();
-				var cantidad = $('#txtCantidad'+idVal).val();
-				var total = cantidad * val;
-				var prevision = $('#txtPrevisionId').val();
-				var res = validarProcesos('./controller/server/controlador_valorizar.php','pro_id='+idVal+'&op=actualizarValor'+'&val_monto='+val+'&pss_id='+$('#pss_id').val()+'&pss_saldo='+$('#txtTotal').val());
-			});
-			var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=valorizarPss');
-
-			var paciente=$("#Paciente").val();
-			var ctaCorriente=$("#CtaCorriente").val();
-			var identificador=$("#Identificador").val();
-			var id = $('#cue_id').val();
-			cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
-			mensajeUsuario('successMensaje','Éxito','Valores actualizados con exito.');
-
-			$('#modalValorizarPss').dialog('destroy').remove();
+		var cmbInst = $('#cmbInstitucionVal option:selected').val();
+		if(cmbInst==0){
+			mensajeUsuario('alertMensaje','Advertencia','Porfavor seleccione una institución.');
 		}else{
-			mensajeUsuario('alertMensaje','Error','Porfavor termine de editar los valores.');
+			if(a==0){
+				var totalPrograma = 0;
+				$('#tblValorizacion  [name="txtValor"]').each(function(){
+					var idVal = $(this).attr('id');
+					var val = $(this).val();
+					var cantidad = $('#txtCantidad'+idVal).val();
+					var total = cantidad * val;
+					totalPrograma = totalPrograma + total; 
+					var prevision = $('#txtPrevisionId').val();
+					var res = validarProcesos('./controller/server/controlador_valorizar.php','pro_id='+idVal+'&op=actualizarValor'+'&val_monto='+val+'&pss_id='+$('#pss_id').val()+'&pss_saldo='+$('#txtTotal').val());
+				});
+				var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=valorizarPss&total='+totalPrograma);
+				var guardarInst = validarProcesos('./controller/server/controlador_convenio.php','ins_id='+$('#cmbInstitucionVal option:selected').val()+'&op=guardarConvenioPSS&pss_id='+$('#pss_id').val());
+
+				var paciente=$("#Paciente").val();
+				var ctaCorriente=$("#CtaCorriente").val();
+				var identificador=$("#Identificador").val();
+				var id = $('#cue_id').val();
+				cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
+				mensajeUsuario('successMensaje','Éxito','Valores actualizados con exito.');
+				$('#modalValorizarPss').dialog('destroy').remove();
+			}else{
+				mensajeUsuario('alertMensaje','Advertencia','Porfavor termine de editar los valores.');
+			}	
 		}
 	});
 	$('#cmbInstitucionVal').change(function(){

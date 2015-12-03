@@ -21,7 +21,6 @@ $(document).ready(function(){
 			if($(this).hasClass('open')){
 				mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a Abrir el PSS N° '+pss_id+', ¿Desea Continuar?','./controller/server/controlador_pss.php','pss_id='+pss_id+'&op=abrirPss','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarPssCtaCte');
 			}
-
 			if($(this).hasClass('close')){
 				mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a Cerrar el PSS N° '+pss_id+', ¿Desea Continuar?','./controller/server/controlador_pss.php','pss_id='+pss_id+'&op=cerrarPss','./view/interface/busquedaPssCtaCte.php','cue_id='+$('#cue_id').val()+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'#contenidoBuscado','modalAgregarPssCtaCte');
 			}
@@ -38,7 +37,7 @@ $(document).ready(function(){
 				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'auto','auto','Edición de Pss','modalEditarPss');
 			}
 			if($(this).hasClass('pagar')){
-				mensajeUsuario('alertMensaje','No no nooo','Este opción aun esta en desarrollo.');
+				ventanaModal('./view/dialog/pagarPss.php','pss_id='+pss_id,'auto','auto','Pagar Pss N°'+pss_id,'modalPagarPss')
 			}
 			if($(this).hasClass('ordenAtencion')){
 				mensajeUsuario('alertMensaje','No no nooo','Este opción aun esta en desarrollo.');
