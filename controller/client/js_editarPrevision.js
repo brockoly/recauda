@@ -2,8 +2,9 @@ $(document).ready(function(){
 
 	$("#btnModificarPre").button().click(function(){
 		if($("#txtPrevision").val().trim()!=""){
+			var valor = eliminarEspacio($("#txtPrevision").val());
+			$("#txtPrevision").val(valor);
 			var res = validarProcesos('./controller/server/controlador_prevision.php',$("#frmEditarUsuario").serialize()+"&op=editar");
-			
 			if(res!=""){
 				$("#txtPrevision").addClass("cajamala");
 				muestraError("errPrevision", res);
@@ -18,5 +19,10 @@ $(document).ready(function(){
 			muestraError("errPrevision", "Rellene los campos");
 		}
 				
+	});
+
+	$("#txtPrevision").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 	});
 });

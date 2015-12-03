@@ -1,7 +1,6 @@
 <?php
 	/*LLAMADA DE CLASES*/
-	session_start();
-	
+	session_start();	
 	require_once('../../class/Conectar.class.php'); $objCon = new Conectar(); 
 	require_once('../../class/Paciente.class.php'); $objPac = new Paciente(); 
 	require_once('../../class/Util.class.php');	$objUtil= new Util();
@@ -27,15 +26,15 @@
 		<table>
 				<tr>
 					<td>Nombres *</td>
-					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtNombres" name="txtNombres" value="<?=$datos[0]['Nombre'];?>"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errUsuario" hidden="true"/></td>
+					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtNombres" name="txtNombres" value="<?=$datos[0]['Nombre'];?>"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errNombres" hidden="true"/></td>
 				</tr>
 				<tr>
 					<td>Apellido Paterno *</td>
-					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtApellidoPat"  name="txtApellidoPat" value="<?=$datos[0]['Apellido_Paterno']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
+					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtApellidoPat"  name="txtApellidoPat" value="<?=$datos[0]['Apellido_Paterno']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errApellidoPat" hidden="true"/></td>
 				</tr>
 				<tr>
 					<td>Apellido Materno *</td>
-					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtApellidoMat"  name="txtApellidoMat" value="<?=$datos[0]['Apellido_Materno']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errCorreo" hidden="true"/></td>
+					<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtApellidoMat"  name="txtApellidoMat" value="<?=$datos[0]['Apellido_Materno']?>" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errApellidoMat" hidden="true"/></td>
 				</tr>
 				<tr>
 					<td>Sexo</td>

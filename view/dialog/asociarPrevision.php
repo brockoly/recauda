@@ -11,6 +11,7 @@
 <script type="text/javascript" src="controller/client/js_asociarPrevision.js"></script>
 <center>
 <form id="frmEditarUsuario">
+		<?php  if(count($instituciones)>0){ ?>
 		<input type="hidden" name="txtIdIns" id="txtIdIns" value="<?=$_POST['ins_id']?>">
 		<input type="hidden" name="txtNombreIns" id="txtNombreIns" value="<?=$_POST['ins_nombre']?>">
 		<fieldset style="width: 400px;"><legend>Lista Previsiones</legend><br>
@@ -36,4 +37,5 @@
 				</tr>
 		</table><br>
 		</fieldset>
+		<?php }else{?> <label style="color: red;">Esta intituciones ya tiene todas las previsión asociadas</label><br><br><?php } ?>
 </form>

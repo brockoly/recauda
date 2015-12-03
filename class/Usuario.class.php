@@ -173,7 +173,8 @@ class Usuario{
 					persona.per_apellidoMaterno,
 					persona.per_fechaNacimiento,
 					persona.per_telefono,
-					persona.per_direccion
+					persona.per_direccion,
+					persona.per_sexo
 				FROM
 					usuario
 				LEFT JOIN persona ON usuario.per_id = persona.per_id
@@ -189,6 +190,7 @@ class Usuario{
 						$datos[$i]['privilegio']=$v['pri_id'];
 						$datos[$i]['fechaNacimiento']=$v['per_fechaNacimiento'];
 						$datos[$i]['direccion']=$v['per_direccion'];
+						$datos[$i]['sexo']=$v['per_sexo'];
 						$i++;
 				}
 	 	return $datos;

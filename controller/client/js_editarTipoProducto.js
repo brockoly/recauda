@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	validar('txtNombreTipoProducto', 'id' ,'letras')
 	$('#btnModificarTipoProducto').button().click(function(){
 		var datosEnviar=[];
 		var i = 0;
@@ -6,6 +7,8 @@ $(document).ready(function(){
 	       	datosEnviar[i] = $(this).val(); 
 	       	i++;
    		});
+   		var valor = eliminarEspacio($("#txtNombreTipoProducto").val());
+		$("#txtNombreTipoProducto").val(valor);
 		if($("#txtNombreTipoProducto").val()!=""){
 			var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#txtNombreTipoProducto").val()+'&tip_prod_id='+$("#tip_prod_id").val()+"&op=editarTipo"+'&datosE='+datosEnviar);
 			if(res=="existe"){

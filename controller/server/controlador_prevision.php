@@ -2,6 +2,7 @@
 	
 		require_once('../../class/Conectar.class.php');  $objCon = new Conectar();
 		require_once('../../class/Prevision.class.php'); $objPre = new Prevision();
+		require_once('../../class/Util.class.php'); $objUti = new Util();
 
 
 
@@ -32,7 +33,7 @@
 					 			$e->getMessage();
 							}
 						}else{
-							echo "Este nombre ya existe en la base de datos";
+							echo "Este nombre ya existe en los registros";
 						}
 				break;
 
@@ -42,7 +43,7 @@
 						$prevision=$objPre->buscaPrevision($objCon, 2);
 						
 						if($prevision!=""){
-							echo "Este nombre ya existe en la base de datos";
+							echo "Este nombre ya existe en los registros";
 						}else{
 
 							try{

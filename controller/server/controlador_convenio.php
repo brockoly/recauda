@@ -10,12 +10,18 @@
 				case "editar":
 						$objIns->setInstitucion($_POST['txtIdCon'], $objUtil->eliminaEspacios($_POST['txtConvenio']));					
 						$objCon->db_connect();
-						$institucion=$objIns->buscaInstitucion($objCon);
+						$institucion=$objIns->buscaInstitucion($objCon, 2);
 						
-						if($institucion!=""){
-							echo "Este nombre ya existe en la base de datos";
-						}else{
-
+						if($institucion=="Existe con id"){
+							 $bandera=0;									
+						}else{  
+							if($institucion=="Existe sin id"){
+								$bandera=1;
+							}else{
+								$bandera=0;
+							}
+						}						
+						if($bandera==0){
 							try{
 							 		$objCon->beginTransaction();
 							 		$objIns->modificarConvenio($objCon);
@@ -24,6 +30,8 @@
 						 			$objCon->rollBack(); 
 						 			$e->getMessage();
 							}
+						}else{
+							echo "Este nombre ya existe en los registros";
 						}
 				break;
 				//Nuevo Agregar (con asociacion a previsión)
@@ -32,7 +40,7 @@
 						$id=$objIns->buscarMaximoId($objCon);											
 						$objIns->setInstitucion($id,$objUtil->eliminaEspacios($_POST['ins_nombre']));
 						$arreglox= explode(",", $_POST['arregloPrevisiones']);
-						$usuAux=$objIns->buscaInstitucion($objCon);				
+						$usuAux=$objIns->buscaInstitucion($objCon, 1);				
 						if($usuAux!=""){
 							echo "Este nombre ya existe en la base de datos";
 						}else{

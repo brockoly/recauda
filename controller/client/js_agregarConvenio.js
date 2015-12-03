@@ -1,6 +1,8 @@
 $(document).ready(function(){
 
 	$("#btnAgregarCon").button().click(function(){
+		var valor = eliminarEspacio($("#txtConvenioAgre").val());
+		$("#txtConvenioAgre").val(valor);
 		if($("#txtConvenioAgre").val().trim()!=""){
 			$("#txtConvenioAgre").val($("#txtConvenioAgre").val().trim());
 			var arrayPrevisiones="";
@@ -30,5 +32,13 @@ $(document).ready(function(){
 			$("#txtConvenioAgre").addClass("cajamala");
 			muestraError("errConvenio", "Rellene los campos");
 		}				
+	});
+	$("#txtConvenioAgre").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
+	});
+	$("#txtConvenioAgre").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errConvenio').attr("title", "").hide("slow");
 	});
 });

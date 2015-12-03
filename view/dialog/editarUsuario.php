@@ -17,7 +17,7 @@
 	$_SESSION['usu_nombre']=$datos[0]['usuario'];
 	$_SESSION['usu_correo']=$datos[0]['correo'];	
 	//var_dump($datos);
-$fecha = "01/01/".(date("Y")-18);
+	$fecha = "01/01/".(date("Y")-18);
 ?>
 <script type="text/javascript" src="controller/client/js_editarUsuario.js"></script>
 <script type="text/javascript">calendario('txtFechaNacimientos', '<?=$fecha?>')</script>
@@ -53,7 +53,8 @@ $fecha = "01/01/".(date("Y")-18);
 						<img src="./include/img/information.png" id="errPrivilegio" hidden="true"/>
 					</td>
 					<?php }else{ ?> <input type="hidden" id="txtCorreo" name="cmbPrivilegios" value="<?=$datos[0]['privilegio']?>"> <? }?>
-				</tr>				
+				</tr>
+				<input type="hidden" value="<?=$datos[0]['sexo']?>" name="rdSexo">				
 		</table>
 		<br>
 		</fieldset>

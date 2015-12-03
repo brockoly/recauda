@@ -482,7 +482,7 @@ function validar(id, atributo,tipo){
 			case 'correo' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 								break;
 		}
-		$('[name="'+id+'"]').bind('copy paste cut', function (e) {
+		$('[name="'+id+'"]').bind('paste', function (e) {
 		        e.preventDefault();
 		        return false;
 		});
@@ -502,7 +502,7 @@ function validar(id, atributo,tipo){
 				case 'correo' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 									break;
 			}
-			$('#'+id).bind('copy paste cut', function (e) {
+			$('#'+id).bind('paste', function (e) {
 		        e.preventDefault();
 		        return false;
 		    });
@@ -522,7 +522,7 @@ function validar(id, atributo,tipo){
 				case 'correo' 	: 	$('.'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 									break;
 			}
-			$('.'+id).bind('copy paste cut', function (e) {
+			$('.'+id).bind('paste', function (e) {
 		        e.preventDefault();
 		        return false;
 		    });
@@ -532,6 +532,13 @@ function validar(id, atributo,tipo){
 }
 
 function eliminarEspacio(string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+		string = string.trim();
 		string = string.replace(/\s+/g, ' ');
+		return string
+}
+
+function eliminarTodosEspacio(string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+		string = string.trim();
+		string = string.replace(/\s+/g, '');
 		return string
 }

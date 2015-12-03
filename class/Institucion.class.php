@@ -26,8 +26,8 @@
 		function actualizarInstitucion($conexion){
 
 		}	
-		function buscaInstitucion($objCon){//
-
+		function buscaInstitucion($objCon, $opcion){//
+			if($opcion==1){
 			 	$sql="SELECT ins_nombre
 					  FROM institucion
 					  WHERE ins_nombre='$this->ins_nombre'";
@@ -35,7 +35,23 @@
 				foreach ($objCon->consultaSQL($sql, 'ERROR obtenerInstituciones') as $v) {
 					$datos=$v['ins_nombre'];
 			    }
-				return $datos;		 	
+				return $datos;
+			}
+
+			if($opcion==2){
+				$sql =" SELECT
+								CASE 
+								WHEN institucion.ins_nombre = '$this->ins_nombre' AND institucion.ins_id = '$this->ins_id' THEN 'Existe con id'
+								WHEN institucion.ins_nombre = '$this->ins_nombre' AND institucion.ins_id <>'$this->ins_id'THEN 'Existe sin id'
+								END AS condicion
+					   	FROM recaudacion.institucion";
+			 	foreach ($objCon->consultaSQL($sql,'ERROR buscaInstitucion') as $v) {
+			 		if(is_null($v['condicion'])==false){
+			 			$datos = $v['condicion'];
+			 		}
+			 	}
+			 	return $datos;
+			}	 	
 		}
 		function buscarInstitucionAsociacion($objCon, $pre_id){
 			$sql="	SELECT 	DISTINCT 

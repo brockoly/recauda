@@ -5,6 +5,7 @@
 	require_once('../../class/Tipo_Producto.class.php');$objTipoPro = new Tipo_Producto();
 	require_once('../../class/Unidad_Medida.class.php');$objUnidadM = new Unidad_Medida();
 	require_once('../../class/Valores.class.php');$objValores = new Valores();
+	require_once('../../class/Util.class.php');$objUti = new Util();
 
 	switch($_POST['op']) {
 		case "addProducto":		

@@ -70,6 +70,8 @@ $(document).ready(function(){
 	});
 
 	$("#txtNombre").blur(function(){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errNombre','Rellene los campos');
@@ -84,11 +86,11 @@ $(document).ready(function(){
 					c=0;
 				}
 			}
-			var valor = eliminarEspacio($(this).val());
-			$(this).val(valor);
 	});
 
 	$("#txtApellidoPaterno").blur(function(){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errApellidoPaterno','Rellene los campos');
@@ -103,11 +105,11 @@ $(document).ready(function(){
 					d=0;
 				}
 			}
-			var valor = eliminarEspacio($(this).val());
-			$(this).val(valor);
 	});
 
 	$("#txtApellidoMaterno").blur(function(){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errApellidoMaterno','Rellene los campos');
@@ -122,18 +124,16 @@ $(document).ready(function(){
 					e=0;
 				}
 			}
-			var valor = eliminarEspacio($(this).val());
-			$(this).val(valor);
 	});
 
 	$("#txtDireccion").blur(function(){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errNombre','Rellene los campos');
 				c=0;		
 			}
-			var valor = eliminarEspacio($(this).val());
-			$(this).val(valor);
 	});
 
 	$("#txtDireccion").focus(function(){

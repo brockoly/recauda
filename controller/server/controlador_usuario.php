@@ -93,7 +93,7 @@
 
 								$fecha = $objUtil->cambiarfecha_mysql($_POST['txtFechaNacimiento']);
 								$objUsu->setUsuario($objUtil->eliminaEspacios($_SESSION['usu_nombre']), '',$objUtil->eliminaEspacios($_POST['txtCorreo']));
-								$objPer->setPersona($_SESSION['rut'],$objUtil->eliminaEspacios($_POST['txtNombre']),$objUtil->eliminaEspacios($_POST['txtApellidoPaterno']),$objUtil->eliminaEspacios($_POST['txtApellidoMaterno']),$fecha ,$telefono,1, '',$objUtil->eliminaEspacios($_POST['txtDireccion']));
+								$objPer->setPersona($_SESSION['rut'],$objUtil->eliminaEspacios($_POST['txtNombre']),$objUtil->eliminaEspacios($_POST['txtApellidoPaterno']),$objUtil->eliminaEspacios($_POST['txtApellidoMaterno']),$fecha ,$telefono,1, $_POST['rdSexo'],$objUtil->eliminaEspacios($_POST['txtDireccion']));
 								
 								$correoAux = $objUsu->buscarCorreo($objCon);
 								if($correoAux=="Existe con usuario"){

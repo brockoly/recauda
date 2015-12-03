@@ -207,6 +207,8 @@ $(document).ready(function(){
 		}
 	});
 	$("#txtNombres").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errNombres','Rellene los campos');
@@ -220,10 +222,11 @@ $(document).ready(function(){
 				muestraError('errNombres','Mínimo 2 caracteres, Máximo 35 caracteres');
 				b=0;
 			}
-		}
-		$(this).val($(this).val().trim());
+		}		
 	});
 	$("#txtApellidoPat").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoPat','Rellene los campos');
@@ -237,11 +240,12 @@ $(document).ready(function(){
 				muestraError('errApellidoPat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				c=0;
 			}
-		}
-		$(this).val($(this).val().trim());
+		}		
 	});
 
 	$("#txtApellidoMat").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoMat','Rellene los campos');
@@ -255,10 +259,11 @@ $(document).ready(function(){
 				muestraError('errApellidoMat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				d=0;
 			}
-		}
-		$(this).val($(this).val().trim());
+		}		
 	});
 	$("#txtDireccion").blur(function(){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
 			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errDireccion','Rellene los campos');
@@ -267,7 +272,6 @@ $(document).ready(function(){
 				$(this).removeClass("cajamala" );
 				h=1;
 			}
-			$(this).val($(this).val().trim());
 	});
 	/*VALIDACIONES ONFOCUS ------------------------------*/
 	$("#txtNombres").focus(function(){
