@@ -22,9 +22,9 @@
   for($i=0; $i<count($detallePSS);$i++){
       $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
   }
+  //print_r($_SESSION);
 ?>
 <script type="text/javascript" src="controller/client/js_pagarPSS.js"></script>
-<input type="hidden" value="<?=$paciente[0]['prevision_id']?>" id="txtPrevisionId" />
 <input type="hidden" value="<?=$_POST['pss_id']?>" id="pss_id" />
 <br>
 <fieldset class="cabezeraDatos"><legend class="cuerpoDatos">Datos PSS N ° <?=$_POST['pss_id'];?></legend>
@@ -94,7 +94,10 @@
         <legend class="cuerpoDatos">Bonos  <img width="20" height="20" id="btnMasBono" src="./include/img/plus.png"></legend>
         <center>
           <table width="90%" border="0">
-            <tr align="center">
+          <tr>
+            <td>PRONTAMENTE</td>
+          </tr>
+            <!-- <tr align="center">
               <td>ID</td>
               <td>NOMBRE</td>
               <td>VALOR</td>
@@ -103,7 +106,7 @@
               <td>1</td>
               <td>Fonasa Ins</td>
               <td>0</td>
-            </tr>
+            </tr> -->
           </table>
         <center>
         <br/>
@@ -114,20 +117,37 @@
         <br/>
         <legend class="cuerpoDatos">Datos pago</legend>
         <center>
-          <table border="0" width="90%">
+          <table border="0">
             <tr>
-              <td width="30%">Tipo Pago</td>
-              <td width="70%">Monto a pagar</td>
-            </tr>
-            <tr>
-              <td>
-              <select>
-                <option value="0">Seleccione...</option>
-                <? for($i=0; $i<count($objTip_pag); $i++){ ?>
-                      <option value="<?=$objTip_pag[$i][tip_pag_id]?>"><?=$objTip_pag[$i][tip_pag_descripcion]?></option>
-                <? }?>
-              </select></td>
-              <td><input type="text" id="txtMontoPago"></td>
+              <td >
+                <table border="0">
+                  <tr class="cuerpoDatosTablas">
+                    <td >Tipo Pago</td>
+                    <td >Monto a pagar</td>
+                    <td >Acción</td>
+                    <td align="center" >Total</td>
+                  </tr>
+                  <tr>
+                    <td>
+                    <select id="cmbTipoPago">
+                      <option value="0">Seleccione...</option>
+                      <? for($i=0; $i<count($objTip_pag); $i++){ ?>
+                            <option value="<?=$objTip_pag[$i][tip_pag_id]?>"><?=$objTip_pag[$i][tip_pag_descripcion]?></option>
+                      <? }?>
+                    </select></td>
+                    <td><input type="text" class="valores" style="text-align:right;" id="txtMontoPago"></td>
+                    <td align="center"><img width="20" height="20" id="bntAgregarPago" style="cursor:pointer;" src="./include/img/plus.png"></td>
+                    <td><input type="text" style="border:none; background:none; text-align:center; font-size: 20px;" readonly id="txtTotalPag" value="0"></td>
+                  </tr>
+                  <tr>
+                    <td colspan="4">
+                      <table border="0" width="100%" id="tblPagos">
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+              <td align="center"> </td>
             </tr>
           </table>
         </center>

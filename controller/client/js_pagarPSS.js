@@ -1,18 +1,82 @@
 $(document).ready(function(){
-	$('#btnPagarPSS').button().click(function(){		
-		if(a==0){
-			$('#tblValorizacion  [name="txtValor"]').each(function(){
-				var idVal = $(this).attr('id');
-				var val = $(this).val();
-				var cantidad = $('#txtCantidad'+idVal).val();
-				var total = cantidad * val;
-				var prevision = $('#txtPrevisionId').val();
-				var res = validarProcesos('./controller/server/controlador_valorizar.php','pro_id='+idVal+'&op=actualizarValor'+'&val_monto='+val+'&pss_id='+$('#pss_id').val()+'&pss_saldo='+$('#txtTotal').val());
-			});
-			mensajeUsuario('successMensaje','Éxito','Valores actualizados con exito.');
-			$('#modalValorizarPss').dialog('destroy').remove();
+	validar('valores', 'class' ,'numero');
+	var a=0,b=0,c=0;
+	$('#bntAgregarPago').click(function(){
+
+		var valor = $('#txtMontoPago').val();
+		var tipo_pago = $('#cmbTipoPago option:selected').text();
+		var tip_pag_id = $('#cmbTipoPago option:selected').val();
+		if(isNaN(parseInt(valor))){
+			mensajeUsuario('alertMensaje','Advertencia','Solo puede agregar numeros.');
 		}else{
-			mensajeUsuario('alertMensaje','Error','Porfavor termine de editar los valores.');
+			if(tip_pag_id==0){
+				mensajeUsuario('alertMensaje','Advertencia','Seleccione un tipo de pago.');
+			}
+			else if(valor<=0 || valor==''){
+				mensajeUsuario('alertMensaje','Advertencia','Ingrese un valor.');
+			}
+			else{
+				if(tip_pag_id==1 && a==1){
+					mensajeUsuario('alertMensaje','Advertencia','No puede agregar el mismo tipo.');
+				}else if(tip_pag_id==2 && b==1){
+					mensajeUsuario('alertMensaje','Advertencia','No puede agregar el mismo tipo.');
+				}else if(tip_pag_id==3 && c==1){
+					mensajeUsuario('alertMensaje','Advertencia','No puede agregar el mismo tipo.');
+				}
+				else{
+					var valLbl = $('#txtTotalPag').val();
+					$('#txtTotalPag').val(parseInt(valor)+parseInt(valLbl));
+					$('<tr name="bntEliminarPago'+tip_pag_id+'"><td width="30%">'+tipo_pago+'</td><td width="30%" name="valorPago" id="valor'+tip_pag_id+'" align="right">'+valor+'</td><td width="5%" align="center"><img width="20" height="20" id="bntEliminarPago'+tip_pag_id+'" src="./include/img/eraser.png"></td><td></td></tr>').appendTo('#tblPagos');
+					if(tip_pag_id==1){
+						a=1;
+					}else if(tip_pag_id==2){
+						b=1;
+					}
+					else if(tip_pag_id==3){
+						c=1;
+					}
+					$('#bntEliminarPago'+tip_pag_id).click(function(){
+						var total = $('#txtTotalPag').val();
+						$('#txtTotalPag').val(parseInt(total)-parseInt($('#valor'+tip_pag_id).text()));
+						if(tip_pag_id==1){
+							a=0;
+						}else if(tip_pag_id==2){
+							b=0;
+						}
+						else if(tip_pag_id==3){
+							c=0;
+						}
+						$('[name="bntEliminarPago'+tip_pag_id+'"]').remove();
+					});
+				}
+			}
+		}
+	});
+	$('#btnPagarPSS').button().click(function(){		
+		if(a==1 || b==1 || c==1){
+			var datosEnviar = [];
+			var i = 0;
+			var z=0;
+			$('#tblPagos [name="valorPago"]').each(function(){
+				var valor = $(this).text();
+				var idTipoPago = $(this).attr('id').split('valor');
+				var idTipoPago = idTipoPago[1];
+
+				var datos = [2];
+	            datos[0]=idTipoPago;
+	            datos[1]=valor;
+	            datosEnviar[z]=datos;
+	            z++;
+			});
+			var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val());
+			//alert(bol_id);
+			mensajeUsuario('successMensaje','Exito','Pago generado, boleta Nº.'+bol_id);
+			$('#modalPagarPss').dialog('destroy').remove();
+			//ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
+			/*mensajeUsuario('successMensaje','Éxito','Valores actualizados con exito.');
+			*/
+		}else{
+			mensajeUsuario('alertMensaje','Advertencia','Porfavor agregue un monto.');
 		}
 	});
 });
