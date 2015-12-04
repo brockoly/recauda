@@ -1,6 +1,8 @@
 $(document).ready(function(){
 	var a=0, b=0, c=0;
 	$('#btnCambiarContrasena').button().click(function(){
+		$("#txtPassNuevo").blur();
+		$("#txtPassNuevoR").blur();
 		if(a==1 && b==1 && c==1){
 			var resCambio = validarProcesos('controller/server/controlador_sesion.php',$("#frmCambiarContrasena").serialize()+"&op=modificar");
 			if(resCambio=='1'){
@@ -13,14 +15,12 @@ $(document).ready(function(){
 			}else{
 				mensajeUsuario('errorMensaje','Error','A ocurrido un error');
 			}
-		}else{
-			mensajeUsuario('errorMensaje','Advertencia','Complete los campos correctamente');
 		}
 	});
 	
 	//EVENTOS BLUR
 	$("#txtPassActual").blur(function(){
-			if( $(this).val()==""){
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errPassActual','Rellene los campos');
 				a=0;			
@@ -31,27 +31,41 @@ $(document).ready(function(){
 	});
 
 	$("#txtPassNuevo").blur(function(){
-			if( $(this).val()==""){
+			var esp = verificarEspacios($(this).val());
+			if(esp==-1){
+				if( $(this).val().trim()==""){
+					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+					muestraError('errPassNuevo','Rellene los campos');
+					b=0;			
+				}else{			
+					$(this).removeClass("cajamala" );
+					b=1;
+				}
+			}else{
+				b=0;
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errPassNuevo','Rellene los campos');
-				b=0;			
-			}else{			
-				$(this).removeClass("cajamala" );
-				b=1;
+				muestraError('errPassNuevo','Las contraseñas no puede contener espacio');
 			}
 	});
 	$("#txtPassNuevoR").blur(function(){
-			if( $(this).val()==""){
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errPassNuevoR','Rellene los campos');
-				c=0;			
-			}else if($("#txtPassNuevo").val() != $(this).val()){
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errPassNuevoR','Las contraseñas no coinciden');
+			var esp = verificarEspacios($(this).val());
+			if(esp==-1){
+				if( $(this).val().trim()==""){
+					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+					muestraError('errPassNuevoR','Rellene los campos');
+					c=0;			
+				}else if($("#txtPassNuevo").val() != $(this).val()){
+					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+					muestraError('errPassNuevoR','Las contraseñas no coinciden');
+					c=0;
+				}else{			
+					$(this).removeClass("cajamala" );
+					c=1;	
+				}
+			}else{
 				c=0;
-			}else{			
-				$(this).removeClass("cajamala" );
-				c=1;	
+				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+				muestraError('errPassNuevoR','Las contraseñas no puede contener espacio');
 			}
 	});
 
@@ -70,5 +84,8 @@ $(document).ready(function(){
 		$(this).removeClass("cajabuena cajamala");	
 		$('#errPassNuevoR').attr("title", "").hide("slow");				
 	});
-
 });
+
+function verificarEspacios(string){
+	return string.indexOf(" ");
+}

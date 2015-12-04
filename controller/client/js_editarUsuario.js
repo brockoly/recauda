@@ -70,58 +70,75 @@ $(document).ready(function(){
 	});
 
 	$("#txtNombre").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errNombre','Rellene los campos');
 				c=0;		
 			}else{
-				if($(this).val().length>2 && $(this).val().length<21){					
+				if($(this).val().length>1 && $(this).val().length<35){					
 					$(this).removeClass("cajamala" );
 					c=1;
 				}else{
 					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-					muestraError('errNombre','Mínimo 3 caracteres, Máximo 20 caracteres');	
+					muestraError('errNombre','Mínimo 2 caracteres, Máximo 35 caracteres');	
 					c=0;
 				}
 			}
 	});
 
 	$("#txtApellidoPaterno").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errApellidoPaterno','Rellene los campos');
 				d=0;			
 			}else{
-				if($(this).val().length>2 && $(this).val().length<21){					
+				if($(this).val().length>1 && $(this).val().length<35){					
 					$(this).removeClass("cajamala" );
 					d=1;
 				}else{
 					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-					muestraError('errApellidoPaterno','Mínimo 3 caracteres, Máximo 20 caracteres');
+					muestraError('errApellidoPaterno','Mínimo 2 caracteres, Máximo 35 caracteres');
 					d=0;
 				}
 			}
 	});
 
 	$("#txtApellidoMaterno").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errApellidoMaterno','Rellene los campos');
 				e=0;			
 			}else{
-				if($(this).val().length>2 && $(this).val().length<21	){					
+				if($(this).val().length>1 && $(this).val().length<35	){					
 					$(this).removeClass("cajamala" );
 					e=1;
 				}else{
 					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-					muestraError('errApellidoMaterno','Mínimo 3 caracteres, Máximo 20 caracteres');	
+					muestraError('errApellidoMaterno','Mínimo 2 caracteres, Máximo 35 caracteres');	
 					e=0;
 				}
 			}
 	});
+
+	$("#txtDireccion").blur(function(){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
+				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+				muestraError('errNombre','Rellene los campos');
+				c=0;		
+			}
+	});
+
 	$("#txtDireccion").focus(function(){
 		$(this).removeClass("cajabuena cajamala");	
-		$('#errDireccion').attr("title", "").hide("slow");				
+		$('#errDireccion').attr("title", "").hide("slow");					
 	});
 	/*$("#txtTelefono").blur(function(){
 			if( $(this).val()==""){

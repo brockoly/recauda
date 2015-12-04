@@ -2,47 +2,57 @@
 	
 		require_once('../../class/Conectar.class.php');  $objCon = new Conectar();
 		require_once('../../class/Prevision.class.php'); $objPre = new Prevision();
+		require_once('../../class/Util.class.php'); $objUti = new Util();
 
 
 
 		switch($_POST['op']) {
 
 				case "editar":
-						$objPre->setPrevision($_POST['txtIdPre'], $_POST['txtPrevision']);					
+						$objPre->setPrevision($_POST['txtIdPre'],  $objUti->eliminaEspacios($_POST['txtPrevision']));					
 						$objCon->db_connect();
-						$usuAux=$objPre->buscaPrevision($objCon);
-						
-						if($usuAux!=""){
-							echo "Este nombre ya existe en la base de datos";
-						}else{
-
-							try{
-							 		$objCon->beginTransaction();
-							 		$objPre->modificarPrevision($objCon);
-							 		$objCon->commit();						 		
-							}catch (PDOException $e){
-								 			$objCon->rollBack(); 
-								 			$e->getMessage();
+						$prevision=$objPre->buscaPrevision($objCon, 1);
+						$bandera=-1;
+						if($prevision=="Existe con id"){
+							 $bandera=0;									
+						}else{  
+							if($prevision=="Existe sin id"){
+								$bandera=1;
+							}else{
+								$bandera=0;
 							}
+						}
+						
+						if($bandera==0){
+							try{
+						 		$objCon->beginTransaction();
+						 		$objPre->modificarPrevision($objCon);
+						 		$objCon->commit();						 		
+							}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			$e->getMessage();
+							}
+						}else{
+							echo "Este nombre ya existe en los registros";
 						}
 				break;
 
 				case "agregar":
-						$objPre->setPrevision($_POST['txtIdPre'], $_POST['txtPrevision']);					
+						$objPre->setPrevision( '',  $objUti->eliminaEspacios($_POST['txtPrevision']));					
 						$objCon->db_connect();
-						$usuAux=$objPre->buscaPrevision($objCon);
+						$prevision=$objPre->buscaPrevision($objCon, 2);
 						
-						if($usuAux!=""){
-							echo "Este nombre ya existe en la base de datos";
+						if($prevision!=""){
+							echo "Este nombre ya existe en los registros";
 						}else{
 
 							try{
-							 		$objCon->beginTransaction();
-							 		$objPre->insertarPrevision($objCon);
-							 		$objCon->commit();						 		
+						 		$objCon->beginTransaction();
+						 		$objPre->insertarPrevision($objCon);
+						 		$objCon->commit();						 		
 							}catch (PDOException $e){
-								 			$objCon->rollBack(); 
-								 			$e->getMessage();
+					 			$objCon->rollBack(); 
+					 			$e->getMessage();
 							}
 						}
 				break;

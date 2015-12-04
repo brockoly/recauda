@@ -1,4 +1,4 @@
-$(document).ready(function(){	
+$(document).ready(function(){
 	validar('txtId', 'id' ,'numero');
 	validar('campoValor', 'class' ,'numero');
 	validar('campoDesc', 'class' ,'todo')
@@ -6,12 +6,23 @@ $(document).ready(function(){
 	var producto = $("#cmbTipoProducto option:selected").val();
 	var unidad = $('#uni_id').val();
 	var res = validarProcesos('controller/server/controlador_producto.php','op=buscarUmTipoProducto'+'&tip_prod_id='+producto);
+	var a=0,b=0,c=0,d=0;
 	if(res>0){
-		$('<td name="tdUM">UM:</td><td name="tdUM">&nbsp;&nbsp;&nbsp;<select id="cmbUnidadM"  name="cmbUnidadM"><option value="0">Seleccione..</option></select><img src="./include/img/information.png" id="errCmbUm" hidden="true"/></td>').appendTo('#trUnidadMedida');
+		$('<td name="tdUM">UM:</td><td name="tdUM">&nbsp;&nbsp;&nbsp;<select id="cmbUnidadM"  name="cmbUnidadM"><option value="0">Seleccione..</option></select>&nbsp;&nbsp;&nbsp; 	<img src="./include/img/information.png" id="errCmbUm" hidden="true" /></td>').appendTo('#trUnidadMedida');
 		$('#trUnidadMedida').show();
 		cargarComboAjaxValorP('controller/server/controlador_parametros.php','op=cmbUnidadM'+'&tip_prod_id='+producto,'#cmbUnidadM', unidad);
+		$('#cmbUnidadM').change(function(){
+			if( $(this).val()==0){
+				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+				muestraError('errCmbUm','Seleccione unidad de medida');	
+				d=0;		
+			}else{
+				$(this).removeClass("cajamala" );
+				$('#errCmbUm').attr("title", "").hide("slow");
+				d=1;
+			}
+		});
 	}
-	var a=0,b=0,c=0,d=0;
 	$('#btnAddProductoE').button().click(function(){
 		$('#txtId').blur();
 		$('#txtDescripcion').blur();
@@ -20,19 +31,17 @@ $(document).ready(function(){
 			var res = $(this).attr('id');
 			$('#'+res).blur();
 		});
-		var pro_id = $('#txtId').val(); ;
+		var pro_id = $('#txtId').val();
 		var pro_nom = $('#txtDescripcion').val();
 		var tip_pro_id = $('#cmbTipoProducto').val();
-		if($('#cmbUnidadM').val()=='undefined'){
-			var uni_id = 0;
-		}else{
-			var uni_id = $('#cmbUnidadM').val();
-		}
+		var uni_id;
+		$('#cmbUnidadM').change();
 		//alert('a='+a+' b='+b+' c='+c+' d='+d);
 		if(a==1 && b==1 && c==1 && d==1){
 			var datosEnviar = [];
 			var i = 0;
 			var z=0;
+			uni_id = $('#cmbUnidadM').val();
 			$('#tblUM :input').each(function() {
 				var datos = [3];
 	            datos[0]=$(this).attr('id'); //pre_id
@@ -62,7 +71,7 @@ $(document).ready(function(){
 			d=1;
 		});
 		i++;
-	});
+	}); 
 	$('#cmbTipoProducto').change(function(){
 		if($("#cmbTipoProducto option:selected").val() == 0){
 			$('#trUnidadMedida').hide();
@@ -73,13 +82,14 @@ $(document).ready(function(){
 			var producto = $("#cmbTipoProducto option:selected").val();
 			var res = validarProcesos('controller/server/controlador_producto.php','op=buscarUmTipoProducto'+'&tip_prod_id='+producto);
 			if(res>0){
-				$('<td name="tdUM">UM:</td><td name="tdUM">&nbsp;&nbsp;&nbsp;<select id="cmbUnidadM" name="cmbUnidadM"><option value="0">Seleccione..</option></select><img src="./include/img/information.png" id="errCmbUm" hidden="true"/></td>').appendTo('#trUnidadMedida');
+				$("#errCmbUm").remove();
+				$('<td name="tdUM">UM:</td><td name="tdUM">&nbsp;&nbsp;&nbsp;<select id="cmbUnidadM" name="cmbUnidadM"><option value="">Seleccione..</option></select><img src="./include/img/information.png" id="errCmbUm" hidden="true"/></td>').appendTo('#trUnidadMedida');
 				$('#trUnidadMedida').show();
 				cargarComboAjax('controller/server/controlador_parametros.php','op=cmbUnidadM'+'&tip_prod_id='+producto,'#cmbUnidadM');
-				$('#cmbUnidadM').blur(function(){
+				$('#cmbUnidadM').change(function(){
 					if( $(this).val()==0){
 						$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-						muestraError('#errCmbUm','Seleccione unidad de medida');	
+						muestraError('errCmbUm','Seleccione unidad de medida');	
 						d=0;		
 					}else{
 						$(this).removeClass("cajamala" );
@@ -87,10 +97,7 @@ $(document).ready(function(){
 						d=1;
 					}
 				});
-				$('#cmbUnidadM').focus(function(){
-					$(this).removeClass("cajamala");	
-					$('#errCmbUm').attr("title", "").hide("slow");				
-				});
+				d=0;
 			}else{
 				$('[name="tdUM"]').remove();
 				$('#trUnidadMedida').hide();
@@ -117,6 +124,8 @@ $(document).ready(function(){
 		}
 	});
 	$('#txtDescripcion').blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errDescrpcion','Rellene los campos');
@@ -149,5 +158,4 @@ $(document).ready(function(){
 		$(this).removeClass("cajamala");	
 		$('#errCmbTipoP').attr("title", "").hide("slow");				
 	});
-	
 });

@@ -80,12 +80,12 @@ $(document).ready(function(){
 
     // VALIDACIONES ONBLUR ------------
 	$("#txtUsuario").blur(function(){
-			if($(this).val()==""){
+			if($(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errUsuario','Rellene los campos');
 				a=0;			
 			}else{
-				if($(this).val().length>3 && $(this).val().length<16){					
+				if($(this).val().trim().length>3 && $(this).val().trim().length<20){					
 					$(this).removeClass("cajamala" );
 					var res = validarProcesos('./controller/server/controlador_usuario.php','op=validarNombreUsuario&usu_nombre='+$("#txtUsuario").val());//FALTA TERMINAR
 					if(res=="desactivado"){
@@ -109,12 +109,12 @@ $(document).ready(function(){
 	});
 	
 	$("#txtCorreo").blur(function(){
-			if( $(this).val()==""){
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errCorreo','Rellene los campos');	
 				b=0;		
 			}else{
-				if(validaEmail($(this).val())){					
+				if(validaEmail($(this).val().trim())){					
 					$(this).removeClass("cajamala" );
 					b=1;
 				}else{
@@ -126,63 +126,73 @@ $(document).ready(function(){
 	});
 
 	$("#txtNombre").blur(function(){
-			if( $(this).val()==""){
+		    var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errNombre','Rellene los campos');
 				c=0;		
 			}else{
-				if($(this).val().length>2 && $(this).val().length<21){					
+				if($(this).val().trim().length>1 && $(this).val().trim().length<35){
+					$(this).val($(this).val().trim());					
 					$(this).removeClass("cajamala" );
 					c=1;
 				}else{
 					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-					muestraError('errNombre','Mínimo 3 caracteres, Máximo 20 caracteres');	
+					muestraError('errNombre','Mínimo 2 caracteres, Máximo 35 caracteres');	
 					c=0;
 				}
 			}
+			
 	});
 
 	$("#txtApellidoPaterno").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if($(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errApellidoPaterno','Rellene los campos');
 				d=0;			
 			}else{
-				if($(this).val().length>2 && $(this).val().length<21){					
+				if($(this).val().trim().length>1 && $(this).val().trim().length<35){										
 					$(this).removeClass("cajamala" );
 					d=1;
 				}else{
 					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-					muestraError('errApellidoPaterno','Mínimo 3 caracteres, Máximo 20 caracteres');
+					muestraError('errApellidoPaterno','Mínimo 2 caracteres, Máximo 35 caracteres');
 					d=0;
 				}
 			}
 	});
 
 	$("#txtApellidoMaterno").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errApellidoMaterno','Rellene los campos');
 				e=0;			
 			}else{
-				if($(this).val().length>2 && $(this).val().length<21	){					
+				if($(this).val().trim().length>1 && $(this).val().trim().length<35	){					
 					$(this).removeClass("cajamala" );
 					e=1;
 				}else{
 					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-					muestraError('errApellidoMaterno','Mínimo 3 caracteres, Máximo 20 caracteres');	
+					muestraError('errApellidoMaterno','Mínimo 2 caracteres, Máximo 35 caracteres');	
 					e=0;
 				}
 			}
 	});
 
 	$("#txtTelefono").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				//$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				//muestraError('errTelefono','Rellene los campos');
 				g=0;			
 			}else{
-				if($(this).val().length>9 && $(this).val().length<11){					
+				if($(this).val().trim().length>4){					
 					//$(this).removeClass("cajamala" );
 					g=1;
 				}else{
@@ -192,8 +202,11 @@ $(document).ready(function(){
 				}
 			}
 	});
+
 	$("#txtDireccion").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errDireccion','Rellene los campos');
 				h=0;			
@@ -202,37 +215,20 @@ $(document).ready(function(){
 				h=1;
 			}
 	});
+
 	$("#txtIdentificador").blur(function(){
-			if( $(this).val()==""){				
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if($(this).val().trim()==""){				
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errIdentificador','Rellene los campos');
+				$('#txtNombre').val("");
+				$('#txtApellidoPaterno').val("");
+				$('#txtApellidoMaterno').val("");
+				$('#txtFechaNacimientos').val("");
+				$('#txtTelefono').val("");
+				$('#txtDireccion').val("");	
 				o=0;			
-			}else{
-				rut=$.Rut.quitarFormato($("#txtIdentificador").val());				
-				var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut);
-
-				if(resUsu2.length>2){
-					pacEx=1;
-					c=1;
-					d=1;
-					e=1;
-					g=1;
-					var resUsu3 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut);
-					if(resUsu3.length<2){
-						var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut));												
-						$('#txtNombre').val(arrExistente.per_nombre);
-						$('#txtApellidoPaterno').val(arrExistente.per_apellidoPaterno);
-						$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
-						$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
-						$('#txtTelefono').val(arrExistente.per_telefono);
-						if(arrExistente.per_sexo=='m'){
-							$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
-						}					
-						$('#txtDireccion').val(arrExistente.per_direccion);
-					}
-				}else{
-					pacEx=0;
-				}
 			}
 	});
 
@@ -243,9 +239,57 @@ $(document).ready(function(){
 								 o=0;
 								 rut=0;
 							  },
-		  on_success: function(){ 
+		  on_success: function(){ //alert("Valido rut")
 		  						rut=$.Rut.quitarFormato($("#txtIdentificador").val());
 		  						o=1;
+		  						rut=$.Rut.quitarFormato($("#txtIdentificador").val());				
+									var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut);
+									if(resUsu2.length>2){
+										pacEx=1;
+										c=1;
+										d=1;
+										e=1;
+										g=1;
+										var resUsu3 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut);
+										if(resUsu3.length<3){
+											var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut));												
+											$('#txtNombre').val(arrExistente.per_nombre);
+											$('#txtApellidoPaterno').val(arrExistente.per_apellidoPaterno);
+											$('#txtApellidoMaterno').val(arrExistente.per_apellidoMaterno);
+											$('#txtFechaNacimientos').val(arrExistente.per_fechaNacimiento);
+											$('#txtTelefono').val(arrExistente.per_telefono);
+											if(arrExistente.per_sexo=='m'){
+												$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
+											}
+											$("#txtIdentificador").removeClass("cajabuena cajamala");	
+											$('#errIdentificador').attr("title", "").hide("slow");
+											$(this).removeClass("cajabuena cajamala");	
+											$('#errIdentificador').attr("title", "").hide("slow");				
+											$('#txtDireccion').val(arrExistente.per_direccion);
+											$("#txtUsuario").blur();
+											$("#txtCorreo").blur();
+											$("#txtNombre").blur();
+											$("#txtApellidoPaterno").blur();
+											$("#txtApellidoMaterno").blur();
+											$("#txtDireccion").blur();
+											$("#txtApellidoPaterno").focus();
+											$("#txtApellidoMaterno").focus();
+											$("#txtDireccion").focus();
+											$("#txtNombre").focus();
+											if($("#txtFechaNacimientos").val()==""){
+												$("#txtFechaNacimientos").addClass("cajamala");
+												muestraError('errFechaNacimiento','Rellene los campos');
+												f=0;	
+											}else{
+												$("#txtFechaNacimientos").removeClass("cajamala" );
+												f=1;
+											}
+											$('#errFechaNacimiento').removeClass("cajamala");	
+											$('#errFechaNacimiento').attr("title", "").hide("slow");
+										}
+									}else{
+										pacEx=0;
+									}
 		  					    },
 		  format_on: 'keyup'
 

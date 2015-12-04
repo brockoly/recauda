@@ -81,6 +81,7 @@
 				$anio_dif--;
 			return $anio_dif;
 		}
+		
 		function formatDinero($monto){
 			$montoFormat=number_format($monto,0);
   			return str_replace(',', '.', $montoFormat);
@@ -132,6 +133,18 @@
 				return "00:00:00";
 				//return "OUT2 - 00:00:00 - - Fecha 1: ".$days." - ".$hours.":".$minutes.":".$seconds." - Fecha 2: ".$days2." - ".$hours2.":".$minutes2.":".$seconds2;	
 			}
+		}
+
+		function eliminaEspacios($string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+			
+			$cadena = preg_replace('/\s+/', ' ', trim($string));
+			return $cadena;
+		}
+
+		function eliminaTodoEspacios($string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+			
+			$cadena = preg_replace('/\s+/', '', trim($string));
+			return $cadena;
 		}
 	}
 ?>

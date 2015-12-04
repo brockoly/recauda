@@ -22,6 +22,7 @@ require_once('../../class/Pagos.class.php'); $objPag = new Pagos;
 require_once('../../class/Util.class.php'); $objUti = new Util;
 require_once('../../class/Pss.class.php'); $objPss = new Pss;
 
+
 		//TODO LO QUE NECESITAMOS
 
 		$numFolio = $_GET['bol_id'];	// NUMERO DE FOLIO
@@ -73,7 +74,7 @@ $totalProductos=count($datosDetallePss);
 
 
 // create new PDF document
-$custom_layout = array(80, ($totalProductos*8.1)+152);
+$custom_layout = array(80, ($totalProductos*8.3)+162);
 $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $custom_layout, true, 'UTF-8', false);
 //SET DOCUMENT INFORMATION
 $pdf->SetCreator(PDF_CREATOR);
@@ -88,7 +89,7 @@ $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 $pdf->SetMargins(4, 5, 5, 1);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(0);
-$pdf->SetAutoPageBreak(TRUE, 15);
+$pdf->SetAutoPageBreak(FALSE, 0);
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->setLanguageArray($l);
 $pdf->setFontSubsetting(true);
@@ -214,7 +215,7 @@ $html.= '
 	</tr>
 </table>  
 <br/>';
-//$monto = $montoTotal; $dif = $QRdif["pssCabTotal"] - $monto;
+
 $html .='<br/>
 <table>
     <tr>

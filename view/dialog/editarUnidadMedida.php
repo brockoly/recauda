@@ -1,12 +1,11 @@
 <?php
 
 ?>
-
 <script type="text/javascript" src="controller/client/js_editarUnidadMedida.js"></script>
 <center>
 <form id="frmUnidadMedida">
-<input type="hidden" value="<?=$_POST['uni_nombre']?>" id="txtUnidadMedidaAct" name="txtUnidadMedidaAct" />
-<input type="hidden" value="<?=$_POST['uni_id']?>" id="txtuni_id" name="txtuni_id" />
+<input type="" value="<?=$_POST['uni_nombre']?>" id="txtUnidadMedidaAct" name="txtUnidadMedidaAct" />
+<input type="" value="<?=$_POST['uni_id']?>" id="txtuni_id" name="txtuni_id" />
 		<fieldset style="width: 400px;"><legend>Unidad de medida</legend>
 		<table>
 				<tr>

@@ -21,7 +21,10 @@
   $tipoProducto=$objTip_pro->listarTipoProducto($objCon);
   $productos_PSS=$objPss->verDetallePss($objCon);
   $objCon=null;
+<<<<<<< HEAD
   //echo count($productos_PSS);
+=======
+>>>>>>> 80847ce4d3e62124fa8261b01c1962018e685f2c
 ?>
 <script type="text/javascript" src="controller/client/js_editarPss.js"></script>
 <fieldset class="cabezeraDatos"><legend class="cuerpoDatos">Datos PSS N ° <?=$_POST['pss_id']?></legend>
