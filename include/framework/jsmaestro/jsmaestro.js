@@ -562,6 +562,7 @@ function recargarTiempoRestante(){
 	$("#lblTime").text(horaImprimible);
 	setTimeout("recargarTiempoRestante()",1000) ;
 */
+}
 
 function eliminarEspacio(string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
 		string = string.trim();
