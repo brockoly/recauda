@@ -263,7 +263,7 @@ for($i=0; $i<count($boletas);$i++){
 			}
 		}
 		$html.='<td width="'.$tamañox.'%">'.round($totalcategoria*$porcentaje).'</td>';
-		$arrTotalesBot[$b]=round($totalcategoria*$porcentaje);
+		$arrTotalesBot[$b]+=round($totalcategoria*$porcentaje);
 		$totalBoleta+=round($totalcategoria*$porcentaje);		
 		$totalcategoria=0;
 		
