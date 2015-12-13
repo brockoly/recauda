@@ -46,7 +46,7 @@ if ( $_SESSION['usuario'] == null ) {
 </div>
 </center>
 </head>
-<body bgcolor="#E6E6FA">
+<body bgcolor="#E6E6FA" ondrop="return false">
 <div class="mainWrap">
 <a id="touch-menu" class="mobile-menu" href="#"><i class="icon-reorder"></i>Menu</a>
 	<nav>
@@ -71,10 +71,10 @@ if ( $_SESSION['usuario'] == null ) {
 			</li>
 			<li><a href="#"><i class="icon-print"></i>REPORTES</a>
 				<ul class="sub-menu">
-					<li class="change"><a href="#">ARQUEOS</a>
+					<li ><a href="#">ARQUEOS</a>
 						<ul class="sub-menu">
-							<li class="change"><a href="#">ESPONTANEO</a></li>
-							<li class="change"><a href="#">GLOBAL</a></li>
+							<li class="change"><a href="#" onclick="cargarContenido('view/interface/rendicionEspontanea.php','','#contenidoCargado')">ESPONTÁNEO</a></li>
+							<li class="change"><a href="#" onclick="cargarContenido('view/interface/rendicionGlobal.php','','#contenidoCargado')">GLOBAL</a></li>
 						</ul>
 					</li>
 				</ul>

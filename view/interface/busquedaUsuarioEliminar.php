@@ -36,7 +36,7 @@
 						<td><?=$datos[$i]['telefono']?></td>
 						<td><?=$datos[$i]['correo']?></td>
 						<td>
-							<img title="Restaurar Usuario" src="./include/img/restaurar.png" onclick="mensajeUsuarioConProcedimiento('','Confirmar Acción','¿Desea Restaurar Este Usuario?','./controller/server/controlador_usuario.php','usu_nombre=<?=$datos[$i]['usuario']?>&op=restaurarUsuario','view/interface/busquedaUsuarioEliminar.php','','#contenidoCargado')" style="cursor: pointer;"/>
+							<img title="Restaurar Usuario" src="./include/img/restaurar.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','¿Desea Restaurar Este Usuario?','./controller/server/controlador_usuario.php','usu_nombre=<?=$datos[$i]['usuario']?>&op=restaurarUsuario','view/interface/busquedaUsuarioEliminar.php','','#contenidoCargado')" style="cursor: pointer;"/>
 						</td>
 	            </tr>
             <?php 	}

@@ -22,13 +22,13 @@ $(document).ready(function(){
 				$('#modalEditarPaciente').dialog('destroy').remove();
 			}
 		}else{
+			$("#txtNombres").blur();
 			$("#txtApellidoPat").blur();
 			$("#txtApellidoMat").blur();
 			$("#cmbPais").blur();
 			$("#cmbPrevision").blur();
 			$("#cmbInstitucion").blur();
 			$("#txtDireccion").blur();
-			mensajeUsuario('alertMensaje','Advertencia','Complete los campos solicitados');
 		}
 	});
 	$('#cmbPrevision').change(function(){
@@ -81,64 +81,109 @@ $(document).ready(function(){
 		}
 	});
 	$("#txtNombres").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errNombres','Rellene los campos');
 			b=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<36){					
 				$(this).removeClass("cajamala" );
 				b=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errNombres','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errNombres','Mínimo 2 caracteres, Máximo 35 caracteres');
 				b=0;
 			}
-		}
+		}		
 	});
 	$("#txtApellidoPat").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoPat','Rellene los campos');
 			c=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<36){					
 				$(this).removeClass("cajamala" );
 				c=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errApellidoPat','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errApellidoPat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				c=0;
 			}
 		}
 	});
+
 	$("#txtApellidoMat").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoMat','Rellene los campos');
 			d=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<36){					
 				$(this).removeClass("cajamala" );
 				d=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errApellidoMat','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errApellidoMat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				d=0;
 			}
 		}
 	});
 	$("#txtDireccion").blur(function(){
-			if( $(this).val()==""){
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errDireccion','Rellene los campos');
-				h=0;			
-			}else{
-				$(this).removeClass("cajamala" );
-				h=1;
-			}
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
+		if( $(this).val()==""){
+			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+			muestraError('errDireccion','Rellene los campos');
+			h=0;			
+		}else{
+			$(this).removeClass("cajamala" );
+			h=1;
+		}
 	});
 
+	$("#txtNombres").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errNombres').attr("title", "").hide("slow");				
+	});
+	$("#txtApellidoPat").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errApellidoPat').attr("title", "").hide("slow");				
+	});
+	$("#txtApellidoMat").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errApellidoMat').attr("title", "").hide("slow");				
+	});
+	$("#txtFechaNac").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errFechaNac').attr("title", "").hide("slow");				
+	});
+	$("#txtTelefono").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errTelefono').attr("title", "").hide("slow");				
+	});
+	$("#cmbPais").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errcmbPais').attr("title", "").hide("slow");				
+	});
+	$("#cmbInstitucion").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errcmbInstitucion').attr("title", "").hide("slow");				
+	});
+	$("#cmbPrevision").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errcmbPrevision').attr("title", "").hide("slow");				
+	});
+	$("#txtDireccion").focus(function(){
+		$(this).removeClass("cajabuena cajamala");	
+		$('#errDireccion').attr("title", "").hide("slow");				
+	});
 	
 });
 

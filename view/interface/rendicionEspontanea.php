@@ -1,27 +1,46 @@
 <?php
 session_start();
 	require_once('../../class/Conectar.class.php');
-	require_once('../../class/Usuario.class.php');
 	require_once('../../class/Util.class.php');	
-	$objUsu = new Usuario();
+	
 	$objCon = new Conectar(); 
 	$objUtil = new Util(); 
 	$objCon->db_connect();
-	$datos = $objUsu->desplegarUsuarios($objCon,0);
+	//$datos = $objUsu->desplegarUsuarios($objCon,0);
 	$objCon=null;
 	//var_dump($datos);
 ?>
-<script type="text/javascript" src="controller/client/js_busqudaUsuario.js"></script>
-<center><h3>Listado de usuarios</h3></center>
-<div id="btnAgregaUsuario" onclick="ventanaModal('./view/dialog/agregarUsuario.php','','auto','auto','Registro de Usuario','modalAgregarUsuario')"><img src="./include/img/agregar.png" width="25" height="25"  > Agregar Usuario
-</div>
+<style> 
+#imgRendirArqueo {
+    width:40px;
+    height:40px;    
+
+}
+#imgRendirArqueo:hover{
+     transform: rotate(360deg);
+	
+}
+
+</style>
+<script type="text/javascript" src="controller/client/js_rendicionEspontanea.js"></script>
+<center><h3 style="margin-bottom:30px;">Arqueo Espontáneo</h3></center>
+<fieldset style="float:left;width:250px !important; padding:10px !important;" class="cabezeraDatos"><legend class="cuerpoDatos">Opciones de Arqueo</legend>
+	<center>
+	<div class="btnVisualizar" id="btnVisualizar" ><img class="imgVisualizar" id="imgVisualizar" src="./include/img/preview2.png" width="40" height="40"> 	
+	</div>
+	<div class="btnRendirArqueo" id="btnRendirArqueo" onclick="ventanaModal('./view/dialog/visualizarArqueoEspontaneo.php','','auto','auto','Visualizar Arqueo Espontáneo','modalVisualizarArqueoEspontaneo')"><img class="imgRendirArqueo" id="imgRendirArqueo" src="./include/img/gear.png">	
+	</div></center>
+</fieldset>
+<center><fieldset style="float:left;width:800px !important; margin-left:200px !important;padding:10px !important;" class="cabezeraDatos"><legend class="cuerpoDatos">Opciones de Búsqueda</legend>
+	<center>
+	</center>
+</fieldset></center>
 <br><br>
 <center>
-	<table class="display" width="100%" id="tabUsuario">
+	<table class="display" width="100%" id="tabArqueos">
             <thead>
 	            <tr>
 	              <th width="10%">Usuario</th>
-	              <th width="7%">Privilegio</th>
 	              <th width="10%">Rut</th>
 	              <th width="10%">Nombre</th>
 	              <th width="10%">Apellido Paterno</th>
@@ -37,7 +56,6 @@ session_start();
 	        ?> 
 	        	<tr>
 	        			<td><?=$datos[$i]['usuario']?></td>
-	        			<td><?=$datos[$i]['privilegio']?></td>
 						<td><?=$objUtil->formatRut($datos[$i]['rut'])?></td>
 						<td><?=$datos[$i]['nombre']?></td>
 						<td><?=$datos[$i]['apellidoPaterno']?></td>

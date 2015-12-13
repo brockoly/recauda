@@ -33,11 +33,11 @@
 	 }
 
 	function buscarPaciente($objCon, $per_id){
-		$sql="SELECT
-			paciente.per_id
-			FROM
-			paciente
-			WHERE paciente.per_id = '$per_id'";
+		$sql=" SELECT
+					REPLACE(paciente.per_id, ' ', '') as per_id
+				FROM
+				paciente
+				WHERE paciente.per_id = '$per_id'";
 		$datos = array();
 		foreach ($objCon->consultaSQL($sql,'ERROR buscarPaciente') as $v) {
 			$datos['per_id'] = $v['per_id'];

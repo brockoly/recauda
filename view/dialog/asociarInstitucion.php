@@ -10,10 +10,13 @@
 
 <script type="text/javascript" src="controller/client/js_asociarInstitucion.js"></script>
 <center>
+
 <form id="frmEditarUsuario">
+		<?php  if(count($instituciones)>0){ ?>
 		<input type="hidden" name="txtIdPre" id="txtIdPre" value="<?=$_POST['pre_id']?>">
 		<input type="hidden" name="txtNombrePre" id="txtNombrePre" value="<?=$_POST['pre_nombre']?>">
-		<fieldset style="width: 400px;"><legend>Lista Instituciones</legend><br>
+		<fieldset style="width: 400px;">
+		<legend>Lista Instituciones</legend><br>
 		<table border="0">
 				<tr>
 					<td></td>
@@ -37,4 +40,6 @@
 				</tr>
 		</table><br>
 		</fieldset>
+		<?php }else{?> <label style="color: red;">Esta previsión ya tiene todas las intituciones asociadas</label><br><br><?php } ?>
+		
 </form>

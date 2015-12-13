@@ -19,6 +19,10 @@
 <center>
 <table>
 	<tr>
+		<td width="25%">Código:</td>
+		<td>&nbsp;&nbsp;&nbsp;<input type="text" name="tip_prod_id" id="tip_prod_id" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errTip_prod_id" hidden="true"  /></td>
+	</tr>
+	<tr>
 		<td width="25%">Nombre:</td>
 		<td>&nbsp;&nbsp;&nbsp;<input type="text" name="tip_descripcion" id="tip_descripcion" />&nbsp;&nbsp;<img src="include/img/Information.png" id="errtip_descripcion" hidden="true"  /></td>
 	</tr>
@@ -56,16 +60,18 @@ for($t=0;$t<$filas;$t++){ ?>
 	<table class="display" width="100%" id="tblTipoProducto">
         <thead>
             <tr>
-              <th width="60%">Nombre</th>
-              <th width="40%">Opciones</th>
+            	<th width="20%">Código</th>
+            	<th width="60%">Nombre</th>
+            	<th width="20%" align="center">Opciones</th>
             </tr>
         </thead>
         <tbody>
 		<?php
 		for($i=0; $i<count($tipoProducto); $i++){
 	?> 	<tr>
+			<td align="center"><?=$tipoProducto[$i]['tip_prod_id']?></td>
 			<td><?=$tipoProducto[$i]['tip_descripcion']?></td>
-			<td>
+			<td align="center">
 				<img title="Editar Tipo Producto" src="./include/img/Edit.png" onclick="ventanaModal('./view/dialog/editarTipoProducto.php','tip_descripcion=<?=$tipoProducto[$i]["tip_descripcion"]?>&tip_prod_id=<?=$tipoProducto[$i]["tip_prod_id"]?>','auto','auto','Editar Tipo Producto','modalEditarTipoProducto')" style="cursor: pointer;')"/>
 				&nbsp;&nbsp;&nbsp;
 				<img title="Eliminar Tipo Producto" src="./include/img/Delete.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a ELIMINAR el tipo de producto <?=$tipoProducto[$i]['tip_descripcion']?>, ¿Desea continuar?','./controller/server/controlador_tipoProducto.php','tip_prod_id=<?=$tipoProducto[$i]['tip_prod_id']?>&op=eliminarTipo','view/dialog/agregarTipoProducto.php','','#modalAgregarTipoProducto')" style="cursor: pointer;" style="cursor: pointer;')"/>
@@ -86,14 +92,16 @@ for($t=0;$t<$filas;$t++){ ?>
 	<table class="display" width="100%" id="tblTipoProductoEliminado">
             <thead>
 	            <tr>
-	              <th width="60%">Nombre</th>
-	              <th width="40%">Opciones</th>
+	              <th width="20%">Código</th>
+            	<th width="60%">Nombre</th>
+            	<th width="20%" align="center">Opciones</th>
 	            </tr>
             </thead>
             <tbody>
 			<?php
 			for($i=0; $i<count($tipoProductoEliminados); $i++){
 		?> 	<tr>
+				<td align="center"><?=$tipoProductoEliminados[$i]['tip_prod_id']?></td>
 				<td><?=$tipoProductoEliminados[$i]['tip_descripcion']?></td>
 				<td>
 					<img title="Restaurar Tipo Producto" src="./include/img/restaurar.png" onclick="mensajeUsuarioConProcedimiento('alertMensaje','Confirmar Acción','Atención, se procederá a RESTAURAR el tipo de producto <?=$tipoProductoEliminados[$i]['tip_descripcion']?>, ¿Desea continuar?','./controller/server/controlador_tipoProducto.php','tip_prod_id=<?=$tipoProductoEliminados[$i]['tip_prod_id']?>&op=restaurarTipo','view/dialog/agregarTipoProducto.php','','#modalAgregarTipoProducto')" style="cursor: pointer;" style="cursor: pointer;')"/>

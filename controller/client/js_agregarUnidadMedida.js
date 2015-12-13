@@ -1,11 +1,13 @@
 $(document).ready(function(){
 	tablaMinima('tblUnidadMedida');
 	tablaMinima('tblUnidadMedidaEliminada');
-
+	validar('txtDesUnidad', 'id' ,'letras');
+	var a=0;
 	$('#btnAddUnidad').button().click(function(){
-		if($("#txtDesUnidad").val()!=""){
+		$("#txtDesUnidad").blur();
+		if(a==1){
 			var res = validarProcesos('./controller/server/controlador_unidadMedida.php','uni_nombre='+$("#txtDesUnidad").val()+"&op=buscarUM");
-		//	alert(res);
+		 //	alert(res);
 			if(res>0){
 				$("#txtDesUnidad").addClass("cajamala");
 				muestraError("errUnidadDes", "La unidad de medida ya existe");
@@ -19,9 +21,24 @@ $(document).ready(function(){
 			muestraError("errUnidadDes", "Rellene los campos");
 		}
 	});
+
 	$("#txtDesUnidad").focus(function(){
 		$(this).removeClass("cajabuena cajamala");	
-		$('#errUnidadDes').attr("title", "").hide("slow");				
+		$('#errUnidadMedidaE').attr("title", "").hide("slow");				
+	});
+	$("#txtDesUnidad").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);	
+		if($(this).val()==""){
+			muestraError("errUnidadMedidaE", "Rellene los campos");	
+			$(this).addClass("cajamala");
+			a=0;			
+		}else{			
+			$('#errUnidadMedidaE').attr("title", "").hide("slow");
+			$(this).removeClass("cajabuena cajamala");
+			a=1;
+		}
+				
 	});
 	
 });

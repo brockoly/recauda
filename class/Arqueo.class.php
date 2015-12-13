@@ -1,6 +1,6 @@
 <?php 
 
-class Pagos{
+class Arqueo{
 	 private $pag_id;
 	 private $pag_monto;
 
@@ -8,25 +8,6 @@ class Pagos{
 	function setPagos($pag_id, $pag_monto){
 	 		$this->pag_id=trim($pag_id);
 	 		$this->pag_monto=trim($pag_monto);
-	}
-	function buscarMaximoId($objCon){//
-
-	 	$sql="SELECT MAX(pag_id)+1 as CONT
-			  FROM pagos";
-		$i=0;
-		$datos=1;
-		foreach ($objCon->consultaSQL($sql, 'ERROR buscarMaximoId') as $v) {
-			if(is_null($v['CONT'])==false){
-	 			$datos = $v['CONT'];
-	 		}
-	    }
-		return $datos;		 	
-	}
-	function agregarPago($objCon,$cue_id,$pss_id, $tip_pag_id){
-		$sql ="INSERT INTO pagos(cue_id, pss_id, pag_id, tip_pag_id, pag_monto)
-			   VALUES ('$cue_id', '$pss_id', '$this->pag_id', '$tip_pag_id', '$this->pag_monto')";
-	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL agregarPago');
-	 	return $rs;
 	}
 	function listarPagosPSS($objCon, $pss_id, $bol_id){ //Cambiar en todos los lados que se llama
 		$sql="SELECT

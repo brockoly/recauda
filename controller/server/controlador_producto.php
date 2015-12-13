@@ -5,6 +5,7 @@
 	require_once('../../class/Tipo_Producto.class.php');$objTipoPro = new Tipo_Producto();
 	require_once('../../class/Unidad_Medida.class.php');$objUnidadM = new Unidad_Medida();
 	require_once('../../class/Valores.class.php');$objValores = new Valores();
+	require_once('../../class/Util.class.php');$objUti = new Util();
 
 	switch($_POST['op']) {
 		case "addProducto":		
@@ -23,7 +24,7 @@
 			}
 			try{
 		 		$objCon->beginTransaction();
-		 		$objPro->setProducto($_POST['pro_id'],$_POST['pro_nom'],'0');
+		 		$objPro->setProducto($_POST['pro_id'], $objUti->eliminaEspacios($_POST['pro_nom']),'0');
 				$objPro->agregarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
 				for($i=0; $i<count($nuevoArr);$i++){
 					$val_id = $objValores->buscarMaximoId($objCon);
@@ -79,7 +80,7 @@
 			}
 			try{
 		 		$objCon->beginTransaction();
-		 		$objPro->setProducto($_POST['pro_id'],$_POST['pro_nom'],'0');
+		 		$objPro->setProducto($_POST['pro_id'], $objUti->eliminaEspacios($_POST['pro_nom']),'0');
 				$objPro->editarProducto($objCon,$_POST['tip_pro_id'], $_POST['uni_id']);
 				for($i=0; $i<count($nuevoArr);$i++){
 					$val_id = $objValores->buscarMaximoId($objCon);
