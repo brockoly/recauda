@@ -152,15 +152,15 @@ class Pss{
 			$alto=30;
 			$botones="";
 			/*--------------------------Condiciones de los botones------------------------*/
-			$rulesAbierto  = array(0 => "Cerrado",1 => "Valorizado",);
-			$rulesCerrar  = array(0 => "Abierto",);
+			$rulesAbierto  = array(0 => "Cerrado",1 => "Valorizado");
+			$rulesCerrar  = array(0 => "Abierto");
 			$rulesDetalle  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
 			$rulesEditarpSS  = array(0 => "Abierto");
 			$rulesImprimir  = array(0 => "Valorizado", 1=> "Abonado", 2=>"Pagado");
-			$rulesValorizar  = array(0 => "Cerrado",);
-			$rulesPagar = array(0 => "Valorizado", 1=> "Abonado",);
-			$rulesAbonar = array(0 => "Pagado",);
-			$rulesOrdenAtencion  = array(0 => "Pagado",1=> "Abonado",2=> "Valorizado",);// Se valida con la institucion;
+			$rulesValorizar  = array(0 => "Cerrado");
+			$rulesPagar = array(0 => "Valorizado");
+			$rulesAbonar = array(0 => "Abonado");
+			$rulesOrdenAtencion  = array(0 => "Pagado",1=> "Abonado",2=> "Valorizado");// Se valida con la institucion;
 			/*--------------------------Botones------------------------*/
 
 
@@ -257,7 +257,8 @@ class Pss{
 				cuenta_corriente.cue_id,
 				pss.pss_id,
 				prevision.pre_nombre,
-				institucion.ins_nombre
+				institucion.ins_nombre,
+				nacionalidad.nac_nombre
 				FROM
 				persona
 				INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -265,6 +266,7 @@ class Pss{
 				INNER JOIN pss ON cuenta_corriente.cue_id = pss.cue_id
 				INNER JOIN institucion ON pss.pss_insId = institucion.ins_id
 				INNER JOIN prevision ON pss.pss_prevId = prevision.pre_id
+				INNER JOIN nacionalidad ON persona.per_procedencia = nacionalidad.nac_id
 				WHERE pss.pss_id = '$this->pss_id'";		
 				
 		 	foreach($objCon->consultaSQL($sql, 'ERROR cabeceraPSS') as $v) {
@@ -280,6 +282,7 @@ class Pss{
 				$datos[$i]['pss_id']=$v['pss_id'];
 				$datos[$i]['pre_nombre']=$v['pre_nombre'];
 				$datos[$i]['ins_nombre']=$v['ins_nombre'];
+				$datos[$i]['nac_nombre']=$v['nac_nombre'];
 				$i++;
 			}
 		 	return $datos;

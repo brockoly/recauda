@@ -39,11 +39,10 @@ $(document).ready(function(){
 			$("#cmbPrevision").blur();
 			$("#cmbInstitucion").blur();
 			$("#txtDireccion").blur();
-			mensajeUsuario('alertMensaje','Advertencia','Complete los campos solicitados');
 		}
 	});
 	$('#cmbPais').change(function(){
-		if($("#cmbPais option:selected").text() == 'Chile'){
+		if($("#cmbPais option:selected").val() == 1){
 
 			$('#trIdentificador').show();
 			$('#tdRut').remove();
@@ -57,68 +56,69 @@ $(document).ready(function(){
 							a=0;
 							rut=0;
 						  },
-	  			on_success: function(){ 
-							rut=$.Rut.quitarFormato($("#txtRut").val());
-							a=1;
-							},
+	  			on_success: function(){
+	  						a=1;	
+							rut=$.Rut.quitarFormato($("#txtRut").val());												
+							var resUsu2 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut); 
+							var resPac2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
+
+							if(resPac2!=0){
+								$("#txtRut").removeClass("cajabuena" ).addClass( "cajamala" );
+								muestraError('errRut','Identificador ya existente en nuestros registros');
+								a=0;			
+							}else{
+								if(resUsu2.length>2){
+									pacEx =1;
+									b=1;
+									c=1;
+									d=1;
+									e=1;
+									var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+$('#txtRut').val()));							
+									$('#txtNombres').val(arrExistente.per_nombre);
+									$('#txtApellidoPat').val(arrExistente.per_apellidoPaterno);
+									$('#txtApellidoMat').val(arrExistente.per_apellidoMaterno);
+									$('#txtFechaNac').val(arrExistente.per_fechaNacimiento);
+									$('#txtTelefono').val(arrExistente.per_telefono);
+									if(arrExistente.per_sexo=='m'){
+										$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
+									}
+									$('#txtDireccion').val(arrExistente.per_direccion);
+									$("#txtNombres").blur();
+									$("#txtApellidoPat").blur();
+									$("#txtApellidoMat").blur();
+									$("#cmbPais").blur();
+									$("#cmbPrevision").blur();
+									$("#cmbInstitucion").blur();
+									$("#txtDireccion").blur();
+									$("#txtNombres").focus();
+									$("#txtApellidoPat").focus();
+									$("#txtApellidoMat").focus();
+									$("#cmbPais").focus();
+									$("#txtDireccion").focus();
+									
+									if( $("#txtFechaNac").val()==""){
+										$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
+										muestraError('errFechaNac','Ingrese una Fecha.');
+										e=0;			
+									}else{
+										$("#txtFechaNac").removeClass("cajamala");	
+										$('#errFechaNac').attr("title", "").hide("slow");	
+										e=1;
+									}
+								}else{
+									$(this).removeClass("cajamala" );
+									a=1;
+								}
+							}
+						
+				},
 	  			format_on: 'keyup'
 			});
 			$('#txtRut').blur(function(){
-				if( $(this).val()==""){
+				if( $(this).val().trim()==""){
 					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 					muestraError('errRut','Rellene los campos');
 					a=0;			
-				}else{
-					if(a==1){						
-						var resUsu2 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut); 
-						var resPac2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
-						if(resPac2!=0){
-							$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-							muestraError('errRut','Identificador ya existente');
-							a=0;			
-						}else if(resUsu2.length>2){
-							pacEx =1;
-							b=1;
-							c=1;
-							d=1;
-							e=1;
-							var arrExistente = JSON.parse(validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+$('#txtRut').val()));							
-							$('#txtNombres').val(arrExistente.per_nombre);
-							$('#txtApellidoPat').val(arrExistente.per_apellidoPaterno);
-							$('#txtApellidoMat').val(arrExistente.per_apellidoMaterno);
-							$('#txtFechaNac').val(arrExistente.per_fechaNacimiento);
-							$('#txtTelefono').val(arrExistente.per_telefono);
-							if(arrExistente.per_sexo=='m'){
-								$("input[name=rdSexo][value=" + arrExistente.per_sexo + "]").attr('checked', 'checked');
-							}
-							$('#txtDireccion').val(arrExistente.per_direccion);
-							$("#txtNombres").blur();
-							$("#txtApellidoPat").blur();
-							$("#txtApellidoMat").blur();
-							$("#cmbPais").blur();
-							$("#cmbPrevision").blur();
-							$("#cmbInstitucion").blur();
-							$("#txtDireccion").blur();
-							$("#txtNombres").focus();
-							$("#txtApellidoPat").focus();
-							$("#txtApellidoMat").focus();
-							$("#cmbPais").focus();
-							$("#txtDireccion").focus();
-							
-							if( $("#txtFechaNac").val()==""){
-								$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
-								muestraError('errFechaNac','Ingrese una Fecha.');
-								e=0;			
-							}else{
-								$("#txtFechaNac").removeClass("cajamala");	
-								$('#errFechaNac').attr("title", "").hide("slow");	
-								e=1;
-							}
-						}else{
-							$(this).removeClass("cajamala" );
-							a=1;
-						}
-					}
 				}
 			});
 			$("#txtRut").focus(function(){
@@ -137,15 +137,27 @@ $(document).ready(function(){
 			$('#tdRut').remove();
 			$('<td id="tdIdentificador">&nbsp;&nbsp;&nbsp;<input type="text" id="txtIdentificador" name="txtIdentificador" />&nbsp;&nbsp;<img src="./include/img/information.png" id="errRut" hidden="true"/></td>').appendTo('#trIdentificador');
 			$('#txtIdentificador').blur(function(){
-			if( $(this).val()==""){
-				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errRut','Rellene los campos');
-				a=0;			
-			}else{		
-				$(this).removeClass("cajamala" );
-				id = $('#txtIdentificador').val();
-				a=1;
-			}
+				var valor = eliminarEspacio($(this).val());
+				$(this).val(valor);
+				if( $(this).val().trim()==""){
+					$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+					muestraError('errRut','Rellene los campos');
+					a=0;			
+				}else{
+					id = $('#txtIdentificador').val();
+					rut=-1;
+					var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
+					if(resPac==0){
+						$(this).removeClass("cajabuena cajamala");	
+						$('#errRut').attr("title", "").hide("slow");
+						a=1;
+					}else{
+						$(this).removeClass("cajabuena" ).addClass( "cajamala" );
+						muestraError('errRut','El identificador ya se encuentra en nuestros registros');
+					}	
+					
+				}
+				$(this).val($(this).val().trim());
 			});
 			$('#txtIdentificador').focus(function(){
 				$(this).removeClass("cajabuena cajamala");	
@@ -194,55 +206,64 @@ $(document).ready(function(){
 		}
 	});
 	$("#txtNombres").blur(function(){
-		if( $(this).val()==""){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
+		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errNombres','Rellene los campos');
 			b=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<35){					
 				$(this).removeClass("cajamala" );
 				b=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errNombres','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errNombres','Mínimo 2 caracteres, Máximo 35 caracteres');
 				b=0;
 			}
-		}
+		}		
 	});
 	$("#txtApellidoPat").blur(function(){
-		if( $(this).val()==""){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
+		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoPat','Rellene los campos');
 			c=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<35){					
 				$(this).removeClass("cajamala" );
 				c=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errApellidoPat','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errApellidoPat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				c=0;
 			}
-		}
+		}		
 	});
+
 	$("#txtApellidoMat").blur(function(){
-		if( $(this).val()==""){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
+		if( $(this).val().trim()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errApellidoMat','Rellene los campos');
 			d=0;			
 		}else{
-			if($(this).val().length>3 && $(this).val().length<16){					
+			if($(this).val().length>1 && $(this).val().length<35){					
 				$(this).removeClass("cajamala" );
 				d=1;
 			}else{
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-				muestraError('errApellidoMat','Mínimo 4 caracteres, Máximo 15 caracteres');
+				muestraError('errApellidoMat','Mínimo 2 caracteres, Máximo 35 caracteres');
 				d=0;
 			}
-		}
+		}		
 	});
 	$("#txtDireccion").blur(function(){
-			if( $(this).val()==""){
+			var valor = eliminarEspacio($(this).val());
+			$(this).val(valor);
+			if( $(this).val().trim()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('errDireccion','Rellene los campos');
 				h=0;			

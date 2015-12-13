@@ -12,8 +12,8 @@ class Conectar extends PDO {
 	
 	function __construct(){
 		$this->dns="mysql";
-		$this->user = "recauda";
-		$this->pass = "recaudaIncap123";
+		$this->user = "usuario";
+		$this->pass = "hospital";
 		$this->server = "localhost";
 		$this->database = "recaudacion";		
 	}

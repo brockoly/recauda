@@ -47,15 +47,18 @@
 		}
 
 		function buscaNacionalidad($objCon){//
-
-		 	$sql="SELECT nac_nombre
-				  FROM nacionalidad
-				  WHERE nac_nombre='$this->nac_nombre'";
-			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR obtenerNacionalidades') as $v) {
-				$datos=$v['nac_nombre'];
-		    }
-			return $datos;		 	
+			$sql ="SELECT
+					CASE 
+					WHEN nacionalidad.nac_nombre = '$this->nac_nombre' AND nacionalidad.nac_id = '$this->nac_id' THEN 'Existe con id'
+					WHEN nacionalidad.nac_nombre = '$this->nac_nombre' AND nacionalidad.nac_id <> '$this->nac_id' THEN 'Existe sin id'
+					END AS condicion
+				   FROM recaudacion.nacionalidad";
+	 	    foreach ($objCon->consultaSQL($sql,'ERROR buscarCorreo') as $v) {
+		 		if(is_null($v['condicion'])==false){
+		 			$datos = $v['condicion'];
+		 		}
+		 	}
+		 	return $datos;	 	
 		}
 
 		function buscarMaximoId($objCon){//

@@ -17,7 +17,7 @@
 	<? }else{
 ?>
 <script type="text/javascript" src="controller/client/js_agregarProducto.js"></script>
-<fieldset style="width: 400px;"><legend>Datos Producto</legend>
+<fieldset style="width: 500px;"><legend>Datos Producto</legend>
 <center>
 <table>
 		<tr>
@@ -47,28 +47,27 @@
 </center><br><br>
 </fieldset>
 <br><br>
-<fieldset style="width: 400px;"><legend>Valores</legend>
+<fieldset style="width: 500px;"><legend>Valores</legend>
 <center>
-<table id="tblUM">
+<table id="tblUM" width="100%">
 	<tr>
-	<td width="35%"><b>Institución</b></td>
-	<td width="35%"><b>Previsión</b></td>
-	<td width="30%">
-	&nbsp;&nbsp;&nbsp; <b>Valor</b>
+	<td width="35%">&nbsp;&nbsp;&nbsp;&nbsp;<b>Institución</b></td>
+	<td width="35%">&nbsp;&nbsp;&nbsp;&nbsp;<b>Previsión</b></td>
+	<td width="30%">&nbsp;&nbsp;&nbsp;<b>Valor</b>
 	</td>
 </tr>
 <? 	
 
 for ($i=0; $i<count($previsionesInst); $i++) { 
-	$pre_nombre = str_replace(' ','', $previsionesInst[$i]['pre_nombre']);
+	$pre_nombre = $previsionesInst[$i]['pre_nombre'];//str_replace(' ','', $previsionesInst[$i]['pre_nombre']);
 ?>
 
 <tr>
-	<td><?=$previsionesInst[$i]['ins_nombre']?></td>
-	<td><?=$pre_nombre?></td>
+	<td>&nbsp;&nbsp;&nbsp;&nbsp;<?=$previsionesInst[$i]['ins_nombre']?></td>
+	<td>&nbsp;&nbsp;&nbsp;&nbsp;<?=$pre_nombre?></td>
 	<td>
 	&nbsp;&nbsp;&nbsp;<input type="text" class="campoValor" style="width:100px;" value="<? if($previsionesInst[$i]['pre_id'] == $valoresProductos[$i]['pre_id']){ echo $valoresProductos[$i]['val_monto'];} ?>" name="<?=$previsionesInst[$i]['ins_id']?>" id="<?=$previsionesInst[$i]['pre_id']?>" />
-		<img src="./include/img/information.png" id="err<?=$previsionesInst[$i]['pre_id']?>" hidden="true"/>
+		<img src="./include/img/information.png" id="err<?=$previsionesInst[$i]['pre_id']?>" class="errVal" hidden="true"/>
 	</td>
 </tr>
 <? }?>

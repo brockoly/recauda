@@ -12,6 +12,19 @@ class Boleta{
 	 		$this->bol_fecha=trim($bol_fecha);
 	 		$this->bol_hora=trim($bol_hora);
 	}
+	function buscarMaximoId($objCon){//
+
+	 	$sql="SELECT MAX(bol_id)+1 as CONT
+			  FROM boleta";
+		$i=0;
+		$datos=1;
+		foreach ($objCon->consultaSQL($sql, 'ERROR buscarMaximoId') as $v) {
+			if(is_null($v['CONT'])==false){
+	 			$datos = $v['CONT'];
+	 		}
+	    }
+		return $datos;		 	
+	}
 	function listarBoletaPagos($objCon, $pss_id, $bol_id, $pag_id){ //Cambiar en todos los lados que se llama
 		$sql="SELECT ";
 			
@@ -28,6 +41,12 @@ class Boleta{
 			SET boleta.est_id='2'
 			WHERE boleta.bol_id='$bol_id'";
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL anularBoleta');
+	 	return $rs;
+	}
+	function agregarNuevaBoleta($objCon, $cue_id,$pss_id, $pag_id, $usu_nombre,$est_id){
+		$sql ="INSERT INTO boleta(bol_id, est_id, usu_nombre, cue_id, pss_id, pag_id, bol_tipo, bol_fecha, bol_hora)
+			   VALUES ('$this->bol_id', '$est_id', '$usu_nombre', '$cue_id', '$pss_id', '$pag_id', '$this->bol_tipo', '$this->bol_fecha', '$this->bol_hora')";
+	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL agregarBoleta');
 	 	return $rs;
 	}
 	function buscarAnularBoleta($objCon, $bol_id){ //Cambiar en todos los lados que se llama
@@ -59,7 +78,6 @@ class Boleta{
 		    }
 		return $datos;
 	}
-
 	function buscarBoletasArqueo($objCon, $usu_nombre, $tipo){ //Cambiar en todos los lados que se llama
 		$sql="	SELECT
 					boleta.bol_id,

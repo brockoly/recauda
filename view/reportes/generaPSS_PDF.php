@@ -111,8 +111,14 @@ $html = '
 				<tr>
 					<td>'.strtoupper($cabeceraPSS[0][per_nombre]).' '.strtoupper($cabeceraPSS[0][per_apellidoPaterno]).' '.strtoupper($cabeceraPSS[0][per_apellidoMaterno]).'</td>
 					<td>'.$objUtil->calcularEdad($cabeceraPSS[0][per_fechaNacimiento]).'</td>
-					<td>'.strtoupper($cabeceraPSS[0][per_sexo]).'</td>
-					<td>'.$cabeceraPSS[0][per_id].'</td>
+					<td>'.strtoupper($cabeceraPSS[0][per_sexo]).'</td>';
+					
+					 if($cabeceraPSS[0][nac_nombre]!='Chile'){
+					 	$html .= '<td>'.$cabeceraPSS[0][per_id].'</td>';
+					 }else{
+					 	$html .= '<td>'.$objUtil->formatRut($cabeceraPSS[0][per_id]).'</td>';
+					 }
+			$html .='
 					<td>'.$cabeceraPSS[0][per_telefono].'</td>
 				</tr>
 				<tr>

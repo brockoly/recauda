@@ -27,7 +27,7 @@
 				</tr>
 				<tr>
 					<td>Nombre</td>
-					<td>&nbsp;&nbsp;&nbsp;<input value="<?=$_POST['tip_descripcion']?>" type="text" id="txtNombreTipoProducto" onkeyup ="validar('txtNombreTipoProducto', 'id' ,'letras')" name="txtNombreTipoProducto"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errTipoProducto" hidden="true"/></td>
+					<td>&nbsp;&nbsp;&nbsp;<input value="<?=$_POST['tip_descripcion']?>" type="text" id="txtNombreTipoProducto" name="txtNombreTipoProducto"/>&nbsp;&nbsp;<img src="./include/img/information.png" id="errTipoProducto" hidden="true"/></td>
 				</tr>
 		</table>
 		<br/>

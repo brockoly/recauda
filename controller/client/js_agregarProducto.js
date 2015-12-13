@@ -14,6 +14,7 @@ $(document).ready(function(){
 		}else{
 			var uni_id = $('#cmbUnidadM').val();
 		}
+		$('#cmbUnidadM').change();
 		if(a==1 && b==1 && c==1 && d==1){
 			var datosEnviar = [];
 			var i = 0;
@@ -54,13 +55,13 @@ $(document).ready(function(){
 			var producto = $("#cmbTipoProducto option:selected").val();
 			var res = validarProcesos('controller/server/controlador_producto.php','op=buscarUmTipoProducto'+'&tip_prod_id='+producto);
 			if(res>0){
-				$('<td name="tdUM">UM:</td><td name="tdUM">&nbsp;&nbsp;&nbsp;<select id="cmbUnidadM" name="cmbUnidadM"><option value="0">Seleccione..</option></select><img src="./include/img/information.png" id="errCmbUm" hidden="true"/></td>').appendTo('#trUnidadMedida');
+				$('<td name="tdUM">UM:</td><td name="tdUM">&nbsp;&nbsp;&nbsp;<select id="cmbUnidadM" name="cmbUnidadM"><option value="0">Seleccione..</option></select>&nbsp;&nbsp;<img src="./include/img/information.png" id="errCmbUm" hidden="true"/></td>').appendTo('#trUnidadMedida');
 				$('#trUnidadMedida').show();
 				cargarComboAjax('controller/server/controlador_parametros.php','op=cmbUnidadM'+'&tip_prod_id='+producto,'#cmbUnidadM');
-				$('#cmbUnidadM').blur(function(){
+				$('#cmbUnidadM').change(function(){
 					if( $(this).val()==0){
 						$(this).removeClass("cajabuena" ).addClass( "cajamala" );
-						muestraError('#errCmbUm','Seleccione unidad de medida');	
+						muestraError('errCmbUm','Seleccione unidad de medida');	
 						d=0;		
 					}else{
 						$(this).removeClass("cajamala" );
@@ -72,6 +73,7 @@ $(document).ready(function(){
 					$(this).removeClass("cajamala");	
 					$('#errCmbUm').attr("title", "").hide("slow");				
 				});
+				d=0;
 			}else{
 				$('[name="tdUM"]').remove();
 				$('#trUnidadMedida').hide();
@@ -79,20 +81,20 @@ $(document).ready(function(){
 			}
 		}
 	});
-	var i = 0;
+	/*var i = 0;
 	$('#tblUM :input').each(function() {
 		var res = $(this).attr('id');
 		var dat = res.split("_");
 		var prevision = dat[0];
 		var idPre = dat[1];
-		$('#'+res).blur(function(){
+		$('.campoValor').blur(function(){
 			if( $(this).val()==""){
 				$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 				muestraError('err'+idPre,'Rellene los campos');	
 				d=0;		
 			}else{
 				$(this).removeClass("cajamala" );
-				$('#err'+idPre).attr("title", "").hide("slow");
+				$('err'+idPre).attr("title", "").hide("slow");
 				d=1;
 			}
 		});
@@ -102,7 +104,7 @@ $(document).ready(function(){
 			$('#err'+idPre).attr("title", "").hide("slow");				
 		});
 		i++;
-	});
+	});*/
 		
 	$('#txtId').blur(function(){
 		if( $(this).val()==""){
@@ -122,6 +124,8 @@ $(document).ready(function(){
 		}
 	});
 	$('#txtDescripcion').blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if( $(this).val()==""){
 			$(this).removeClass("cajabuena" ).addClass( "cajamala" );
 			muestraError('errDescrpcion','Rellene los campos');

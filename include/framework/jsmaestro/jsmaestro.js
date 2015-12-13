@@ -424,7 +424,7 @@ function tooltipImg(div, mensaje){
     });	
 }
 function validaEmail( email ) {
-    expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    expr = /^([a-zA-Z0-9Ññ_\.\-])+\@(([a-zA-Z0-9Ññ\-])+\.)+([a-zA-Z0-9Ññ]{2,4})+$/;
 	if ( !expr.test(email) ){// INCORRECTO , ENTRA
 		return false;
 	}else{
@@ -482,7 +482,10 @@ function validar(id, atributo,tipo){
 			case 'correo' 	: 	$('[name="'+id+'"]').validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 								break;
 		}
-
+		$('[name="'+id+'"]').bind('paste', function (e) {
+		        e.preventDefault();
+		        return false;
+		});
 	}else{
 		if(atributo=='id'){
 			switch(tipo){
@@ -501,6 +504,10 @@ function validar(id, atributo,tipo){
 				case 'tipoProd' 	: 	$('#'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZáéíóúÁÉÍÓÚ .');
 									break;
 			}
+			$('#'+id).bind('paste', function (e) {
+		        e.preventDefault();
+		        return false;
+		    });
 		}
 		if(atributo=='class'){
 			switch(tipo){
@@ -517,6 +524,10 @@ function validar(id, atributo,tipo){
 				case 'correo' 	: 	$('.'+id).validCampoFranz('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@_.-');
 									break;
 			}
+			$('.'+id).bind('paste', function (e) {
+		        e.preventDefault();
+		        return false;
+		    });
 		}
 	}
 	
@@ -551,4 +562,15 @@ function recargarTiempoRestante(){
 	$("#lblTime").text(horaImprimible);
 	setTimeout("recargarTiempoRestante()",1000) ;
 */
+
+function eliminarEspacio(string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+		string = string.trim();
+		string = string.replace(/\s+/g, ' ');
+		return string
+}
+
+function eliminarTodosEspacio(string){ // Ej: "A      B      C" -> "A B C" , Es decir, deja solo un espacio entre palabras
+		string = string.trim();
+		string = string.replace(/\s+/g, '');
+		return string
 }
