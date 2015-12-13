@@ -18,7 +18,7 @@
   $paciente=$objPac->getInformacionPaciente($objCon, "", "", $pss[0]['cue_id']);
   unset($_SESSION['cue_id']);
   $_SESSION['cue_id']=$pss[0]['cue_id'];
-  $tipoProducto=$objTip_pro->listarTipoProducto($objCon);
+  $tipoProducto=$objTip_pro->listarTipoProducto($objCon,'nombre');
   $productos_PSS=$objPss->verDetallePss($objCon);
   $objCon=null;
   echo count($productos_PSS);

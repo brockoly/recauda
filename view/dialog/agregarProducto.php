@@ -7,7 +7,7 @@
 	require_once('../../class/Prevision.class.php');$objPrev = new Prevision();
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
-	$productos = $objTipoPro->listarTipoProducto($objCon);
+	$productos = $objTipoPro->listarTipoProducto($objCon, 'nombre');
 	$valores = $objPrev->obtenerPrevisionesActivas($objCon);
 	$previsionesInst = $objPrev->listarPrevisionInstitucion($objCon);
 	$objCon=null;

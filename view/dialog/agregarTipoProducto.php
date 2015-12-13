@@ -7,7 +7,7 @@
 	require_once('../../class/Unidad_Medida.class.php');$objUniMed = new Unidad_Medida();
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
-	$tipoProducto = $objTipoPro->listarTipoProducto($objCon);
+	$tipoProducto = $objTipoPro->listarTipoProducto($objCon,'nombre');
 	$tipoProductoEliminados = $objTipoPro->tipoProductoEliminado($objCon);
 	$unidades = $objUniMed->listarUnidadMedida($objCon);
 	$objCon=null;

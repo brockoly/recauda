@@ -58,7 +58,7 @@ require_once('../../class/Pagos.class.php'); $objPago = new Pagos();
 $objCon->db_connect();
 $objPss->setPss($pss_id, '', '', '', '', '', '');
 
-$tipoProducto 	= $objTip->listarTipoProducto($objCon);
+$tipoProducto 	= $objTip->listarTipoProducto($objCon,'nombre');
 $detallePSS 	= $objPss->verDetallePss($objCon);
 $cabeceraPSS 	= $objPss->cabeceraPSS($objCon);
 $pagos 			= $objPago->listarPagosPSS($objCon, $pss_id,'');

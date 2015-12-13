@@ -1,6 +1,5 @@
 <? if(!isset($_SESSION)) session_start();
 
-error_reporting(0);
 ini_set('post_max_size', '512M'); 
 ini_set('memory_limit', '1G'); 
 set_time_limit(0);
@@ -27,7 +26,8 @@ class MYPDF extends TCPDF {
 	}
 }
 // create new PDF document
-$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$custom_layout = array(80, ($totalProductos*8.3)+162);
+$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, $custom_layout, true, 'UTF-8', false);
 //SET DOCUMENT INFORMATION
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Recaudacion');
@@ -35,17 +35,18 @@ $pdf->SetTitle('Programa de Servicio de Salud');
 $pdf->SetSubject('Detalle programa paciente');
 $pdf->SetKeywords('Paciente, PSS, Programa');
 //$pdf->SetHeaderData('../../img/logo.jpg', PDF_HEADER_LOGO_WIDTH,'SERVICIO DE SALUD ARICA ','HOSPITAL REGIONAL DE ARICA Y PARINACOTA');
-$pdf->setHeaderFont(Array('helvetica', '', 6));
+$pdf->setHeaderFont(Array('helvetica', '', 18));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-$pdf->SetMargins(3, 5, 3);
+$pdf->SetMargins(4, 5, 5, 1);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-$pdf->SetAutoPageBreak(TRUE, 15);
+$pdf->SetFooterMargin(0);
+$pdf->SetAutoPageBreak(FALSE, 0);
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->setLanguageArray($l);
 $pdf->setFontSubsetting(true);
-$pdf->SetFont('helvetica', '', 8, '', true);
+$pdf->SetFont('helvetica', '', 9, '', true);
+$pdf->setPrintFooter(false);
 //CREA UNA PAGINA
 $pdf->AddPage('L', 'A4');
 
@@ -75,16 +76,16 @@ require_once('../../class/Pss.class.php'); $objPss = new Pss;
 
 $objCon->db_connect();
 $usu_nombre = $_SESSION['usuario'][1]['nombre_usuario'];
-$tipos_productos = $objTipPro->listarTipoProducto($objCon);
+$tipos_productos = $objTipPro->listarTipoProducto($objCon,'codigo');
 
 //$boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre);
-$boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre);
+$boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre,'');
 
 
 
 //LISTA DE TIPOS DE PRODUCTOS EXISTENTES
-/*
-echo "Tipos de productos: 1: ";
+
+/*echo "Tipos de productos: 1: ";
 for($i=0; $i<count($tipos_productos); $i++){
 	echo $tipos_productos[$i]['tip_descripcion']." - ";
 }
@@ -97,47 +98,49 @@ for($i=0; $i<count($boletas); $i++){
 $textoPrev = "VISTA PREVIA";
 $mensajeTitulo="<strong>ARQUEO ESPONTÁNEO <br> '.$textoPrev.'</strong>'";
 $nombreUser = $usu_nombre;
-$mensajeDoc = '<label style="color:red;">Este documento NO es valido para rendir</label>';
-$tipoDoc ="I";
+$mensajeDoc = '';
+$tipoDoc ="";
+$tipoArqueo = $_GET['tipoArqueo'];
 
 //CONDICION DE PDF 
-/*
+
 switch($tipoArqueo){
 	case 'vista_previa'	: 	$textoPrev 			=   'VISTA PREVIA';
 							$mensajeTitulo 		=   '<strong>ARQUEO ESPONTANEO <br> '.$textoPrev.'</strong>';
-							$nombreUser 		=   'Nombre: '.$nombreUsuario;
-							$mensajeDoc 		=   '<label style="color:red;">Este documento NO es valido para rendir</label>';
-							$QRrendGlobal 		= 	$objArqueo->arqueoEspontaneoNormal($link, $usuario, $id_rendicion);
+							$nombreUser 		=   'Nombre: <strong>'.$nombreUser.'</strong>';
+							$mensajeDoc 		=   '<label style="color:red;">Este documento NO es válido para rendir</label>';
+							/*$QRrendGlobal 		= 	$objArqueo->arqueoEspontaneoNormal($link, $usuario, $id_rendicion);
 							$QRrendGlobalExe 	= 	$objArqueo->arqueoEspontaneoExe($link, $usuario, $id_rendicion);
 							$QRcheque        	= 	$objArqueo->arqueoEspontaneoCheque($link, $usuario, $id_rendicion);
 							$QRtrans         	= 	$objArqueo->arqueoEspontaneoTransbank($link, $usuario, $id_rendicion);
 							$QRnotaC 			= 	$objArqueo->arqueoEspNota($link, $usuario, $id_rendicion);
-							$QRrendNula 		=	$objArqueo->arqueoEspontaneoNula($link, $usuario);
+							$QRrendNula 		=	$objArqueo->arqueoEspontaneoNula($link, $usuario);*/
 							$tipoDoc 			=   "I";
 							break;
 
-	case 'generar_arqueo':  $id_rendicion 		= 	$objArqueo->InsertarRendicion($link, $usuario);
-							$nro_arq 			=   'N° '.$id_rendicion;
+	case 'generar_arqueo':  //$id_rendicion 		= 	$objArqueo->InsertarRendicion($link, $usuario);
+							$nro_arq 			=   'N° ';
 							$mensajeTitulo 		=   '<strong>ARQUEO ESPONTANEO <br> '.$nro_arq.'</strong>';
-							$mensajeDoc 		=   '<label style="color:green;">Documento valido para rendir</label>';
-							$updateRend			=	$objArqueo->updateArqueoEspontaneoNormal($link, $id_rendicion, $usuario);
+							$mensajeDoc 		=   '<label style="color:green;">Documento válido para rendir</label>';
+							/*$updateRend			=	$objArqueo->updateArqueoEspontaneoNormal($link, $id_rendicion, $usuario);
 							$QRrendGlobal 		= 	$objArqueo->arqueoEspontaneoNormal($link, $usuario, $id_rendicion);
 							$QRrendGlobalExe 	= 	$objArqueo->arqueoEspontaneoExe($link, $usuario, $id_rendicion);
 							$QRcheque        	= 	$objArqueo->arqueoEspontaneoCheque($link, $usuario, $id_rendicion);
 							$QRtrans         	= 	$objArqueo->arqueoEspontaneoTransbank($link, $usuario, $id_rendicion);
 							$QRnotaC 			= 	$objArqueo->arqueoEspNota($link, $usuario, $id_rendicion);
-							$QRrendNula 		=	$objArqueo->arqueoEspontaneoNula($link, $usuario, $id_rendicion);
+							$QRrendNula 		=	$objArqueo->arqueoEspontaneoNula($link, $usuario, $id_rendicion);*/
 							$tipoDoc 			= 	"FI";
 							break;
 }
-*/
+
 //TABLA DE CONTENIDO HTML
+$msjSubTitulo='';
 $html = '
-<table width="100%">
+<table width="100%" border="0">
 	<tr>
-		<td width="40%" align="left"><img src="../../css/img/logo_regional.jpg" width="130" height="120" /></td>
+		<td width="40%" align="left"><img src="../../include/img/logo_regional.jpg" width="130" height="120" /></td>
 		<td align="center" style="font-size:10;">
-		<table>
+		<table border="0">
 				<tr>
 					<td height="30px" width="1px" >&nbsp;</td>
 				</tr>
@@ -149,123 +152,55 @@ $html = '
 				</tr>
 			</table >
 		</td>
-		<td height="10" width="27%" align="right" style="font-size:10;">Arica, '.date('d-m-Y').', '.$objUtil->getHoraBD().' <br/>'.$mensajeDoc.'</td>
+		<td height="10" width="27%" align="right" style="font-size:10;">Arica, '.date('d-m-Y').', '.$objUti->obtenerHora().' <br/>'.$mensajeDoc.'</td>
 	</tr>
 </table>
 <br/>
 <br/>';
 
+$arrTotalesBot= Array(count($tipos_productos));
+
+
 $html .='
-<table width="100%">
+<table width="100%" border="0">
 	<tr>
 		<td width="30%">&nbsp;</td>
-		<td width="70%">
-			<table>
-				<tr>
-					<td>Día cama</td>
-					<td>Intervención</td>
-					<td>Examenes</td>
-					<td>Consultas</td>
-					<td>Medicamento</td>
-					<td>Prótesis</td>
-					<td>Traslado</td>
-					<td>Dental</td>
-					<td>Otros Ing.</td>
-					<td>U.M.I.</td>
-				</tr>	
-				<tr>
-					<td>4310101</td>
-					<td>4310102</td>
-					<td>4310103</td>
-					<td>4310104</td>
-					<td>4310105</td>
-					<td>4310106</td>
-					<td>4310107</td>
-					<td>4310108</td>
-					<td>4310199</td>
-					<td>6310115</td>
-				</tr>	
-			</table>
-		</td>
-	</tr>
-</table><br/><br/>';
+		<td width="70%" align="left">
+			<table><tr>';
+
+	for($i=0; $i<count($tipos_productos); $i++){
+		$html.='<td>'.$tipos_productos[$i]['tip_descripcion'].'</td>';		
+	}	
+	$html.='</tr><tr>';	
+	for($i=0; $i<count($tipos_productos); $i++){
+		$html.='<td>'.$tipos_productos[$i]['tip_prod_id'].'</td>';
+	}	
+	$html.='</tr></table></td></tr></table><br/><br/>';
+
+
 $html .='
-	<table>
+	<table width="100%"border="1">
 		<tr>
 			<td>
-				<strong>BOLETAS DE RECAUDACION</strong>
+				<strong>BOLETAS DE RECAUDACIÓN</strong>
 			</td>
 		</tr>
+
 		<tr>
-			<td>
+			<td>													<!-- LISTADO DE HEADERS-->
 				<table align="center">
 					<tr>
 						<td colspan="13">
 							<table border="1">
-								<tr>
-									<td width="5%">Boleta</td>
-									<td width="12.5%">Paciente</td>
-									<td width="10%">	
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310101</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310102</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310103</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310104</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310105</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="5%">4310106</td>
-									<td width="5%">4310107</td>
-									<td width="5%">4310108</td>
-									<td width="5%">4310199</td>
-									<td width="5%">6310115</td>
-									<td>TOTAL</td>
+								<tr >
+									<td style="line-height:8px;" width="5%">Boleta</td>
+									<td style="line-height:8px;" width="12.5%">Paciente</td>
+									';
+									$tamañox=(72.5/count($tipos_productos));
+									for($i=0; $i<count($tipos_productos); $i++){
+										$html.='<td style="line-height:8px;" width="'.$tamañox.'%">'.$tipos_productos[$i]['tip_prod_id'].'</td>';
+									}	
+									$html.='<td style="line-height:8px;" width="10%">TOTAL</td>
 								</tr>
 							</table>
 						</td>
@@ -273,152 +208,62 @@ $html .='
 				</table>
 			</td>
 		</tr>';
-		while($RSrendGlobal = mysql_fetch_array($QRrendGlobal)){
-		$html .='
-		<tr>
-			<td>
-				<table align="center">
-					<tr>
-						<td colspan="13">
-							<table>
-								<tr>
-									<td width="5%">'.$RSrendGlobal['BOLfolio'].'</td>
-									<td width="12.5%" align="left">'.$RSrendGlobal['nombre_completo'].'</td>
-									<td width="10%">	
-										<table align="center">
-											<tr>';
-											if($RSrendGlobal['DETprevision']>=0 && $RSrendGlobal['DETprevision']<=3){
-													$diaCamaBen = $RSrendGlobal['item4310101'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$diaCamaBen.'</td>';
-												}else {
-													$diaCama = $RSrendGlobal['item4310101'];
-														$html .='
-																<td align="right">'.$diaCama.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobal['DETprevision']>=0 && $RSrendGlobal['DETprevision']<=3){
-													$interBen = $RSrendGlobal['item4310102'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$interBen.'</td>';
-												}else {
-														$inter = $RSrendGlobal['item4310102'];
-														$html .='
-																<td align="right">'.$inter.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobal['DETprevision']>=0 && $RSrendGlobal['DETprevision']<=3){
-													$exaBen = $RSrendGlobal['item4310103'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$exaBen.'</td>';
-												}else {
-														$exa = $RSrendGlobal['item4310103'];
-														$html .='
-																<td align="right">'.$exa.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobal['DETprevision']>=0 && $RSrendGlobal['DETprevision']<=3){
-													$consu_ben = $RSrendGlobal['item4310104'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$consu_ben.'</td>';
-												}else {
-														$consu = $RSrendGlobal['item4310104'];
-														$html .='
-																<td align="right">'.$consu.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobal['DETprevision']>=0 && $RSrendGlobal['DETprevision']<=3){
-													$medi_ben = $RSrendGlobal['item4310105'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$medi_ben.'</td>';
-												}else {
-														$medi = $RSrendGlobal['item4310105'];
-														$html .='
-																<td align="right">'.$medi.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>';
-									if($RSrendGlobal['item4310106'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$pro = $RSrendGlobal['item4310106']; 
-											$html .='
-													<td width="5%" align="right">'.$pro.'</td>';	
-									}
-									if($RSrendGlobal['item4310107'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$tra = $RSrendGlobal['item4310107']; 
-											$html .='
-													<td width="5%" align="right">'.$tra.'</td>';	
-									}
-									if($RSrendGlobal['item4310108'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$dent = $RSrendGlobal['item4310108']; 
-											$html .='
-													<td width="5%" align="right">'.$dent.'</td>';	
-									}
-									if($RSrendGlobal['item4310106'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$otro = $RSrendGlobal['item4310199']; 
-											$html .='
-													<td width="5%" align="right">'.$otro.'</td>';	
-									}
-									if($RSrendGlobal['item4310106'] == null){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$umi = $RSrendGlobal['item4310115']; 
-											$html .='
-													<td width="5%" align="right">'.$umi.'</td>';	
-									}
 
-									$html .='<td align="right">'.$RSrendGlobal['BOLmonto'].'</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		';
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+
+$totalBoleta=0;
+for($i=0; $i<count($boletas);$i++){
+	$objPss->setPss_id($boletas[$i]['pss_id']);
+	$detallesProductos = $objPss->verDetallePss($objCon);
+
+	$arrTiposPSS = Array();
+	for($a=0; $a<count($detallesProductos);$a++){
+	    $arrTiposPSS[$a] = $detallesProductos[$a]['tip_prod_id']; 
+	}
+			$html .='
+			<tr>
+				<td>
+					<table align="center">
+						<tr>
+							<td colspan="13">
+								<table  border="1">										<!-- DATOS BOLETA -->
+									<tr>
+										<td width="5%">'.$boletas[$i]['bol_id'].'</td>
+										<td width="12.5%" align="left">'.$boletas[$i]['nombre'].'</td>';
+	for($b=0; $b<count($tipos_productos); $b++){
+		$totalcategoria=0;
+		for($c=0; $c<count($detallesProductos); $c++){
+			if($tipos_productos[$b]['tip_prod_id'] == $detallesProductos[$c]['tip_prod_id']){
+				
+				$totalcategoria+=$detallesProductos[$c]['total'];
+			}
+		}
+		$html.='<td width="'.$tamañox.'%">'.$totalcategoria.'</td>';
+		$arrTotalesBot[$c]=$totalcategoria;
+		$totalBoleta+=$totalcategoria;		
+		$totalcategoria=0;
+		
+	}
+	$html.='<td align="right" width="10%">'.$totalBoleta.'</td>';
+			
+			$html.='							
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			';
+			$totalBoleta=0;
+			
+}
+		/* TOTALES
 		$total_diaCamaBen +=$diaCamaBen;
 		$total_diaCama +=$diaCama;
 		$total_InterBen +=$interBen;
@@ -435,64 +280,43 @@ $html .='
 		$total_otro +=$otro;
 		$total_umi +=$umi;
 		
-		$total_boletas += $RSrendGlobal['BOLmonto'];
-		}
+		$total_boletas += $RSrendGlobal['BOLmonto'];			MONTO TOTAL
+		*/
+
+
+
+
+		
+		$total_diaCama =0;
+		$total_Inter =0;
+		$total_exa =0;
+		$total_consu =0;
+		$total_medi =0;
+		$total_pro =0;
+		$total_tra =0;
+		$total_dent =0;
+		$total_otro =0;
+		$total_umi =0;
+		
+		$total_boletas =($total_diaCama+$total_Inter+$total_exa+$total_consu+$total_medi+$total_pro+$total_tra+$total_dent+$total_otro+$total_umi);
 		$html.='
 		<tr>
 			<td>
-				<table align="center">
+				<table align="center">							<!-- TOTALES -->
 					<tr>
 						<td colspan="13">
 							<table>
 								<tr>
 									<td width="5%"></td>
 									<td width="12.5%"></td>
-									<td width="10%">	
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_diaCama.'</td>
-												<td align="right">'.$total_diaCamaBen.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_Inter.'</td>
-												<td align="right">'.$total_InterBen.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_exa.'</td>
-												<td align="right">'.$total_exaBen.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_consu.'</td>
-												<td align="right">'.$total_consuBen.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_medi.'</td>
-												<td align="right">'.$total_mediBen.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="5%" align="right">'.$total_pro.'</td>
-									<td width="5%" align="right">'.$total_tra.'</td>
-									<td width="5%" align="right">'.$total_dent.'</td>
-									<td width="5%" align="right">'.$total_otro.'</td>
-									<td width="5%" align="right">'.$total_umi.'</td>
-									<td align="right"><strong>'.$objUtil->formatearNumero($total_boletas).'</strong></td>
+									';
+										for($i=0;$i<count($arrTotalesBot);$i++){
+											$html.='<td width="10%">'.$arrTotalesBot[$i].'</td>';
+										}
+
+										$html.='
+									
+									<td align="right"><strong>'.$objUti->formatDinero($total_boletas).'</strong></td>
 								</tr>
 							</table>
 						</td>
@@ -500,12 +324,22 @@ $html .='
 				</table>
 			</td>
 		</tr>
+
+
 		<tr>
 			<td style="border-bottom-width:1px;">
 			</td>
 		</tr>
 		<br/>
-		<tr>
+	</table>';
+
+
+/*
+
+
+
+
+		$html.='<tr>
 			<td>
 				<strong>BOLETAS EXENTAS</strong>
 			</td>
@@ -519,75 +353,30 @@ $html .='
 								<tr>
 									<td width="5%">Boleta</td>
 									<td width="12.5%">Paciente</td>
-									<td width="10%">	
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310101</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310102</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310103</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310104</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td colspan="2" >4310105</td>
-											</tr>
-											<tr>
-												<td>01</td>
-												<td align="right">04</td>
-											</tr>
-										</table>
-									</td>
-									<td width="5%">4310106</td>
-									<td width="5%">4310107</td>
-									<td width="5%">4310108</td>
-									<td width="5%">4310199</td>
-									<td width="5%">6310115</td>
-									<td>TOTAL</td>
+									';
+									for($i=0; $i<count($tipos_productos); $i++){
+										$html.='<td>'.$tipos_productos[$i]['tip_prod_id'].'</td>';
+									}	
+									$html.='<td>TOTAL</td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 				</table>
 			</td>
-		</tr>';		
-		while($RSrendGlobalExe = mysql_fetch_array($QRrendGlobalExe)){
+		</tr>';
+		
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+
+
+
+
+
 		$html .='
 		<tr>
 			<td>
@@ -596,135 +385,14 @@ $html .='
 						<td colspan="13">
 							<table>
 								<tr>
-									<td width="5%">'.$RSrendGlobalExe['BOLfolio'].'</td>
-									<td width="12.5%">'.$RSrendGlobalExe['nombre_completo'].'</td>
+									<td width="5%">FOLIO</td>
+									<td width="12.5%" align="left">NOMBRE PACIENTE</td>
 									<td width="10%">	
 										<table align="center">
-											<tr>';
-											if($RSrendGlobalExe['DETprevision']>=0 && $RSrendGlobalExe['DETprevision']<=3){
-													$diaCamaBenE = $RSrendGlobalExe['item4310101'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$diaCamaBenE.'</td>';
-												}else {
-													$diaCamaE = $RSrendGlobalExe['item4310101'];
-														$html .='
-																<td align="right">'.$diaCamaE.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
+											<tr>TOTAL CATEGORIA</tr>
 										</table>
 									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobalExe['DETprevision']>=0 && $RSrendGlobalExe['DETprevision']<=3){
-													$interBenE = $RSrendGlobalExe['item4310102'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$interBenE.'</td>';
-												}else {
-														$interE = $RSrendGlobalExe['item4310102'];
-														$html .='
-																<td align="right">'.$interE.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobalExe['DETprevision']>=0 && $RSrendGlobalExe['DETprevision']<=3){
-													$exaBenE = $RSrendGlobalExe['item4310103'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$exaBenE.'</td>';
-												}else {
-														$exaE = $RSrendGlobalExe['item4310103'];
-														$html .='
-																<td align="right">'.$exaE.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobalExe['DETprevision']>=0 && $RSrendGlobalExe['DETprevision']<=3){
-													$consu_benE = $RSrendGlobal['item4310104'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$consu_benE.'</td>';
-												}else {
-														$consuE = $RSrendGlobalExe['item4310104'];
-														$html .='
-																<td align="right">'.$consuE.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>';
-											if($RSrendGlobalExe['DETprevision']>=0 && $RSrendGlobalExe['DETprevision']<=3){
-													$medi_benE = $RSrendGlobalExe['item4310105'];
-													$html .='
-															<td align="right">0</td>
-															<td align="right">'.$medi_benE.'</td>';
-												}else {
-														$mediE = $RSrendGlobalExe['item4310105'];
-														$html .='
-																<td align="right">'.$mediE.'</td>
-																<td align="right">0</td>';	
-													}
-											$html .='</tr>
-										</table>
-									</td>';
-									if($RSrendGlobal['item4310106'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$proE = $RSrendGlobal['item4310106']; 
-											$html .='
-													<td width="5%" align="right">'.$proE.'</td>';	
-									}
-									if($RSrendGlobal['item4310107'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$traE = $RSrendGlobal['item4310107']; 
-											$html .='
-													<td width="5%" align="right">'.$traE.'</td>';	
-									}
-									if($RSrendGlobal['item4310108'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$dentE = $RSrendGlobal['item4310108']; 
-											$html .='
-													<td width="5%" align="right">'.$dentE.'</td>';	
-									}
-									if($RSrendGlobal['item4310106'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$otroE = $RSrendGlobal['item4310199']; 
-											$html .='
-													<td width="5%" align="right">'.$otroE.'</td>';	
-									}
-									if($RSrendGlobal['item4310106'] == NULL){
-											$html .='
-													<td width="5%" align="right">0</td>';
-									}else {
-											$umiE = $RSrendGlobal['item4310115']; 
-											$html .='
-													<td width="5%" align="right">'.$umiE.'</td>';	
-									}
-
-									$html .='<td align="right">'.$RSrendGlobalExe['BOLmonto'].'</td>
+									<td align="right">TOTAL BOLETA</td>
 								</tr>
 							</table>
 						</td>
@@ -733,24 +401,21 @@ $html .='
 			</td>
 		</tr>
 		';
-		$total_diaCamaBenE +=$diaCamaBenE;
-		$total_diaCamaE +=$diaCamaE;
-		$total_InterBenE +=$interBenE;
-		$total_InterE +=$interE;
-		$total_exaBenE +=$exaBenE;
-		$total_exaE +=$exaE;
-		$total_consuBenE +=$consu_benE;
-		$total_consuE +=$consuE;
-		$total_mediBenE +=$medi_benE;
-		$total_mediE +=$mediE;
-		$total_proE +=$proE;
-		$total_traE +=$traE;
-		$total_dentE +=$dentE;
-		$total_otroE +=$otroE;
-		$total_umiE +=$umiE;
+
+
+		$total_diaCamaE =0;
+		$total_InterE =0;
+		$total_exaE =0;
+		$total_consuE =0;
+		$total_mediE =0;
+		$total_proE =0;
+		$total_traE =0;
+		$total_dentE =0;
+		$total_otroE =0;
+		$total_umiE =0;
 		
-		$total_boletasE += $RSrendGlobalExe['BOLmonto'];
-		}
+		$total_boletasE =($total_diaCamaE+$total_InterE+$total_exaE+$total_consuE+$total_mediE+$total_proE+$total_traE+$total_dentE+$total_otroE+$total_umiE);
+		
 		
 		$total = $total_boletasE + $total_boletas;
 		$html.='
@@ -763,52 +428,10 @@ $html .='
 								<tr>
 									<td width="5%"></td>
 									<td width="12.5%"></td>
-									<td width="10%">	
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_diaCamaE.'</td>
-												<td align="right">'.$total_diaCamaBenE.'</td>
-											</tr>
-										</table>
-									</td>
 									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_InterE.'</td>
-												<td align="right">'.$total_InterBenE.'</td>
-											</tr>
-										</table>
+										'.$total_diaCamaE.'												
 									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_exaE.'</td>
-												<td align="right">'.$total_exaBenE.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_consuE.'</td>
-												<td align="right">'.$total_consuBenE.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="10%">
-										<table align="center">
-											<tr>
-												<td align="right">'.$total_mediE.'</td>
-												<td align="right">'.$total_mediBenE.'</td>
-											</tr>
-										</table>
-									</td>
-									<td width="5%" align="right">'.$total_proE.'</td>
-									<td width="5%" align="right">'.$total_traE.'</td>
-									<td width="5%" align="right">'.$total_dentE.'</td>
-									<td width="5%" align="right">'.$total_otroE.'</td>
-									<td width="5%" align="right">'.$total_umiE.'</td>
-									<td align="right"><strong>'.$objUtil->formatearNumero($total_boletasE).'</strong></td>
+									<td align="right"><strong>'.$objUti->formatDinero($total_boletasE).'</strong></td>
 								</tr>
 							</table>
 						</td>
@@ -816,8 +439,14 @@ $html .='
 				</table>
 			</td>
 		</tr>
-		
-		
+		<tr>
+			<td style="border-bottom-width:1px;">
+			</td>
+		</tr>
+		<br/>
+
+
+
 		<tr>
 			<td style="border-top-width:1px;" align="right" width="80%">
 			</td>
@@ -825,7 +454,7 @@ $html .='
 				<table align="right">
 						<tr>
 							<td style="font-size:45px;"><strong>TOTAL:</strong></td>
-							<td style="font-size:45px;"><strong>'.$objUtil->formatearNumero($total).'</strong></td>
+							<td style="font-size:45px;"><strong>'.$objUti->formatDinero($total).'</strong></td>
 						</tr>
 				</table>
 			</td>
@@ -834,6 +463,26 @@ $html .='
 	</table>
 ';		
 
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 $html .='
 <br/><br/><br/><br/>
 	<table width="70%">
@@ -878,7 +527,7 @@ $html .='
 			<tr>
 				<td width="15%">&nbsp;</td>
 				<td width="70%">&nbsp;</td>
-				<td width="15%" align="right"><strong>TOTAL:	'.$objUtil->formatearNumero($total_nota).'</strong></td>
+				<td width="15%" align="right"><strong>TOTAL:	'.$objUti->formatearNumero($total_nota).'</strong></td>
 			</tr>
 			</table>
 
@@ -916,7 +565,7 @@ $html .='
 			<tr>
 				<td width="15%">&nbsp;</td>
 				<td width="70%">&nbsp;</td>
-				<td width="15%" align="right"><strong>TOTAL:	'.$objUtil->formatearNumero($total_nul).'</strong></td>
+				<td width="15%" align="right"><strong>TOTAL:	'.$objUti->formatearNumero($total_nul).'</strong></td>
 			</tr>
 			</table>
 <br/><br/><br/><br/>';
@@ -954,7 +603,7 @@ $html .='
 				<td width="15%">&nbsp;</td>
 				<td width="20%">&nbsp;</td>
 				<td width="20%">&nbsp;</td>
-				<td width="45%" align="right"><strong>TOTAL:	'.$objUtil->formatearNumero($total_trans).'</strong></td>
+				<td width="45%" align="right"><strong>TOTAL:	'.$objUti->formatearNumero($total_trans).'</strong></td>
 			</tr>
 			</table>
 			';
@@ -995,17 +644,21 @@ $html .='
 				<td width="15%">&nbsp;</td>
 				<td width="20%">&nbsp;</td>
 				<td width="20%">&nbsp;</td>
-				<td width="45%" align="right"><strong>TOTAL:	'.$objUtil->formatearNumero($total_cheque).'</strong></td>
+				<td width="45%" align="right"><strong>TOTAL:	'.$objUti->formatearNumero($total_cheque).'</strong></td>
 			</tr>
 			</table>
 			';
 	}	
-	$efectivo = ($total_boletas + $total_boletasE) - ($total_cheque + $total_trans + $total_dev);
+
+
+	*/
+	//$efectivo = ($total_boletas + $total_boletasE) - ($total_cheque + $total_trans + $total_dev);
+
 	$html .='
 				<table align="right">
 					<tr>
 						<td style="font-size:45px;" width="91%"><strong>TOTAL EFECTIVO:</strong></td>
-						<td style="font-size:45px;" width="9%"><strong>'.$objUtil->formatearNumero($efectivo).'</strong></td>
+						<td style="font-size:45px;" width="9%"><strong>'.$objUti->formatDinero($total).'</strong></td>
 					</tr>
 				</table>
 				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -1026,16 +679,15 @@ $html .='
 				</table>
 				
 	';
-//Print text using writeHTMLCell()
+
 $pdf->writeHTML($html, true, false, true, false, '');
-$pdf->Output($usuario.'_'.'ArqueoEspontaneo_'.$id_rendicion.'.pdf',$tipoDoc);
+$pdf->Output($nombreUser.'_'.'ArqueoEspontaneo_'.$id_rendicion.'.pdf',$tipoDoc);
 
-
-/*DEFINE ('FTP_USER','recnet'); 
-DEFINE ('FTP_PASS','recnet');
-$path = date('Y')."/ARQUEO/";
+DEFINE ('FTP_USER','recaudacion'); 
+DEFINE ('FTP_PASS','recaudacion');
+$path = date('Y')."/boleta/";
         $path = explode("/",$path);
-        $conn_id = @ftp_connect("10.6.21.14",21,1);
+        $conn_id = @ftp_connect("10.2.21.108",21,1);
         if(!$conn_id) {
             return false;
         }
@@ -1055,10 +707,9 @@ $path = date('Y')."/ARQUEO/";
             }
         }
         @ftp_close($conn_id);
-$ftp_server = "10.6.21.14";
+$ftp_server = "10.2.21.108";
 $conn_id = ftp_connect($ftp_server, 21,1) or die("N");
-$login_result = ftp_login($conn_id, "recnet", "recnet");
-ftp_put($conn_id, date('Y').'/ARQUEO/'.$nombreUsuario.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf', '.'.$nombreUsuario.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf', FTP_BINARY);
-unlink('.'.$nombreUsuario.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf');*/
-
+$login_result = ftp_login($conn_id, "recaudacion", "recaudacion");
+ftp_put($conn_id, date('Y').'/ARQUEO/'.$nombreUser.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf', '.'.$nombreUser.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf', FTP_BINARY);
+unlink('.'.$nombreUser.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf');
 ?>

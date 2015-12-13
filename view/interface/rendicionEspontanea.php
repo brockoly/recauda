@@ -28,7 +28,7 @@ session_start();
 	<center>
 	<div class="btnVisualizar" id="btnVisualizar" ><img class="imgVisualizar" id="imgVisualizar" src="./include/img/preview2.png" width="40" height="40"> 	
 	</div>
-	<div class="btnRendirArqueo" id="btnRendirArqueo" onclick="ventanaModal('./view/dialog/visualizarArqueoEspontaneo.php','','auto','auto','Visualizar Arqueo Espontáneo','modalVisualizarArqueoEspontaneo')"><img class="imgRendirArqueo" id="imgRendirArqueo" src="./include/img/gear.png">	
+	<div class="btnRendirArqueo" id="btnRendirArqueo"><img class="imgRendirArqueo" id="imgRendirArqueo" src="./include/img/gear.png">	
 	</div></center>
 </fieldset>
 <center><fieldset style="float:left;width:800px !important; margin-left:200px !important;padding:10px !important;" class="cabezeraDatos"><legend class="cuerpoDatos">Opciones de Búsqueda</legend>

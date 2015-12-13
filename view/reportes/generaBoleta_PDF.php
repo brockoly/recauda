@@ -44,7 +44,7 @@ require_once('../../class/Pss.class.php'); $objPss = new Pss;
 
 
 		$exen = $datosPago[$i]['bol_tipo'];
-		if($exen == 1){
+		if($exen != 1){
 			$exe = 'EXENTA';
 		}
 		$fechaBoleta= $objUti->cambiarfecha_mysql_a_normalGuion($datosPago[$i]['bol_fecha']);
@@ -145,7 +145,7 @@ $html = '
 		</table>
 	';
 
-$tiposProductos = $objTipoProd->listarTipoProducto($objCon);
+$tiposProductos = $objTipoProd->listarTipoProducto($objCon,'nombre');
 
 $totalBoleta=0;
 

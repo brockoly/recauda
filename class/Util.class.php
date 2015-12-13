@@ -1,5 +1,9 @@
 <?php
 	class Util{
+		function obtenerHora(){
+			$hora=date("H:i:s");
+			return $hora;
+		}
 		function cambiarfecha_mysql($fecha){
 					list($dia,$mes,$ano)=explode("/",$fecha);
 					$fecha="$ano-$mes-$dia";

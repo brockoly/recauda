@@ -5,8 +5,9 @@ $(document).ready(function(){
 		ventanaModal('./view/dialog/visualizarArqueoEspontaneo.php','','auto','auto','Arqueo Espontáneo','modalVisualizarArqueoEspontaneo');
 	});
 
-	$("#btnRendirArqueo").button();
-
+	$("#btnRendirArqueo").button().click(function(){
+		ventanaModal('./view/dialog/rendirArqueoEspontaneo.php','','auto','auto','Arqueo Espontáneo','modalRendirArqueoEspontaneo');
+	});
 
 	tooltipImg("btnVisualizar", "Previsualizar arqueo espontáneo");
 	tooltipImg("btnRendirArqueo", "Generar arqueo espontáneo");
