@@ -180,7 +180,7 @@ $html = '
 			}
 		}
 	
-$total_programa += $subtotal;
+
 
 $html .='<tr>
 			<td style="border-bottom-width:1px;" colspan="3"><br><br></td>

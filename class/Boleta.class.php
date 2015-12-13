@@ -86,14 +86,18 @@ class Boleta{
 					estado_boleta.est_descripcion,
 					paciente.per_id,
 					boleta.pss_id,
-					CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ',persona.per_apellidoMaterno) AS 'nombre'
+					CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ',persona.per_apellidoMaterno) AS 'nombre',
+					CONCAT(b.per_nombre,' ',b.per_apellidoPaterno,' ',b.per_apellidoMaterno) AS 'paciente',
+					pagos.pag_monto
 				FROM boleta				
 			 	INNER JOIN usuario ON usuario.usu_nombre = boleta.usu_nombre
 			 	INNER JOIN persona ON persona.per_id = usuario.per_id
+			 	INNER JOIN pagos ON pagos.pag_id = boleta.pag_id
 			 	INNER JOIN estado_boleta on estado_boleta.est_id = boleta.est_id
 				INNER JOIN cuenta_corriente on cuenta_corriente.cue_id = boleta.cue_id
 				INNER JOIN paciente on paciente.pac_id=cuenta_corriente.pac_id			 
-				WHERE boleta.usu_nombre='$usu_nombre' AND boleta.arq_id IS NULL";
+				INNER JOIN persona b ON b.per_id = paciente.per_id
+				WHERE boleta.usu_nombre='seba' AND boleta.arq_id IS NULL";
 				if($tipo!=''){
 					$sql.='AND boleta.bol_tipo <> 0';
 				}
@@ -108,6 +112,8 @@ class Boleta{
 				$datos[$i][est_descripcion]=$v['est_descripcion'];
 				$datos[$i][per_id]=$v['per_id'];
 				$datos[$i][pss_id]=$v['pss_id'];
+				$datos[$i][paciente]=$v['paciente'];
+				$datos[$i][total]=$v['pag_monto'];
 				$i++;
 		    }
 

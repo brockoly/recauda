@@ -29,7 +29,7 @@ class Pagos{
 	 	return $rs;
 	}
 	function listarPagosPSS($objCon, $pss_id, $bol_id){ //Cambiar en todos los lados que se llama
-		echo $sql="SELECT
+		$sql="SELECT
 				pagos.cue_id,
 				pagos.pss_id,
 				pagos.pag_monto,

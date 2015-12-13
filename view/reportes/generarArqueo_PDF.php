@@ -158,7 +158,7 @@ $html = '
 <br/>
 <br/>';
 
-$arrTotalesBot= Array(count($tipos_productos));
+$arrTotalesBot= Array();
 
 
 $html .='
@@ -225,6 +225,21 @@ for($i=0; $i<count($boletas);$i++){
 	for($a=0; $a<count($detallesProductos);$a++){
 	    $arrTiposPSS[$a] = $detallesProductos[$a]['tip_prod_id']; 
 	}
+	$totalBoletaAux=0;
+	for($d=0; $d<count($tipos_productos); $d++){
+	$totalcategoriaAux=0;
+
+		for($e=0; $e<count($detallesProductos); $e++){
+			if($tipos_productos[$d]['tip_prod_id'] == $detallesProductos[$e]['tip_prod_id']){				
+				$totalcategoriaAux+=$detallesProductos[$e]['total'];
+			}			
+		}
+		$totalBoletaAux+=$totalcategoriaAux;
+		$totalcategoriaAux=0;
+	}
+	$porcentaje=(($boletas[$i]['total']*100)/$totalBoletaAux)/100;
+
+
 			$html .='
 			<tr>
 				<td>
@@ -234,7 +249,11 @@ for($i=0; $i<count($boletas);$i++){
 								<table  border="1">										<!-- DATOS BOLETA -->
 									<tr>
 										<td width="5%">'.$boletas[$i]['bol_id'].'</td>
-										<td width="12.5%" align="left">'.$boletas[$i]['nombre'].'</td>';
+										<td width="12.5%" align="left">'.$boletas[$i]['paciente'].'</td>';
+
+
+
+										// IMPRESIÖN CATEGORÍAS
 	for($b=0; $b<count($tipos_productos); $b++){
 		$totalcategoria=0;
 		for($c=0; $c<count($detallesProductos); $c++){
@@ -243,13 +262,13 @@ for($i=0; $i<count($boletas);$i++){
 				$totalcategoria+=$detallesProductos[$c]['total'];
 			}
 		}
-		$html.='<td width="'.$tamañox.'%">'.$totalcategoria.'</td>';
-		$arrTotalesBot[$c]=$totalcategoria;
-		$totalBoleta+=$totalcategoria;		
+		$html.='<td width="'.$tamañox.'%">'.round($totalcategoria*$porcentaje).'</td>';
+		$arrTotalesBot[$b]=round($totalcategoria*$porcentaje);
+		$totalBoleta+=round($totalcategoria*$porcentaje);		
 		$totalcategoria=0;
 		
 	}
-	$html.='<td align="right" width="10%">'.$totalBoleta.'</td>';
+	$html.='<td align="right" width="10%">'.$boletas[$i]['total'].'</td>';
 			
 			$html.='							
 									</tr>
@@ -279,44 +298,31 @@ for($i=0; $i<count($boletas);$i++){
 		$total_dent +=$dent;
 		$total_otro +=$otro;
 		$total_umi +=$umi;
-		
-		$total_boletas += $RSrendGlobal['BOLmonto'];			MONTO TOTAL
 		*/
 
+		$total_boletas =0;			//MONTO TOTAL
+		for($i=0;$i<count($arrTotalesBot);$i++){
+			$total_boletas+=$arrTotalesBot[$i];
+		}
 
-
-
-		
-		$total_diaCama =0;
-		$total_Inter =0;
-		$total_exa =0;
-		$total_consu =0;
-		$total_medi =0;
-		$total_pro =0;
-		$total_tra =0;
-		$total_dent =0;
-		$total_otro =0;
-		$total_umi =0;
-		
-		$total_boletas =($total_diaCama+$total_Inter+$total_exa+$total_consu+$total_medi+$total_pro+$total_tra+$total_dent+$total_otro+$total_umi);
 		$html.='
 		<tr>
 			<td>
 				<table align="center">							<!-- TOTALES -->
 					<tr>
 						<td colspan="13">
-							<table>
+							<table border="1">
 								<tr>
 									<td width="5%"></td>
 									<td width="12.5%"></td>
 									';
 										for($i=0;$i<count($arrTotalesBot);$i++){
-											$html.='<td width="10%">'.$arrTotalesBot[$i].'</td>';
+											$html.='<td width="'.$tamañox.'%">'.$arrTotalesBot[$i].'</td>';
 										}
 
 										$html.='
 									
-									<td align="right"><strong>'.$objUti->formatDinero($total_boletas).'</strong></td>
+									<td align="right" width="10%"><strong>'.$objUti->formatDinero($total_boletas).'</strong></td>
 								</tr>
 							</table>
 						</td>
