@@ -24,10 +24,11 @@
 		<input type="hidden" name="per_id" value="<?=$datos[0]['Identificador'];?>">
 		<fieldset style="width: 500px;"><legend>Datos Personales</legend>
 		<table>
-			<?php if(preg_match("/RN/i", "".$datos[0]['Identificador'])==1) {?>
+			<?php if($datos[0]['rn']==1) {?>
 					<tr>
-						<td>Identificador * <input type="hidden" id="naci_id" value="<?=$datos[0]['nac_id'];?>"/></td>
+						<td>Identificador * <input type="hidden" id="naci_id" name="naci_id" value="<?=$datos[0]['nac_id'];?>"/></td>
 						<td>&nbsp;&nbsp;&nbsp;<input type="text" id="txtIdentificador" name="txtIdentificador" value="<?=$datos[0]['Identificador'];?>"/>
+											  <input type="hidden" id="txtIdentificadorAntiguo" name="txtIdentificadorAntiguo" value="<?=$datos[0]['Identificador'];?>"/>
 						&nbsp;&nbsp;<img src="./include/img/information.png" id="errIdentificador" hidden="true"/>
 						</td>
 					</tr>
@@ -98,5 +99,13 @@
 		</br>		
 		</fieldset>		
 		</br>
-		<center><input type="button" id="btnEditarPaciente" value="Modificar Paciente"/></center>
+		<center>
+		<?php if($datos[0]['rn']==1) {?>
+			<input type="button" id="btnEditarPacienteRN" value="Modificar Paciente"/></center>
+		<?php
+			}else{
+		?>
+			<input type="button" id="btnEditarPaciente" value="Modificar Paciente"/>
+		<?php	}
+		?>
 </form>

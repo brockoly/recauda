@@ -28,6 +28,7 @@ if ( $_SESSION['usuario'] == null ) {
     <script src="include/js/rut.js"></script>
     <script src="include/js/validCampoFranz.js"></script>
     <script src="controller/client/js_index.js"></script>
+    <script src="include/framework/jqueryForm/jqueryForm.js"></script>
 
 <center>
 <div class="horizontal">

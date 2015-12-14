@@ -5,7 +5,7 @@ class Tipo_Producto{
 	 public $tip_Pro_estado;
 	 
 	 function setTipoProducto($tip_descripcion,$tip_prod_id,$tip_Pro_estado){
- 		$this->tip_descripcion=trim($tip_descripcion);
+ 		$this->tip_descripcion=utf8_decode(trim($tip_descripcion));
  		$this->tip_prod_id=trim($tip_prod_id);
  		$this->tip_Pro_estado=trim($tip_Pro_estado);
 	 }

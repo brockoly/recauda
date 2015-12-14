@@ -5,7 +5,7 @@ class Tipo_pago{
 	 public $tip_Pro_estado;
 	 
 	 function setTipoPago($tip_pagId,$tip_pag_descripcion){
- 		$this->tip_pag_descripcion=trim($tip_pag_descripcion);
+ 		$this->tip_pag_descripcion=utf8_decode(trim($tip_pag_descripcion));
  		$this->tip_pag_id=trim($tip_pag_id);
 	 }
 	function listarTipoPago($objCon){

@@ -14,7 +14,7 @@ class Pss{
 		    $this->pss_fecha=trim($pss_fecha);
 		    $this->pss_hora=trim($pss_hora);
 		    $this->pss_saldo=trim($pss_saldo);
-		    $this->pss_estado=trim($pss_estado);
+		    $this->pss_estado=utf8_decode(trim($pss_estado));
 		    $this->pss_prevId=trim($pss_prevId);
 		    $this->pss_insId=trim($pss_insId);
 		}

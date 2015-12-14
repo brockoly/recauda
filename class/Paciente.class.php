@@ -9,19 +9,28 @@
 	 		$this->pac_id=$pac_id;
 	 }
 
-	 function insertarPaciente($objCon, $pre_id, $per_id, $ins_id){
-	 	$sql ="INSERT INTO paciente 
-	 					   (pac_id, pre_id, per_id, ins_id)
-			   VALUES ('$this->pac_id', '$pre_id','$per_id','$ins_id')";		
-		$rs =$objCon->ejecutarSQL($sql, 'ERROR AL insertarPaciente');
-	 	return $rs;
+	 function insertarPaciente($objCon, $pre_id, $per_id, $ins_id,$opcion){
+	 	if(empty($opcion)==false){
+			$sql ="INSERT INTO paciente 
+			 					   (pac_id, pre_id, per_id, ins_id, pac_recien_nacido)
+				   VALUES ('$this->pac_id', '$pre_id','$per_id','$ins_id', '1')";		
+			$rs =$objCon->ejecutarSQL($sql, 'ERROR AL insertarPaciente');
+		 	return $rs;
+		}else{
+			$sql ="INSERT INTO paciente 
+			 					   (pac_id, pre_id, per_id, ins_id)
+					   VALUES ('$this->pac_id', '$pre_id','$per_id','$ins_id')";		
+			$rs =$objCon->ejecutarSQL($sql, 'ERROR AL insertarPaciente');
+		 	return $rs;
+		}
 	 }
 
 	 function actualizarPaciente($objCon, $pre_id, $per_id, $ins_id){
 	 	$sql ="UPDATE paciente 
 	 		   SET pre_id = '$pre_id', 
-		 			per_id = '$per_id', 
-		 			ins_id = '$ins_id'
+		 		   per_id = '$per_id', 
+		 		   ins_id = '$ins_id',
+		 		   pac_recien_nacido = '0'
 	 		   WHERE per_id = '$per_id'";		
 		$rs = $objCon->ejecutarSQL($sql, 'ERROR actualizarPaciente');
 	 	return $rs;
@@ -140,14 +149,21 @@
 	function ultimoRN($objCon){
 		$datos = array();
 		$i=0;
-	 	$sql="  SELECT persona.per_id 
-	 			FROM persona
-	 			WHERE per_id LIKE '%RN%'";
+	 	$sql="  SELECT
+					persona.per_id
+				FROM
+					persona
+				LEFT JOIN paciente ON persona.per_id = paciente.per_id
+				WHERE paciente.pac_recien_nacido = 1
+				";
 				foreach ($objCon->consultaSQL($sql,'ERROR ultimoRN') as $v) {
 			 		$datos[$i]['rn']=$v['per_id'];
+			 		$i++;
 			 	}
 	 	return $datos;
 	}
+
+	
 
 	function getInformacionPaciente($objCon, $per_id, $pac_nombre, $cue_id){
 	 	$datos = array();
@@ -167,7 +183,8 @@
 			persona.per_sexo,
 			persona.per_direccion,
 			prevision.pre_nombre,
-			institucion.ins_nombre
+			institucion.ins_nombre,
+			paciente.pac_recien_nacido
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -205,6 +222,7 @@
 				$datos[$i]['per_direccion']=$v['per_direccion'];
 				$datos[$i]['pre_nombre']=$v['pre_nombre'];
 				$datos[$i]['ins_nombre']=$v['ins_nombre'];
+				$datos[$i]['rn']=$v['pac_recien_nacido'];
 				$i++;
 		}
 	 	return $datos;

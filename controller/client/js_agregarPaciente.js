@@ -22,7 +22,7 @@ $(document).ready(function(){
 				//alert(resPac)
 				if(resPac ==0){	
 					var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rut='+rut+'&pacEx='+pacEx);
-					if(cont ='bien'){ 
+					if(cont =='bien'){ 
 						mensajeUsuario('successMensaje','Exito','Paciente creado exitosamente');
 						cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
 						$('#modalAgregarPaciente').dialog('destroy').remove();
@@ -35,7 +35,7 @@ $(document).ready(function(){
 			}else{
 				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=agregarPaciente&rn=R.N');
 				//alert(cont);
-				if(cont ='bien'){ 
+				if(cont =='bien'){ 
 					mensajeUsuario('successMensaje','Exito','Paciente creado exitosamente');
 					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
 					$('#modalAgregarPaciente').dialog('destroy').remove();

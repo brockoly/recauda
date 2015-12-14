@@ -49,16 +49,21 @@
 								 			$max=0;
 								 			for($i=0; $i<count($datosRN); $i++){								 				
 								 				$ide = $datosRN[$i]['rn'];
-								 				$tamStr = strlen($ide);
-								 				//echo "MAX: ".$max." actual: ".$ide[$tamStr-1];
-								 				if($max<$ide[$tamStr-1]){									 					
-									 				$max = $ide[$tamStr-1];
+								 				 $tamStr = strlen($ide);
+								 				$maxAux=0;
+								 				for($p=0; $p<$tamStr; $p++){
+								 					if($p>1){
+								 						$maxAux.=$ide[$p];
+								 					}								 					
+								 				}
+								 				if($max<$maxAux){									 					
+									 				$max = $maxAux;
 								 				}
 								 			}
 								 			$max++;
-								 		}
-								 		$max = "RN".$max;								 		
-										//echo "/*********".$max."**********/";
+								 			$max = "RN".$max;
+								 		}								 										 		
+										//echo "\n/*********".$max."**********/";
 							 			$objPer->setPersona($max, $per_nombre, $per_apellidoPaterno, $per_apellidoMaterno, $per_fechaNacimiento, $per_telefono, $per_procedencia, $per_sexo, $per_direccion);
 							 			$pac_id = $objPac->nuevoPac_id($objCon);
 							 			$pac_id;
@@ -66,7 +71,7 @@
 							 			$objNac->setNacionalidad($nac_id,'');	
 							 			$objPer->insertarPersona($objCon);
 										$objNac->insertarNacionalidadPersona($objCon, $max);
-										$objPac->insertarPaciente($objCon, $pre_id, $max, $ins_id);
+										$objPac->insertarPaciente($objCon, $pre_id, $max, $ins_id,'Si');
 										echo "bien";
 							 		}else{
 										$objPer->setPersona($per_id, $per_nombre, $per_apellidoPaterno, $per_apellidoMaterno, $per_fechaNacimiento, $per_telefono, $per_procedencia, $per_sexo, $per_direccion);
@@ -78,7 +83,7 @@
 										}else{
 											$objPer->modificarPersona($objCon);
 										}									
-										$objPac->insertarPaciente($objCon, $pre_id, $per_id, $ins_id);
+										$objPac->insertarPaciente($objCon, $pre_id, $per_id, $ins_id,'');
 										echo "bien";	
 									}								
 							 		$objCon->commit();					 		
@@ -112,13 +117,30 @@
 								$pre_id = $_POST['cmbPrevision']; 
 								$ins_id = $_POST['cmbInstitucion'];
 								try{
-								 		$objCon->beginTransaction();
-										$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia, $per_sexo, $per_direccion);
-										$objPac->setPaciente($pac_id);		
-										$objPer->modificarPersona($objCon);
-										$objPac->actualizarPaciente($objCon, $pre_id, $per_id, $ins_id);
-								 		$objCon->commit();
-								 		echo "bien";						 		
+								 		if(isset($_POST['rn']) && $_POST['rn']!=""){
+								 			if($_POST['naci_id']==1){
+												$per_id	= $objUti->valida_rut($_POST['txtIdentificador']);
+											}else{
+												$per_id	= $objUti->eliminaEspacios($_POST['txtIdentificador']);
+											}
+								 			$objCon->beginTransaction();
+											$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia, $per_sexo, $per_direccion);
+											$objPac->setPaciente($pac_id);											
+								 			$objPer->actualizarID($objCon,$_POST['txtIdentificadorAntiguo']);
+											$objPer->modificarPersona($objCon);
+											$objPac->actualizarPaciente($objCon, $pre_id, $per_id, $ins_id);
+									 		$objCon->commit();
+									 		echo "bien";
+								 		}else{
+									 		$objCon->beginTransaction();
+											$objPer->setPersona($per_id,$per_nombre,$per_apellidoPaterno,$per_apellidoMaterno,$per_fechaNacimiento,$per_telefono,$per_procedencia, $per_sexo, $per_direccion);
+											$objPac->setPaciente($pac_id);		
+											$objPer->modificarPersona($objCon);
+											$objPac->actualizarPaciente($objCon, $pre_id, $per_id, $ins_id);
+									 		$objCon->commit();
+									 		echo "bien";
+								 		}
+								 								 		
 								 	} catch (PDOException $e){
 							 			$objCon->rollBack(); 
 							 			echo $e->getMessage();
@@ -175,5 +197,109 @@
 								$per_id = $objUti->valida_rut($txtRut);
 								echo $res = $objPac->buscarPersona($objCon, $per_id);
 								break;
-	}
+		case "cargarPacienteCSV":
+								$objCon = new Conectar();
+								$objPer= new Persona();
+								$objUti= new Util();
+								$objPac= new Paciente();
+								$objPrev = new Prevision;
+								$objInst = new Institucion;
+								$objNac = new Nacionalidad;
+								$objCon->db_connect();
+								$tipo = $_FILES['archivo']['type'];
+								$tamanio = $_FILES['archivo']['size'];
+								$archivotmp = $_FILES['archivo']['tmp_name'];
+								$lineas = file($archivotmp);
+								$i=0;
+								$j=0;
+								$total=0;
+								$datosDevueltos = array();
+								foreach ($lineas as $linea_num => $linea){
+									if($i != 0){
+										$datos = explode(';',$linea);
+										$id = $objUti->valida_rut(trim($datos[0]));
+										$nombres = trim($datos[1]);											
+										$apellidoPaterno = trim($datos[2]);											
+										$apellidoMaterno = trim($datos[3]);										
+										$sexo = trim($datos[4]);											
+										$fecha = trim($datos[5]);											
+										$telefono = trim($datos[6]);											
+										$direccion = trim($datos[7]);											
+										$prevision = trim($datos[8]);											
+										$institucion = trim($datos[9]);											
+										$nacionalidad = trim($datos[10]);
+										if($id>0){//verifica que el rut es valido										
+											$existe = $objPac->buscarPaciente($objCon, $id);
+											if($existe==1){											
+												$datosDevueltos[$j]['id']= trim($datos[0]);
+												$datosDevueltos[$j]['nombres'] = trim($datos[1]);
+												$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
+												$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
+												$datosDevueltos[$j]['sexo'] = trim($datos[4]);;
+												$datosDevueltos[$j]['fecha'] = trim($datos[5]);
+												$datosDevueltos[$j]['telefono'] = trim($datos[6]);
+												$datosDevueltos[$j]['direccion'] = trim($datos[7]);
+												$datosDevueltos[$j]['prevision'] = trim($datos[8]);
+												$datosDevueltos[$j]['institucion'] = trim($datos[9]);
+												$datosDevueltos[$j]['nacionalidad'] = trim($datos[10]);
+												$datosDevueltos[$j]['error'] = "Ya existe como paciente";
+												$datosDevueltos[$j]['result'] = "No Importado";
+												$j++;
+											}else{ //NO EXISTE COMO PACIENTE
+												$objPer->setPer_id($id);
+												if($objPer->buscarIdentificador($objCon)==1){ //EXISTE EN TABLA PERSONA
+													//CREAMOS PACIENTE Y ACTUALIZAMOS INFORMACIÓN DE PERSONA
+													$total++;
+												}else{
+													//CREAMOS PACIENTE Y CREAMOSPERSONA
+													$total++;
+												}
+											}								
+										}else{
+											if($datos[10]==1){
+												$datosDevueltos[$j]['id']= trim($datos[0]);
+												$datosDevueltos[$j]['nombres'] = trim($datos[1]);
+												$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
+												$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
+												$datosDevueltos[$j]['sexo'] = trim($datos[4]);;
+												$datosDevueltos[$j]['fecha'] = trim($datos[5]);
+												$datosDevueltos[$j]['telefono'] = trim($datos[6]);
+												$datosDevueltos[$j]['direccion'] = trim($datos[7]);
+												$datosDevueltos[$j]['prevision'] = trim($datos[8]);
+												$datosDevueltos[$j]['institucion'] = trim($datos[9]);
+												$datosDevueltos[$j]['nacionalidad'] = trim($datos[10]);
+												$datosDevueltos[$j]['error'] = "Rut ingresado es Incorrecto";
+												$datosDevueltos[$j]['result'] = "No Importado";
+												$j++;
+											}else{
+												$existe = $objPac->buscarPaciente($objCon, $id);
+												if($existe==1){											
+													$datosDevueltos[$j]['id']= trim($datos[0]);
+													$datosDevueltos[$j]['nombres'] = trim($datos[1]);
+													$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
+													$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
+													$datosDevueltos[$j]['sexo'] = trim($datos[4]);;
+													$datosDevueltos[$j]['fecha'] = trim($datos[5]);
+													$datosDevueltos[$j]['telefono'] = trim($datos[6]);
+													$datosDevueltos[$j]['direccion'] = trim($datos[7]);
+													$datosDevueltos[$j]['prevision'] = trim($datos[8]);
+													$datosDevueltos[$j]['institucion'] = trim($datos[9]);
+													$datosDevueltos[$j]['nacionalidad'] = trim($datos[10]);
+													$datosDevueltos[$j]['error'] = "Ya existe como paciente";
+													$datosDevueltos[$j]['result'] = "No Importado";
+													$j++;
+												}else{
+													//CREAMOS PACIENTE Y CREAMOSPERSONA.
+													$total++;
+												}
+											}
+										}
+									}
+									$i++;
+								}
+								$datosDevueltos[$j]['totalIns']=$total;								
+								echo json_encode($datosDevueltos);
+								
+								break;
+	}	
 ?>

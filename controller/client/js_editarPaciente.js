@@ -16,8 +16,7 @@ $(document).ready(function(){
 									 rut=0;
 							  },
 		  on_success: function(){ //alert("Valido rut")
-			  						 rut=$.Rut.quitarFormato($("#txtIdentificador").val());
-			  						 rut=$.Rut.quitarFormato($("#txtIdentificador").val());
+			  						 rut=$.Rut.quitarFormato($("#txtIdentificador").val())
 			  						 var resUsu2 = validarProcesos('controller/server/controlador_paciente.php','op=buscarPersona&txtRut='+rut);
 			  						 if(resUsu2.length>2){
 			  						 	$("#txtIdentificador").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -25,11 +24,11 @@ $(document).ready(function(){
 										o=0;
 			  						 }else{
 			  						 	var resUsu3 = validarProcesos('controller/server/controlador_usuario.php','op=buscarPersona&txtRut='+rut);
-			  						 	if(resUsu3>2){
+			  						 	if(resUsu3.length>2){
 			  						 		$("#txtIdentificador").removeClass("cajabuena" ).addClass( "cajamala" );
 											muestraError('errIdentificador','El rut ingresado es ya está en nuestro registros.');
+											o=0;
 			  						 	}else{
-			  						 		alert()
 			  						 	 	$('#txtIdentificador').removeClass("cajabuena cajamala");	
 									 	    $('#errIdentificador').attr("title", "").hide("slow");
 									 	    o=1
@@ -55,7 +54,6 @@ $(document).ready(function(){
 						id = $('#txtIdentificador').val();
 						rut=-1;
 						var resPac = validarProcesos('controller/server/controlador_paciente.php','op=buscarPaciente&txtRut='+rut+'&txtIdentificador='+id);
-						alert(resPac)
 						if(resPac==0){
 							$(this).removeClass("cajabuena cajamala");	
 							$('#errIdentificador').attr("title", "").hide("slow");
@@ -70,7 +68,6 @@ $(document).ready(function(){
 			});
 		}
 	}
-	alert(o)
 	$('#btnEditarPaciente').button().click(function(){
 		if( $("#txtFechaNac").val()==""){
 			$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
@@ -81,20 +78,44 @@ $(document).ready(function(){
 			e=1;
 		}
 		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && g==1 && h==1){
-			if (o=="undefined"){
-				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=modificarPaciente');
-				if(cont='bien'){
+			//alert("Paciente");
+			var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=modificarPaciente');
+			if(cont=='bien'){
+				mensajeUsuario('successMensaje','Exito','Paciente modificado exitosamente');
+				cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
+				$('#modalEditarPaciente').dialog('destroy').remove();
+			}			
+			
+		}else{
+			$("#txtNombres").blur();
+			$("#txtApellidoPat").blur();
+			$("#txtApellidoMat").blur();
+			$("#cmbPais").blur();
+			$("#cmbPrevision").blur();
+			$("#cmbInstitucion").blur();
+			$("#txtDireccion").blur();
+		}
+	});
+
+	$('#btnEditarPacienteRN').button().click(function(){
+		if( $("#txtFechaNac").val()==""){
+			$("#txtFechaNac").removeClass("cajabuena" ).addClass( "cajamala" );
+			muestraError('errFechaNac','Ingrese una Fecha.');
+			e=0;			
+		}else{				
+			$(this).removeClass("cajamala" );
+			e=1;
+		}
+		if(a==1 && b==1 && c==1 && d==1 && e==1 && f==1 && g==1 && h==1){
+			//alert("RN");
+			if(o==1){
+				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=modificarPaciente&rn=R.N');
+				//alert(cont)
+				if(cont=='bien'){
 					mensajeUsuario('successMensaje','Exito','Paciente modificado exitosamente');
 					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
 					$('#modalEditarPaciente').dialog('destroy').remove();
-				}
-			}else{
-				var cont = validarProcesos('controller/server/controlador_paciente.php',$('#frmDatosPaciente').serialize()+'&op=modificarPaciente');
-				if(cont='bien'){
-					mensajeUsuario('successMensaje','Exito','Paciente modificado exitosamente');
-					cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
-					$('#modalEditarPaciente').dialog('destroy').remove();
-				}
+				}			
 			}
 			
 		}else{
