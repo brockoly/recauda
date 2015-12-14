@@ -215,7 +215,7 @@ $html .='
 		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
 		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
 		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-
+$totalBot=0;
 $totalBoleta=0;
 for($i=0; $i<count($boletas);$i++){
 	$objPss->setPss_id($boletas[$i]['pss_id']);
@@ -253,22 +253,47 @@ for($i=0; $i<count($boletas);$i++){
 
 
 
-										// IMPRESIÖN CATEGORÍAS
+										// IMPRESIN CATEGORÍAS
 	for($b=0; $b<count($tipos_productos); $b++){
 		$totalcategoria=0;
+		$totalCate=0;
+
+
 		for($c=0; $c<count($detallesProductos); $c++){
-			if($tipos_productos[$b]['tip_prod_id'] == $detallesProductos[$c]['tip_prod_id']){
-				
+			if($tipos_productos[$b]['tip_prod_id'] == $detallesProductos[$c]['tip_prod_id']){				
 				$totalcategoria+=$detallesProductos[$c]['total'];
 			}
 		}
-		$html.='<td width="'.$tamañox.'%">'.round($totalcategoria*$porcentaje).'</td>';
-		$arrTotalesBot[$b]+=round($totalcategoria*$porcentaje);
-		$totalBoleta+=round($totalcategoria*$porcentaje);		
+
+
+		$totalCate=round($totalcategoria*$porcentaje);
+
+		/*if($totalCate!=0){
+			if($totalCate<$boletas[$i]['total']){
+				$totalCate=$totalCate-($totalCate-$boletas[$i]['total']);
+			}else if($totalCate>$boletas[$i]['total']){
+				$totalCate=$totalCate+($totalCate-$boletas[$i]['total']);
+			}
+		}*/
+
+
+
+		$html.='<td width="'.$tamañox.'%">'.$totalCate.'</td>';
+		$arrTotalesBot[$b]+=$totalCate;
+		$totalBoleta+=$totalCate;		
 		$totalcategoria=0;
+		$totalCate=0;
 		
 	}
-	$html.='<td align="right" width="10%">'.$boletas[$i]['total'].'</td>';
+	if($totalBoleta!=0){
+			if($totalBoleta>$boletas[$i]['total']){
+				$totalBoleta=$totalBoleta-($totalBoleta-$boletas[$i]['total']);
+			}else if($totalBoleta<$boletas[$i]['total']){
+				$totalBoleta=$totalBoleta+($totalBoleta-$boletas[$i]['total']);
+			}
+		}
+		$totalBot+=$totalBoleta;
+	$html.='<td align="right" width="10%">'.$totalBoleta.'</td>';
 			
 			$html.='							
 									</tr>
@@ -322,7 +347,7 @@ for($i=0; $i<count($boletas);$i++){
 
 										$html.='
 									
-									<td align="right" width="10%"><strong>'.$objUti->formatDinero($total_boletas).'</strong></td>
+									<td align="right" width="10%"><strong>'.$objUti->formatDinero($totalBot).'</strong></td>
 								</tr>
 							</table>
 						</td>
