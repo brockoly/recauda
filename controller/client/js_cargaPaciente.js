@@ -19,6 +19,9 @@ $("#enviarDatos").button().click(function(){
 	   		var rs = JSON.parse(retorno); 
 	   		$(".trNew").remove();
 	   		var i=0;
+	   		if(rs.length>1){
+	   			$('<tr class="cuerpoDatos trEncabezados"><td align="center">Identificador</td><td align="center">Nombre Paciente</td><td align="center">Resumen Error</td><td align="center">Resultado</td></tr>').appendTo('#erroresTB');
+	   		}
 	   		for(i; i<rs.length; i++){
 	   			$("#rsError").show();
 				$("#wait").show();

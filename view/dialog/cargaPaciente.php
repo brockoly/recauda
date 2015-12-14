@@ -19,12 +19,7 @@
 <fieldset  id="rsError" hidden="true" class="cabezeraDatos" style="background-color: #f2f5f7 !important; width: 600px;"><legend class="cuerpoDatos">Errores</legend><br>
 	<center>
 		<table id="erroresTB" width="550px">
-			<tr class="cuerpoDatos">
-					<td align="center">Identificador</td>
-					<td align="center">Nombre Paciente</td>
-					<td align="center">Resumen Error</td>
-					<td align="center">Resultado</td>
-			</tr>
+			
 		</table>
 		<table>
 			<tr>
