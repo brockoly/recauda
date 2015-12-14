@@ -2,7 +2,6 @@ $(document).ready(function(){
 	validar('valores', 'class' ,'numero');
 	var a=0,b=0,c=0;
 	$('#bntAgregarPago').click(function(){
-
 		var valor = $('#txtMontoPago').val();
 		var tipo_pago = $('#cmbTipoPago option:selected').text();
 		var tip_pag_id = $('#cmbTipoPago option:selected').val();
@@ -54,27 +53,42 @@ $(document).ready(function(){
 	});
 	$('#btnPagarPSS').button().click(function(){		
 		if(a==1 || b==1 || c==1){
-			var datosEnviar = [];
-			var i = 0;
-			var z=0;
-			$('#tblPagos [name="valorPago"]').each(function(){
-				var valor = $(this).text();
-				var idTipoPago = $(this).attr('id').split('valor');
-				var idTipoPago = idTipoPago[1];
+			var facturado = $('#txtTotal').val();
+			var pagoActual = $('#txtTotalPag').val();
+			if(pagoActual>facturado){
+				mensajeUsuario('alertMensaje','Advertencia','No puede pagar mas del total facturado.');
+			}else{
 
-				var datos = [2];
-	            datos[0]=idTipoPago;
-	            datos[1]=valor;
-	            datosEnviar[z]=datos;
-	            z++;
-			});
-			var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val());
-			//alert(bol_id);
-			mensajeUsuario('successMensaje','Exito','Pago generado, boleta Nº.'+bol_id);
-			$('#modalPagarPss').dialog('destroy').remove();
-			//ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
-			/*mensajeUsuario('successMensaje','Éxito','Valores actualizados con exito.');
-			*/
+				var datosEnviar = [];
+				var i = 0;
+				var z=0;
+				$('#tblPagos [name="valorPago"]').each(function(){
+					var valor = $(this).text();
+					var idTipoPago = $(this).attr('id').split('valor');
+					var idTipoPago = idTipoPago[1];
+
+					var datos = [2];
+		            datos[0]=idTipoPago;
+		            datos[1]=valor;
+		            datosEnviar[z]=datos;
+		            z++;
+				});
+				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+$('#facturado').val()+'&pagoActual='+$('#pagoActual').val());
+				var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=pagarPSS');
+				var paciente=$("#Paciente").val();
+				var ctaCorriente=$("#CtaCorriente").val();
+				var identificador=$("#Identificador").val();
+				var id = $('#cue_id').val();
+				cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
+				//alert(bol_id);
+				//mensajeUsuario('successMensaje','Exito','Pago generado, boleta Nº.'+bol_id);
+				ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
+				$('#modalPagarPss').dialog('destroy').remove();
+				
+				/*mensajeUsuario('successMensaje','Éxito','Valores actualizados con exito.');
+				*/
+			}
+			
 		}else{
 			mensajeUsuario('alertMensaje','Advertencia','Porfavor agregue un monto.');
 		}

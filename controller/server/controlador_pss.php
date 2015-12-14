@@ -81,6 +81,22 @@
 					 			echo $e->getMessage();
 						}
 				break;
+				case "pagarPSS":
+						$pss_id=$_POST['pss_id'];					 							
+						try{
+							$objCon->db_connect();
+							$objCon->beginTransaction();
+							$objPss->setPss_id($pss_id);
+							$objPss->setPss_estado("Pagado");
+							$objPss->cambiarEstadoPss($objCon);				
+						 	$objCon->commit();						 	
+						 	echo "PSS valorizado con exito.";
+													 		
+						}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			echo $e->getMessage();
+						}
+				break;
 
 				case "agregarProductoPss":
 						session_start();

@@ -37,7 +37,7 @@ require_once('../../class/Pss.class.php'); $objPss = new Pss;
 
 		$exen = $datosPago[$i]['bol_tipo'];
 		if($exen == 1){
-			$exe = 'EXENTA';
+			$exe = '';
 		}
 		$fechaBoleta= $objUti->cambiarfecha_mysql_a_normalGuion($datosPago[$i]['bol_fecha']);
 		if($datosPaciente[$p]['nac_id']=='1'){
