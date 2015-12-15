@@ -232,7 +232,7 @@
 										if($id>0){//verifica que el rut es valido										
 											$existe = $objPac->buscarPaciente($objCon, $id);
 											if($existe==1){											
-												$datosDevueltos[$j]['id']= trim($datos[0]);
+												$datosDevueltos[$j]['id']= $objUti->formatRut(trim($datos[0]));
 												$datosDevueltos[$j]['nombres'] = trim($datos[1]);
 												$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
 												$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
@@ -285,7 +285,7 @@
 											}								
 										}else{
 											if($datos[10]==1){
-												$datosDevueltos[$j]['id']= "<b style='color: red'>".trim($datos[0])."</b>";
+												$datosDevueltos[$j]['id']= "<b style='color: red'>".$objUti->formatRut(trim($datos[0]))."</b>";
 												$datosDevueltos[$j]['nombres'] = trim($datos[1]);
 												$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
 												$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
