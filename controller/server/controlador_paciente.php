@@ -222,12 +222,13 @@
 										$apellidoPaterno = trim($datos[2]);											
 										$apellidoMaterno = trim($datos[3]);										
 										$sexo = trim($datos[4]);											
-										$fecha = trim($datos[5]);											
+										$fecha = $objUti->cambiarfecha_mysql(trim($datos[5]));											
 										$telefono = trim($datos[6]);											
 										$direccion = trim($datos[7]);											
 										$prevision = trim($datos[8]);											
-										$institucion = trim($datos[9]);											
+										$institucion = trim($datos[9]);	
 										$nacionalidad = trim($datos[10]);
+										$objNac->setNacionalidad($nacionalidad,'');
 										if($id>0){//verifica que el rut es valido										
 											$existe = $objPac->buscarPaciente($objCon, $id);
 											if($existe==1){											
@@ -242,22 +243,49 @@
 												$datosDevueltos[$j]['prevision'] = trim($datos[8]);
 												$datosDevueltos[$j]['institucion'] = trim($datos[9]);
 												$datosDevueltos[$j]['nacionalidad'] = trim($datos[10]);
-												$datosDevueltos[$j]['error'] = "Ya existe como paciente";
+												$datosDevueltos[$j]['error'] = "Existe como paciente";
 												$datosDevueltos[$j]['result'] = "No Importado";
 												$j++;
 											}else{ //NO EXISTE COMO PACIENTE
 												$objPer->setPer_id($id);
 												if($objPer->buscarIdentificador($objCon)==1){ //EXISTE EN TABLA PERSONA
 													//CREAMOS PACIENTE Y ACTUALIZAMOS INFORMACIÓN DE PERSONA
-													$total++;
+													try{
+														$objCon->beginTransaction();
+														$pac_id = $objPac->nuevoPac_id($objCon);
+														$objPer->setPersona($id,$nombres,$apellidoPaterno,$apellidoMaterno,$fecha,$telefono,$nacionalidad, $sexo, $direccion);
+														$objPac->setPaciente($pac_id);		
+														$objPer->modificarPersona($objCon);
+														$objPac->insertarPaciente($objCon, $prevision, $id, $institucion,'');
+														$objCon->commit();
+														$total++;														
+													}catch(PDOException $e){
+														$total--;
+											 			$objCon->rollBack(); 
+											 			echo $e->getMessage();
+													}	
 												}else{
 													//CREAMOS PACIENTE Y CREAMOSPERSONA
-													$total++;
+													try{
+														$objCon->beginTransaction();
+														$pac_id = $objPac->nuevoPac_id($objCon);
+														$objPer->setPersona($id,$nombres,$apellidoPaterno,$apellidoMaterno,$fecha,$telefono,$nacionalidad, $sexo, $direccion);
+														$objPac->setPaciente($pac_id);	
+														$objPer->insertarPersona($objCon);
+														$objNac->insertarNacionalidadPersona($objCon, $id);
+														$objPac->insertarPaciente($objCon, $prevision, $id, $institucion,'');
+														$objCon->commit();
+														$total++;
+													}catch (PDOException $e){
+														$total--;
+											 			$objCon->rollBack(); 
+											 			echo $e->getMessage();
+													}	
 												}
 											}								
 										}else{
 											if($datos[10]==1){
-												$datosDevueltos[$j]['id']= trim($datos[0]);
+												$datosDevueltos[$j]['id']= "<b style='color: red'>".trim($datos[0])."</b>";
 												$datosDevueltos[$j]['nombres'] = trim($datos[1]);
 												$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
 												$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
@@ -273,7 +301,7 @@
 												$j++;
 											}else{
 												$existe = $objPac->buscarPaciente($objCon, $id);
-												if($existe==1){											
+												if($existe==1){	//EXISTE COMO PACIENTE										
 													$datosDevueltos[$j]['id']= trim($datos[0]);
 													$datosDevueltos[$j]['nombres'] = trim($datos[1]);
 													$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
@@ -285,12 +313,27 @@
 													$datosDevueltos[$j]['prevision'] = trim($datos[8]);
 													$datosDevueltos[$j]['institucion'] = trim($datos[9]);
 													$datosDevueltos[$j]['nacionalidad'] = trim($datos[10]);
-													$datosDevueltos[$j]['error'] = "Ya existe como paciente";
+													$datosDevueltos[$j]['error'] = "Existe como paciente";
 													$datosDevueltos[$j]['result'] = "No Importado";
 													$j++;
 												}else{
 													//CREAMOS PACIENTE Y CREAMOSPERSONA.
-													$total++;
+													try{
+														$objCon->beginTransaction();
+														$pac_id = $objPac->nuevoPac_id($objCon);
+														$objPer->setPersona($id,$nombres,$apellidoPaterno,$apellidoMaterno,$fecha,$telefono,$nacionalidad, $sexo, $direccion);
+														$objPac->setPaciente($pac_id);	
+														$objPer->insertarPersona($objCon);
+														$objNac->insertarNacionalidadPersona($objCon, $id);
+														$objPac->insertarPaciente($objCon, $prevision, $id, $institucion,'');
+														$objCon->commit();
+														$total++;
+													}catch (PDOException $e){
+														$total--;
+											 			$objCon->rollBack(); 
+											 			echo $e->getMessage();
+													}	
+													
 												}
 											}
 										}
