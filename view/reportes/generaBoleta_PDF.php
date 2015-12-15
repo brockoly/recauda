@@ -44,7 +44,7 @@ require_once('../../class/Pss.class.php'); $objPss = new Pss;
 
 
 		$exen = $datosPago[$i]['bol_tipo'];
-		if($exen == 1){
+		if($exen == 0){
 			$exe = 'EXENTA';
 		}
 		$fechaBoleta= $objUti->cambiarfecha_mysql_a_normalGuion($datosPago[$i]['bol_fecha']);
@@ -199,16 +199,19 @@ $html.= '
 	<tr>
 		<td style="border-top-width:1px; border-bottom-width:1px; border-left-width:1px; border-right-width:1px; width:100%">
 			<table>';
-			$html .='<tr>
-							<td width="70%">'.$datosPago[$i]['tip_pag_descripcion'].'</td>
-							<td width="30%" align="right">'.$objUti->formatDinero($datosPago[$i]['pag_monto']).'</td>
+			$total_pago = 0;
+			for($a=0; $a<count($datosPago);$a++){
+				$html .='<tr>
+							<td width="70%">'.$datosPago[$a]['tip_pag_descripcion'].'</td>
+							<td width="30%" align="right">'.$objUti->formatDinero($datosPago[$a]['pag_monto']).'</td>
 						</tr>';
-
+				$total_pago += $datosPago[$a]['pag_monto'];
+			}
 			
 			$html.='
 				<tr>
 					<td width="70%" style="border-top-width:1px;"><b>Total Pago</b></td>
-					<td width="30%" style="border-top-width:1px;" align="right"><b>$'.$objUti->formatDinero($datosPago[$i]['pag_monto']).'</b></td>
+					<td width="30%" style="border-top-width:1px;" align="right"><b>$'.$objUti->formatDinero($total_pago).'</b></td>
 				</tr>
 			</table>
 		</td>

@@ -4,7 +4,7 @@ class Tipo_pago{
 	 public $tip_pag_id;
 	 public $tip_Pro_estado;
 	 
-	 function setTipoPago($tip_pagId,$tip_pag_descripcion){
+	 function setTipoPago($tip_pag_id,$tip_pag_descripcion){
  		$this->tip_pag_descripcion=trim($tip_pag_descripcion);
  		$this->tip_pag_id=trim($tip_pag_id);
 	 }
@@ -21,5 +21,11 @@ class Tipo_pago{
 				$i++;
 		    }
 			return $datos;
+	}
+	function agregarTipoPago($objCon,$cue_id,$pss_id,$pag_id,$pag_monto){
+		$sql ="INSERT INTO pagos_tipoPago(cue_id, pss_id, pag_id, tip_pag_id, pag_monto)
+			   VALUES ('$cue_id', '$pss_id', '$pag_id', '$this->tip_pag_id','$pag_monto')";
+	 	$rs=$objCon->ejecutarSQL($sql,'ERROR AL agregarTipoPago');
+	 	return $rs;
 	}
 }?>

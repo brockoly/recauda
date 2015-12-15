@@ -4,6 +4,7 @@
 	require_once('../../class/Pagos.class.php');$objPag = new Pagos();
 	require_once('../../class/Boleta.class.php');$objBol = new Boleta();
 	require_once('../../class/Pss.class.php');$objPss = new Pss();
+	require_once('../../class/Tipo_Pago.class.php');$objTipo = new Tipo_Pago();
 	switch($_POST['op']) {
 		case "pagar":		
 			session_start();
@@ -22,17 +23,20 @@
 			//print_r($nuevoArr);
 			try{
 		 		$objCon->beginTransaction();
-
-		 		$pag_id = $objPag->buscarMaximoId($objCon);
 		 		$bol_id = $objBol->buscarMaximoId($objCon);
-
+		 		$pag_id = $objPag->buscarMaximoId($objCon);
 		 		//echo "usuario->".$_SESSION['nombre_usuario'];
-				for($i=0; $i<count($nuevoArr);$i++){
-					$objPag->setPagos($pag_id, $nuevoArr[$i]['valor']);
-					$objPag->agregarPago($objCon,$_POST['cue_id'],$_POST['pss_id'], $nuevoArr[$i]['tip_pag_id']);
-				}
+				
+				$objPag->setPagos($pag_id);
+				$objPag->agregarPago($objCon,$_POST['cue_id'],$_POST['pss_id']);
 				$objBol->setBoleta($bol_id, '1', date('Y-m-d'), date('H:i:s'));
 				$objBol->agregarNuevaBoleta($objCon,$_POST['cue_id'],$_POST['pss_id'],$pag_id, $_SESSION['usuario'][1]['nombre_usuario'],'1');
+
+				for($i=0; $i<count($nuevoArr);$i++){
+					$objTipo->setTipoPago($nuevoArr[$i]['tip_pag_id'],'');
+					$objTipo->agregarTipoPago($objCon,$cue_id,$pss_id,$pag_id,$nuevoArr[$i]['valor']);
+				}
+
 				$objPss->actualizarSaldo($objCon, $_POST['pss_id'], $pss_saldo);
 		 		echo $bol_id;
 		 		$objCon->commit();				 		

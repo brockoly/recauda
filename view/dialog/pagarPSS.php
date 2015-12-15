@@ -22,7 +22,6 @@
   for($i=0; $i<count($detallePSS);$i++){
       $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
   }
-  //print_r($_SESSION);
 ?>
 <script type="text/javascript" src="controller/client/js_pagarPSS.js"></script>
 <input type="hidden" value="<?=$_POST['pss_id']?>" id="pss_id" />

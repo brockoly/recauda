@@ -73,7 +73,7 @@ $(document).ready(function(){
 		            datosEnviar[z]=datos;
 		            z++;
 				});
-				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+$('#facturado').val()+'&pagoActual='+$('#pagoActual').val());
+				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+facturado+'&pagoActual='+pagoActual);
 				var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=pagarPSS');
 				var paciente=$("#Paciente").val();
 				var ctaCorriente=$("#CtaCorriente").val();
