@@ -37,7 +37,10 @@ $(document).ready(function(){
 				ventanaModal('./view/dialog/editarPss.php','pss_id='+pss_id+'&Paciente='+$('#Paciente').val()+'&CtaCorriente='+$('#CtaCorriente').val()+'&Identificador='+$('#Identificador').val(),'auto','auto','Edición de Pss','modalEditarPss');
 			}
 			if($(this).hasClass('pagar')){
-				ventanaModal('./view/dialog/pagarPss.php','pss_id='+pss_id,'auto','auto','Pagar Pss N°'+pss_id,'modalPagarPss')
+				ventanaModal('./view/dialog/pagarPss.php','pss_id='+pss_id+'&tipo=pago','auto','auto','Pagar Pss N°'+pss_id,'modalPagarPss')
+			}
+			if($(this).hasClass('abonar')){
+				ventanaModal('./view/dialog/pagarPss.php','pss_id='+pss_id+'&tipo=abono','auto','auto','Pagar Pss N°'+pss_id,'modalPagarPss')
 			}
 			if($(this).hasClass('ordenAtencion')){
 				mensajeUsuario('alertMensaje','No no nooo','Este opción aun esta en desarrollo.');

@@ -1,13 +1,10 @@
 <?php 
-
 class Pagos{
 	private $pag_id;
-
 	function setPagos($pag_id){
-	 		$this->pag_id=trim($pag_id);
+ 		$this->pag_id=trim($pag_id);
 	}
 	function buscarMaximoId($objCon){//
-
 	 	$sql="SELECT MAX(pag_id)+1 as CONT
 			  FROM pagos";
 		$i=0;
@@ -36,7 +33,12 @@ class Pagos{
 			boleta.bol_hora,
 			boleta.usu_nombre,
 			CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ',persona.per_apellidoMaterno) AS nombre,
-			tipo_pago.tip_pag_descripcion
+			tipo_pago.tip_pag_descripcion,
+			tipo_pago.tip_pag_descripcion,
+			pagos_tipopago.pag_codigoTransaccion,
+			pagos_tipopago.pag_codigoAutorizacion,
+			pagos_tipopago.pag_folioCheque,
+			pagos_tipopago.pag_banco
 			FROM
 			pagos_tipopago
 			INNER JOIN tipo_pago ON pagos_tipopago.tip_pag_id = tipo_pago.tip_pag_id
@@ -44,8 +46,6 @@ class Pagos{
 			INNER JOIN boleta ON pagos.pag_id = boleta.pag_id
 			INNER JOIN usuario ON usuario.usu_nombre = boleta.usu_nombre
 			INNER JOIN persona ON usuario.per_id = persona.per_id";
-
-
 			if(empty($bol_id)==false){
 				$sql.=" WHERE boleta.bol_id = '$bol_id'";
 			}else{
@@ -53,7 +53,6 @@ class Pagos{
 					$sql.=" WHERE boleta.pss_id = '$pss_id'";
 				}
 			}
-			//echo $sql;
 			$datos = array();
 			$i=0;
 			foreach ($objCon->consultaSQL($sql, 'ERROR listarPagosPSS') as $v) {
@@ -67,6 +66,10 @@ class Pagos{
 				$datos[$i][bol_tipo]=$v['bol_tipo'];
 				$datos[$i][usu_nombre]=$v['usu_nombre'];
 				$datos[$i][nombre]=$v['nombre'];
+				$datos[$i][pag_codigoTransaccion]=$v['pag_codigoTransaccion'];
+				$datos[$i][pag_codigoAutorizacion]=$v['pag_codigoAutorizacion'];
+				$datos[$i][pag_folioCheque]=$v['pag_folioCheque'];
+				$datos[$i][pag_banco]=$v['pag_banco'];
 				$i++;
 		    }
 		return $datos;
@@ -86,8 +89,6 @@ class Pagos{
 			INNER JOIN pagos ON pagos.pag_id = boleta.pag_id
 			INNER JOIN usuario ON usuario.usu_nombre = boleta.usu_nombre
 			INNER JOIN persona ON usuario.per_id = persona.per_id";
-
-
 			if(empty($bol_id)==false){
 				$sql.=" WHERE boleta.bol_id = '$bol_id'";
 			}else{
@@ -110,6 +111,36 @@ class Pagos{
 				$i++;
 		    }
 		return $datos;
-	}	
+	}
+	function buscarPagoPss($objCon,$pss_id){
+	 	$sql ="SELECT
+			pagos_tipopago.cue_id,
+			pagos_tipopago.pss_id,
+			pagos_tipopago.pag_id,
+			pagos_tipopago.tip_pag_id,
+			pagos_tipopago.pag_monto,
+			pagos_tipopago.pag_codigoTransaccion,
+			pagos_tipopago.pag_codigoAutorizacion,
+			pagos_tipopago.pag_folioCheque,
+			pagos_tipopago.pag_banco
+			FROM
+			pagos_tipopago
+			WHERE pagos_tipopago.pss_id = '$pss_id'";
+		$datos = array();
+		$i=0;
+	 	foreach ($objCon->consultaSQL($sql,'ERROR buscarPagoPss') as $v) {
+	 		$datos[$i]['cue_id'] = $v['cue_id'];
+	 		$datos[$i]['pss_id'] = $v['pss_id'];
+	 		$datos[$i]['pag_id'] = $v['pag_id'];
+	 		$datos[$i]['tip_pag_id'] = $v['tip_pag_id'];
+	 		$datos[$i]['pag_monto'] = $v['pag_monto'];
+	 		$datos[$i]['pag_codigoTransaccion'] = $v['pag_codigoTransaccion'];
+	 		$datos[$i]['pag_codigoAutorizacion'] = $v['pag_codigoAutorizacion'];
+	 		$datos[$i]['pag_folioCheque'] = $v['pag_folioCheque'];
+	 		$datos[$i]['pag_banco'] = $v['pag_banco'];
+	 		$i++;
+	 	}
+	 	return $datos;
+	 }
 }
 ?>

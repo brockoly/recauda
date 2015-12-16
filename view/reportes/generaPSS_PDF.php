@@ -68,8 +68,6 @@ $arrTiposPSS = Array();
   for($i=0; $i<count($detallePSS);$i++){
       $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
   }
-/*print_r($cabeceraPSS);
-echo $detallePSS[$i][tip_prod_id];*/
 
 //TABLA DE CONTENIDO HTML
 $html = '
@@ -196,36 +194,52 @@ $html .='<tr>
 					</tr>
 				</table>
 			</td>
+		</tr>
+		<tr>
+			<td style="border-bottom-width:1px;" colspan="3"><br><br></td>
 		</tr>';
 //FIN TOTAL PROGRAMA
 //COMIENZA LA MUESTRA DE BOLETAS O ABONOS SI EXISTEN
-for($i=0; $i<count($pagos); $i++){
-	$html .='<tr>
-				<td style="border-bottom-width:1px;" colspan="3"><br><br></td>
-			</tr>
+	$html .='
 			<tr>
-				<td width="50%" align="left" colspan="3"><h3>ABONOS Y PAGOS</h3></td>
+				<td width="95%" align="left" colspan="3"><h3>ABONOS Y PAGOS</h3></td>
 			</tr>
 			<tr>
 			<td colspan="3">
-			<table width="100%" cellpadding="1" style="font-size:8;">
+			<table border="0" width="100%" cellpadding="1" style="font-size:8;">
 				<tr>
 					<th>FOLIO</th>
 					<th>FECHA</th>
 					<th>HORA</th>
-					<th>MONTO</th>
+					<th>TIPO</th>
+					<th>COD. TRANS</th>
+					<th>COD. AUT</th>
+					<th>FOLIO</th>
+					<th>TIPO</th>
+					<th>BANCO</th>
 				</tr>';
-			$html .='
-				<tr>
-					<td>'.$pagos[$i][bol_id].'</td>
-					<td>'.$objUtil->cambiarfecha_mysql_a_normal($pagos[$i][bol_fecha]).'</td>
-					<td>'.$pagos[$i][bol_hora].'</td>
-					<td align="center"><table width="50px" align="right"><tr><td>'.$pagos[$i][pag_monto].'</td></tr></table></td>
-				</tr>
-				</table>
-				</td>
-				</tr>';
-}
+			for($i=0; $i<count($pagos); $i++){
+				$html .='
+							<tr>
+								<td colspan="8">'.count($pagos).'</td>
+							</tr>';
+					$html .='
+						<tr>
+							<td>'.$pagos[$i][bol_id].'</td>
+							<td>'.$objUtil->cambiarfecha_mysql_a_normal($pagos[$i][bol_fecha]).'</td>
+							<td>'.$pagos[$i][bol_hora].'</td>
+							<td>'.$pagos[$i][tip_pag_descripcion].'</td>
+							<td>'.$pagos[$i][pag_codigoTransaccion].'</td>
+							<td>'.$pagos[$i][pag_codigoAutorizacion].'</td>
+							<td>'.$pagos[$i][pag_folioCheque].'</td>
+							<td>'.$pagos[$i][pag_banco].'</td>
+							<td align="center"><table width="50px" align="right"><tr><td>'.$pagos[$i][pag_monto].'</td></tr></table></td>
+						</tr>';
+				}	
+$html .='</table>
+</td>
+</tr>';
+
 //TERMINA LA MUESTRA DE BOLETAS
 $html .='</table>';
 
