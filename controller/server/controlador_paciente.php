@@ -231,8 +231,8 @@
 										$objNac->setNacionalidad($nacionalidad,'');
 										if($id>0){//verifica que el rut es valido										
 											$existe = $objPac->buscarPaciente($objCon, $id);
-											if($existe==1){											
-												$datosDevueltos[$j]['id']= $objUti->formatRut(trim($datos[0]));
+											if($existe==1){										
+												$datosDevueltos[$j]['id']=  "<b style='color: red'>".trim($datos[0])."</b>";
 												$datosDevueltos[$j]['nombres'] = trim($datos[1]);
 												$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
 												$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
@@ -246,7 +246,7 @@
 												$datosDevueltos[$j]['error'] = "Existe como paciente";
 												$datosDevueltos[$j]['result'] = "No Importado";
 												$j++;
-											}else{ //NO EXISTE COMO PACIENTE
+											}else{//NO EXISTE COMO PACIENTE
 												$objPer->setPer_id($id);
 												if($objPer->buscarIdentificador($objCon)==1){ //EXISTE EN TABLA PERSONA
 													//CREAMOS PACIENTE Y ACTUALIZAMOS INFORMACIÓN DE PERSONA
@@ -284,8 +284,8 @@
 												}
 											}								
 										}else{
-											if($datos[10]==1){
-												$datosDevueltos[$j]['id']= "<b style='color: red'>".$objUti->formatRut(trim($datos[0]))."</b>";
+											if($datos[10]==1){//NOTIFICAMOS ERROR DE RUT
+												$datosDevueltos[$j]['id']= "<b style='color: red'>".trim($datos[0])."</b>";
 												$datosDevueltos[$j]['nombres'] = trim($datos[1]);
 												$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
 												$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
@@ -300,9 +300,9 @@
 												$datosDevueltos[$j]['result'] = "No Importado";
 												$j++;
 											}else{
-												$existe = $objPac->buscarPaciente($objCon, $id);
-												if($existe==1){	//EXISTE COMO PACIENTE										
-													$datosDevueltos[$j]['id']= trim($datos[0]);
+												$existe2 = $objPac->buscarPaciente($objCon, $id);
+												if($existe2==1){	//EXISTE COMO PACIENTE										
+													$datosDevueltos[$j]['id']= "<b style='color: red'>".trim($datos[0])."</b>";
 													$datosDevueltos[$j]['nombres'] = trim($datos[1]);
 													$datosDevueltos[$j]['apellidoPaterno'] = trim($datos[2]);	
 													$datosDevueltos[$j]['apellidoMaterno'] = trim($datos[3]);
