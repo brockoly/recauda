@@ -95,32 +95,29 @@ $(document).ready(function(){
 				});
 
 				var datosBonos = [];
-				var i = 0;
-				var z=0;
-				$('#tblBonosAdded tr').each(function(){
-					if(z>0){
-						var numero = $(this).find('[name="idBon"]').text();
-						var tipo = $(this).find('[name="tipoBon"]').attr('id');
-						var monto = $(this).find('[name="valorBon"]').text()
-						var datosBon = [3];
-			            datosBon[0]=numero;
-			            datosBon[1]=tipo;
-			            datosBon[2]= monto;
-			            datosBonos[z]=datosBon;
-					}	
-					z++;				
-				});	
-				//alert(datosBonos);
+				var p=0;
+				$('#tblBonosAdded [name="trBonosA"]').each(function(){
+					var numero = $(this).find('[name="idBon"]').text();
+					var tipo = $(this).find('[name="tipoBon"]').attr('id');
+					var monto = $(this).find('[name="valorBon"]').text()
+					var datosBon = [3];
+		            datosBon[0]=numero;
+		            datosBon[1]=tipo;
+		            datosBon[2]= monto;
+		            datosBonos[p]=datosBon;
+					p++;				
+				});
 				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+facturado+'&pagoActual='+pagoActual+'&frmPagos='+$('#frmPagos').serialize()+'&datosBonos='+datosBonos);
-				alert(bol_id);
-				/*var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=abonarPSS');
+				if(bol_id>0){
+					ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
+				}	
+				var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=abonarPSS');
 				var paciente=$("#Paciente").val();
 				var ctaCorriente=$("#CtaCorriente").val();
 				var identificador=$("#Identificador").val();
 				var id = $('#cue_id').val();
 				cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
-				ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
-				$('#modalPagarPss').dialog('destroy').remove();*/
+				$('#modalPagarPss').dialog('destroy').remove();			
 			}
 			else{ // PAGO TOTAL
 				var datosEnviar = [];
@@ -140,15 +137,32 @@ $(document).ready(function(){
 		            datosEnviar[z]=datos;
 		            z++;
 				});
-				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+facturado+'&pagoActual='+pagoActual+'&frmPagos='+$('#frmPagos').serialize());
-				var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=pagarPSS');
-				var paciente=$("#Paciente").val();
-				var ctaCorriente=$("#CtaCorriente").val();
-				var identificador=$("#Identificador").val();
-				var id = $('#cue_id').val();
-				cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
-				ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
-				$('#modalPagarPss').dialog('destroy').remove();
+
+				var datosBonos = [];
+				var p=0;
+				$('#tblBonosAdded [name="trBonosA"]').each(function(){
+					var numero = $(this).find('[name="idBon"]').text();
+					var tipo = $(this).find('[name="tipoBon"]').attr('id');
+					var monto = $(this).find('[name="valorBon"]').text()
+					var datosBon = [3];
+		            datosBon[0]=numero;
+		            datosBon[1]=tipo;
+		            datosBon[2]= monto;
+		            datosBonos[p]=datosBon;
+					p++;				
+				});	
+
+				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+facturado+'&pagoActual='+pagoActual+'&frmPagos='+$('#frmPagos').serialize()+'&datosBonos='+datosBonos);
+				if(bol_id>0){
+					var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=pagarPSS');
+					var paciente=$("#Paciente").val();
+					var ctaCorriente=$("#CtaCorriente").val();
+					var identificador=$("#Identificador").val();
+					var id = $('#cue_id').val();
+					cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
+					ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
+					$('#modalPagarPss').dialog('destroy').remove();
+				}
 			}
 		}else{
 			mensajeUsuario('alertMensaje','Advertencia','Porfavor agregue un monto.');
@@ -223,7 +237,7 @@ $(document).ready(function(){
 				});
 				var valLbl = $('#txtTotalPag').val();
 				$('#txtTotalPag').val(parseInt(datos[2])+parseInt(valLbl));
-				$('<tr name="trBonoAdded'+datos[0]+'"><td name="idBon">'+datos[0]+'</td><td name="tipoBon" id="'+datosID[0]+'">'+datos[1]+'</td><td name="valorBon" id="valorBon'+datos[0]+'">'+datos[2]+'</td><td align="center"><img width="20" style="cursor: pointer;" height="20" id="bntEliminarBono'+datos[0]+'" src="./include/img/eraser.png"></td></tr>').appendTo('#tblBonosAdded');
+				$('<tr name="trBonosA" id="trBonoAdded'+datos[0]+'"><td name="idBon">'+datos[0]+'</td><td name="tipoBon" id="'+datosID[0]+'">'+datos[1]+'</td><td name="valorBon" id="valorBon'+datos[0]+'">'+datos[2]+'</td><td align="center"><img width="20" style="cursor: pointer;" height="20" id="bntEliminarBono'+datos[0]+'" src="./include/img/eraser.png"></td></tr>').appendTo('#tblBonosAdded');
 				$('#bntEliminarBono'+datos[0]).click(function(){
 					var total = $('#txtTotalPag').val();
 					$('#txtTotalPag').val(parseInt(total)-parseInt($('#valorBon'+datos[0]).text()));
@@ -237,7 +251,7 @@ $(document).ready(function(){
 					if(totalTblBon==1){
 						d=0;
 					}
-					$('[name="trBonoAdded'+datos[0]+'"]').remove();
+					$('#trBonoAdded'+datos[0]+'').remove();
 				});
 				$('[name="trBon"]').remove();
 			});

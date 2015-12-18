@@ -9,6 +9,7 @@
   require_once('../../class/Prevision.class.php'); $objPrev = new Prevision();
   require_once('../../class/Tipo_pago.class.php'); $objTipPag = new Tipo_pago();
   require_once('../../class/Pagos.class.php'); $objPag = new Pagos();
+  require_once('../../class/Bono.class.php');$objBon = new Bono();
   
   $objCon->db_connect();
   $objPss->setPss_id($_POST['pss_id']);
@@ -26,6 +27,12 @@
   for($i=0; $i<count($pagos);$i++){
       $totalAbonado += $pagos[$i]['pag_monto']; 
   }
+  $totalBono = $objBon->buscarBonosPSS($objCon,$_POST['pss_id']);
+  $totalBono = $totalBono[0]['monto'];
+  if($totalBono==''){
+    $totalBono = 0;
+  }
+
   $arrTiposPSS = Array();
   for($i=0; $i<count($detallePSS);$i++){
       $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
@@ -89,8 +96,12 @@
       <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" value="<?=$totalAbonado;?>" /> </td>
     </tr>
     <tr>
+      <td align="right" width="89%"><b>TOTAL BONO: </b></td>
+      <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" value="<?=$totalBono;?>" /> </td>
+    </tr>
+    <tr>
       <td align="right" width="89%"><b>TOTAL DEUDA: </b></td>
-      <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" id="txtTotal" value="<?=$total_programa-$totalAbonado;?>" /> </td>
+      <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" id="txtTotal" value="<?=$total_programa-$totalAbonado-$totalBono;?>" /> </td>
     </tr>
   </table>
 <?
@@ -178,7 +189,6 @@
                     <td colspan="5">
                     <br/>
                       <table border="0" width="100%" id="tblPagos">
-                        <!-- <tr class="cuerpoDatosTablas"><td>Tipo Pago</td><td>Codigo T</td><td>Codigo A</td><td>Folio</td><td>Banco</td><td>Monto</td></tr> -->
                       </table>
                     </td>
                   </tr>

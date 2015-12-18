@@ -53,7 +53,8 @@ require_once('../../class/Conectar.class.php'); $objCon = new Conectar();
 require_once('../../class/Tipo_producto.class.php'); $objTip = new Tipo_producto(); 
 require_once('../../class/Pss.class.php'); $objPss = new Pss(); 
 require_once('../../class/Util.class.php'); $objUtil = new Util(); 
-require_once('../../class/Pagos.class.php'); $objPago = new Pagos(); 
+require_once('../../class/Pagos.class.php'); $objPago = new Pagos();
+require_once('../../class/Bono.class.php'); $objBon = new Bono(); 
 
 $objCon->db_connect();
 $objPss->setPss($pss_id, '', '', '', '', '', '');
@@ -62,6 +63,7 @@ $tipoProducto 	= $objTip->listarTipoProducto($objCon);
 $detallePSS 	= $objPss->verDetallePss($objCon);
 $cabeceraPSS 	= $objPss->cabeceraPSS($objCon);
 $pagos 			= $objPago->listarPagosPSS($objCon, $pss_id,'');
+$bonos 			= $objBon->listarBonosPSS($objCon, $pss_id);
 $objCon = null;
 
 $arrTiposPSS = Array();
@@ -202,7 +204,7 @@ $html .='<tr>
 //COMIENZA LA MUESTRA DE BOLETAS O ABONOS SI EXISTEN
 	$html .='
 			<tr>
-				<td width="95%" align="left" colspan="3"><h3>ABONOS Y PAGOS</h3></td>
+				<td width="95%" align="left" colspan="3"><h3>PAGOS Y ABONOS</h3></td>
 			</tr>
 			<tr>
 			<td colspan="3">
@@ -219,10 +221,6 @@ $html .='<tr>
 					<th>BANCO</th>
 				</tr>';
 			for($i=0; $i<count($pagos); $i++){
-				$html .='
-							<tr>
-								<td colspan="8">'.count($pagos).'</td>
-							</tr>';
 					$html .='
 						<tr>
 							<td>'.$pagos[$i][bol_id].'</td>
@@ -236,9 +234,32 @@ $html .='<tr>
 							<td align="center"><table width="50px" align="right"><tr><td>'.$pagos[$i][pag_monto].'</td></tr></table></td>
 						</tr>';
 				}	
-$html .='</table>
-</td>
-</tr>';
+				$html .='</table>
+					</td>
+				</tr>';
+	$html .='<br/>
+			<tr>
+				<td width="95%" align="left" colspan="3"><h3>BONOS</h3></td>
+			</tr>
+			<tr>
+			<td colspan="3">
+			<table border="0" width="60%" cellpadding="1" style="font-size:8;">
+				<tr>
+					<th>NUMERO</th>
+					<th>TIPO</th>
+					<th>MONTO</th>
+				</tr>';
+			for($i=0; $i<count($bonos); $i++){
+				$html .='
+					<tr>
+						<td>'.$bonos[$i][bonId].'</td>
+						<td>'.$bonos[$i][tipBonId].'</td>
+						<td>'.$bonos[$i][bonMonto].'</td>
+					</tr>';
+			}	
+			$html .='</table>
+			</td>
+			</tr>';
 
 //TERMINA LA MUESTRA DE BOLETAS
 $html .='</table>';
