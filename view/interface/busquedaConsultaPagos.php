@@ -7,7 +7,7 @@
 	$objPag = new Pagos(); 
 	$objCon->db_connect();
 	if(isset($_POST['Boleta']) && $_POST['Boleta']!=""){
-		$datos = $objPag->listarPagosPSS($objCon, "", $_POST['Boleta']);
+		$datos = $objPag->listarPagos($objCon, '', $_POST['Boleta']);
 	}
 	if(isset($_POST['CtaCorriente']) && $_POST['CtaCorriente']!=""){		
 	}

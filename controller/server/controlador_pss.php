@@ -98,6 +98,23 @@
 						}
 				break;
 
+				case "abonarPSS":
+						$pss_id=$_POST['pss_id'];					 							
+						try{
+							$objCon->db_connect();
+							$objCon->beginTransaction();
+							$objPss->setPss_id($pss_id);
+							$objPss->setPss_estado("Abonado");
+							$objPss->cambiarEstadoPss($objCon);				
+						 	$objCon->commit();						 	
+						 	echo "PSS Abonado con exito.";
+													 		
+						}catch (PDOException $e){
+					 			$objCon->rollBack(); 
+					 			echo $e->getMessage();
+						}
+				break;
+
 				case "agregarProductoPss":
 						session_start();
 						$pss_id=$_SESSION['pss_id'];

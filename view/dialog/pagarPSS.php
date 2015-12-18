@@ -8,6 +8,7 @@
   require_once('../../class/Tipo_Producto.class.php'); $objTip_pro = new Tipo_Producto();
   require_once('../../class/Prevision.class.php'); $objPrev = new Prevision();
   require_once('../../class/Tipo_pago.class.php'); $objTipPag = new Tipo_pago();
+  require_once('../../class/Pagos.class.php'); $objPag = new Pagos();
   
   $objCon->db_connect();
   $objPss->setPss_id($_POST['pss_id']);
@@ -16,13 +17,20 @@
   $tipoProducto     = $objTip_pro->listarTipoProducto($objCon,'');
   $detallePSS       = $objPss->verDetallePss($objCon);
   $objTip_pag       = $objTipPag->listarTipoPago($objCon);
-  $objCon=null;
-
+  $tipoPago = $_POST['tipo'];
+  if($tipoPago=='abono'){
+    $pagos = $objPag->buscarPagoPss($objCon,$pss_id);
+  }
+ // highlight_string(print_r($pagos,true));
+  $totalAbonado = 0;
+  for($i=0; $i<count($pagos);$i++){
+      $totalAbonado += $pagos[$i]['pag_monto']; 
+  }
   $arrTiposPSS = Array();
   for($i=0; $i<count($detallePSS);$i++){
       $arrTiposPSS[$i] = $detallePSS[$i]['tip_prod_id']; 
   }
-  //print_r($_SESSION);
+  $objCon=null;
 ?>
 <script type="text/javascript" src="controller/client/js_pagarPSS.js"></script>
 <input type="hidden" value="<?=$_POST['pss_id']?>" id="pss_id" />
@@ -66,12 +74,37 @@
     }
   ?>
 <center>
+<?
+  if($tipoPago=='abono'){
+?>
+  <table width="95%">
+    <tr>
+      <td align="right" width="89%"><b>TOTAL FACTURADO: </b></td>
+      <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" value="<?=$total_programa;?>" /> </td>
+    </tr>
+  </table>
+  <table width="95%">
+    <tr>
+      <td align="right" width="89%"><b>TOTAL ABONADO: </b></td>
+      <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" value="<?=$totalAbonado;?>" /> </td>
+    </tr>
+    <tr>
+      <td align="right" width="89%"><b>TOTAL DEUDA: </b></td>
+      <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" id="txtTotal" value="<?=$total_programa-$totalAbonado;?>" /> </td>
+    </tr>
+  </table>
+<?
+  }else{
+?>
   <table width="95%">
     <tr>
       <td align="right" width="89%"><b>TOTAL FACTURADO: </b></td>
       <td align="right"><input type="text" class="valores" readonly="readonly" style="text-align:right; border:none; background:none" id="txtTotal" value="<?=$total_programa;?>" /> </td>
     </tr>
   </table>
+<?  }
+
+?>
 </center>
  <?  }else{ ?>
   <center>
@@ -82,7 +115,7 @@
     </table>
   </center>
   <? }
- 
+
     ?>
   <br/>
 </fieldset><br/>
@@ -91,22 +124,19 @@
     <td width="30%">
       <fieldset class="cabezeraDatos">
         <br/>
-        <legend class="cuerpoDatos">Bonos  <img width="20" height="20" id="btnMasBono" src="./include/img/plus.png"></legend>
+        <legend class="cuerpoDatos">Bonos  <img width="20" height="20" id="btnMasBono" style="cursor: pointer;" src="./include/img/plus.png"></legend>
         <center>
-          <table width="90%" border="0">
-          <tr>
-            <td>PRONTAMENTE</td>
-          </tr>
-            <!-- <tr align="center">
+          <table width="90%" id="tblBonos" border="0">
+            <tr align="center" class="cuerpoDatosTablas">
               <td>ID</td>
               <td>NOMBRE</td>
               <td>VALOR</td>
             </tr>
             <tr align="center">
-              <td>1</td>
-              <td>Fonasa Ins</td>
-              <td>0</td>
-            </tr> -->
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </table>
         <center>
         <br/>
@@ -117,31 +147,43 @@
         <br/>
         <legend class="cuerpoDatos">Datos pago</legend>
         <center>
+        <form id="frmPagos">
           <table border="0">
             <tr>
               <td >
                 <table border="0">
                   <tr class="cuerpoDatosTablas">
-                    <td >Tipo Pago</td>
-                    <td >Monto a pagar</td>
-                    <td >Acción</td>
+                    <td>Tipo Pago</td>
+                    <td hidden="true" name="tdCodigoT">Codigo T</td>
+                    <td hidden="true" name="tdCodigoA">Codigo A</td>
+                    <td hidden="true" name="tdFolio">Folio</td>
+                    <td hidden="true" name="tdBanco">Banco</td>
+                    <td hidden="true" name="tdMonto">Monto a pagar</td>
+                    <td>Acción</td>
                     <td align="center" >Total</td>
                   </tr>
                   <tr>
                     <td>
-                    <select id="cmbTipoPago">
-                      <option value="0">Seleccione...</option>
-                      <? for($i=0; $i<count($objTip_pag); $i++){ ?>
-                            <option value="<?=$objTip_pag[$i][tip_pag_id]?>"><?=$objTip_pag[$i][tip_pag_descripcion]?></option>
-                      <? }?>
-                    </select></td>
-                    <td><input type="text" class="valores" style="text-align:right;" id="txtMontoPago"></td>
+                      <select id="cmbTipoPago">
+                        <option value="0">Seleccione...</option>
+                        <? for($i=0; $i<count($objTip_pag); $i++){ ?>
+                              <option value="<?=$objTip_pag[$i][tip_pag_id]?>"><?=$objTip_pag[$i][tip_pag_descripcion]?></option>
+                        <? }?>
+                      </select>
+                    </td>
+                    <td name="tdCodigoT" hidden="true"><input type="text" class="numero" style="text-align:right; width:100px;" id="txtCodT"></td>
+                    <td name="tdCodigoA" hidden="true"><input type="text" class="numero" style="text-align:right; width:100px;" id="txtCodA"></td>
+                    <td name="tdFolio" hidden="true"><input type="text" class="numero" style="text-align:right; width:100px;" id="txtFolio"></td>
+                    <td name="tdBanco" hidden="true"><input type="text" class="todo" style="text-align:right; width:100px;" id="txtBanco"></td>
+                    <td name="tdMonto" hidden="true"><input type="text" class="numero" style="text-align:right; width:100px;" id="txtMontoPago"></td>
                     <td align="center"><img width="20" height="20" id="bntAgregarPago" style="cursor:pointer;" src="./include/img/plus.png"></td>
                     <td><input type="text" style="border:none; background:none; text-align:center; font-size: 20px;" readonly id="txtTotalPag" value="0"></td>
                   </tr>
                   <tr>
-                    <td colspan="4">
+                    <td colspan="5">
+                    <br/>
                       <table border="0" width="100%" id="tblPagos">
+                        <!-- <tr class="cuerpoDatosTablas"><td>Tipo Pago</td><td>Codigo T</td><td>Codigo A</td><td>Folio</td><td>Banco</td><td>Monto</td></tr> -->
                       </table>
                     </td>
                   </tr>
@@ -150,6 +192,7 @@
               <td align="center"> </td>
             </tr>
           </table>
+        </form>
         </center>
         <br/>
       </fieldset>
