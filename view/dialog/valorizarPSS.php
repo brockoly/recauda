@@ -13,7 +13,7 @@
 
   $pss              = $objPss->buscarPss($objCon,"");
   $paciente         = $objPac->getInformacionPaciente($objCon, "", "", $pss[0]['cue_id']);
-  $tipoProducto     = $objTip_pro->listarTipoProducto($objCon);
+  $tipoProducto     = $objTip_pro->listarTipoProducto($objCon,'nombre');
   $detallePSS       = $objPss->verDetallePss($objCon);
   $objPrev->setPrevision($paciente[0]['prevision_id'],'');
   $instituciones    = $objPrev->obtenerInstitucionesPrevision($objCon);

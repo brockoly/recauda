@@ -1,9 +1,12 @@
 <? 
 //session_start();
+
 ?>
-<!--<iframe id="pss" width="1800" height="900" src="./view/reportes/generarArqueo_PDF.php"> </iframe>-->
+<iframe id="pss" width="1100" height="900" src="./view/reportes/generarArqueo_PDF.php?pss_id<?=$_POST['pss_id'];?>&tipoArqueo=vista_previa"> </iframe>
 <?
-$url = './view/reportes/generarArqueo_PDF.php';
+
+
+//$url = './view/reportes/generarArqueo_PDF.php';
 
 /*
 Arqueo: arq_id, 
@@ -16,6 +19,13 @@ Pagos:
 
 //PROBANDO LAS VARIABLES ANTES DE ENVIARLA AL PDF, ASÍ NO SE CAÍA 
 
+
+
+
+/*
+
+
+
 require_once('../../class/Tipo_Producto.class.php'); $objTipPro = new Tipo_Producto;
 require_once('../../class/Conectar.class.php');  $objCon = new Conectar();
 require_once('../../class/Arqueo.class.php'); $objArq = new Arqueo;
@@ -27,7 +37,7 @@ require_once('../../class/Pss.class.php'); $objPss = new Pss;
 
 $objCon->db_connect();
 $usu_nombre = $_SESSION['usuario'][1]['nombre_usuario'];
-$tipos_productos = $objTipPro->listarTipoProducto($objCon);
+$tipos_productos = $objTipPro->listarTipoProducto($objCon,'nombre');
 
 //$boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre);
 $boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre);
@@ -70,9 +80,6 @@ $subtotales=0;
     		</tr>
         <?
 
-
-
-
 for($a=0; $a<count($boletas); $a++){
 	$objPss->setPss_id($boletas[$a]['pss_id']);
 	$detallesProductos = $objPss->verDetallePss($objCon);
@@ -92,7 +99,7 @@ for ($i=0; $i<count($tipos_productos); $i++) {//ciclo para recorrer los tipos de
         
       <?$subtotal = 0;
 
-      /*
+      
       for($a=0; $a<count($detallesProductos); $a++){
         if($detallesProductos[$a][tip_prod_id]==$tipos_productos[$i][tip_prod_id]){          
       ?>
@@ -105,7 +112,7 @@ for ($i=0; $i<count($tipos_productos); $i++) {//ciclo para recorrer los tipos de
           </tr>
           <? $subtotal += $detallesProductos[$a][total];
         }
-      }*/
+      }
 
 
       $total_programa += $subtotal; ?>
@@ -121,13 +128,15 @@ for ($i=0; $i<count($tipos_productos); $i++) {//ciclo para recorrer los tipos de
       <?
 
 //ECHOs DE PRUEBA
-	/*$subtotales=0;
+	$subtotales=0;
 	echo "<br><br>BOLETA ID $a: Cantidad Productos: ".count($detallesProductos)."<br>";
 	for($b=0; $b<count($detallesProductos); $b++){
 		$subtotales+=$detallesProductos[$b]['total'];
 		echo " - nº: ".($b+1)." Producto ID: ".($b+1)." Nombre: ".$detallesProductos[$b]['pro_nom']." Cantidad: ".$detallesProductos[$b]['det_proCantidad']." Total: ".$detallesProductos[$b]['total']." Categoría: ".$detallesProductos[$b]['tip_descripcion']."<br>";
 	}
-	echo "SubTotal boleta: ".$subtotales;*/
+	echo "SubTotal boleta: ".$subtotales;
+
+
 }
 
 
@@ -155,6 +164,41 @@ if($valor==0){
 }else{
   echo "Victoria igual";
 }
+
+
+
+/**/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

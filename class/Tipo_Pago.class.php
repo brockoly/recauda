@@ -16,7 +16,6 @@ class Tipo_pago{
 		$this->pag_folioCheque=trim($pag_folioCheque);
 		$this->pag_banco=trim($pag_banco);
 	}
-
 	function listarTipoPago($objCon){
 	 	$sql ="SELECT
 			tipo_pago.tip_pag_id,

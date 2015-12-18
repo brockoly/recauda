@@ -3,14 +3,19 @@
 	require_once('../../class/Tipo_Producto.class.php');$objTipoPro = new Tipo_Producto();
 	require_once('../../class/Unidad_Medida.class.php');$objUnidadM = new Unidad_Medida();
 	require_once('../../class/Util.class.php');$objUti = new Util();
-	require_once('../../class/Producto.class.php');$objProd = new Producto();
+	require_once('../../class/Producto.class.php');$objProd = new Producto(); 
 
 	switch($_POST['op']) {
+
 		case "editarTipo":
 			$datos = explode(',', $_POST['datosE']);
-			$objTipoPro->setTipoProducto($objUti->eliminaEspacios($_POST['tip_descripcion']),$_POST['tip_prod_id'],'');
+			$objTipoPro->setTipoProducto($objUti->eliminaEspacios($_POST['tip_descripcion']),$_POST['tip_prod_id'],'');			
 			$idoriginal=$_POST['idoriginal'];
+			//echo " - id original:".$idoriginal;
 			$desoriginal= $_POST['desoriginal'];
+			//echo " <br>- descripcion original:".$desoriginal;
+			//echo " <br>- descripcion nuevo:".$_POST['tip_descripcion'];
+			//echo " <br>- id nuevo:".$_POST['tip_prod_id'];
 			$objTipoPro->setTipoProducto($_POST['tip_descripcion'],$_POST['tip_prod_id'],'');
 			$objCon->db_connect();
 			$todos = $objTipoPro->listarIdsDes($objCon);

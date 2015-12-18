@@ -59,7 +59,7 @@ require_once('../../class/Bono.class.php'); $objBon = new Bono();
 $objCon->db_connect();
 $objPss->setPss($pss_id, '', '', '', '', '', '');
 
-$tipoProducto 	= $objTip->listarTipoProducto($objCon);
+$tipoProducto 	= $objTip->listarTipoProducto($objCon,'nombre');
 $detallePSS 	= $objPss->verDetallePss($objCon);
 $cabeceraPSS 	= $objPss->cabeceraPSS($objCon);
 $pagos 			= $objPago->listarPagosPSS($objCon, $pss_id,'');
@@ -169,7 +169,7 @@ $html = '
 				
 					$subtotal += $detallePSS[$a][total];
 				}
-			} $total_programa+=$subtotal;
+			}$total_programa+=$subtotal;
 					$html .='<tr>
 								<td style="border-top-width:1px;" align="right" colspan="4"><b>SUBTOTAL</b></td>
 								<td style="border-top-width:1px;" align="right">'.$subtotal.'</td>
@@ -180,7 +180,7 @@ $html = '
 			}
 		}
 	
-//$total_programa += $subtotal;
+
 
 $html .='<tr>
 			<td style="border-bottom-width:1px;" colspan="3"><br><br></td>

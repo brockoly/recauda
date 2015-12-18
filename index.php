@@ -6,6 +6,7 @@ if ( $_SESSION['usuario'] == null ) {
 }
 ?>
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -67,7 +68,7 @@ if ( $_SESSION['usuario'] == null ) {
 				<ul class="sub-menu">									
 					<li class="change"><a href="#" onclick="cargarContenido('view/interface/consultaPagos.php','','#contenidoCargado')">PAGOS</a></li>									
 					<li class="change"><a href="#">PAGARÉ</a></li>
-					<li class="change"><a href="#">ARQUEO ESPONTANEO</a></li>
+					<li class="change"><a href="#" onclick="cargarContenido('view/interface/arqueosEspontaneos.php','','#contenidoCargado')">ARQUEO ESPONTANEO</a></li>
 				</ul>
 			</li>
 			<li><a href="#"><i class="icon-print"></i>REPORTES</a>
@@ -99,16 +100,17 @@ if ( $_SESSION['usuario'] == null ) {
 <div class="mainWrap" id="contenidoCargado">
 
 </div>
+<div id="false" class="finx"></div>
 </body>
 <center>
 	<div style="margin-top: 10%">
 	<div class="linea_pie"><hr style="background-color: #665874; height: 3px;" /></div>
 	    <table>
 	        <tr>
-	            <td><img class="pie" src="include/img/ing.png" width="30" height="30"></td>
+	            <td><img id="fin"class="pie" src="include/img/ing.png" width="30" height="30"></td>
 	            <td><label class="pie_pagina">Sistema de recaudación - Hospital Dr. Juan Noé Crevani</label></td>
 	        </tr>
 	    </table>
 	</div>
-</center>
+</center><center><div id="contenidoxCargado" style="float:center;"></div></center>
 </html>

@@ -11,7 +11,7 @@
   $objPss->setPss_id($_POST['pss_id']);
   $pss=$objPss->buscarPss($objCon,"");
   $paciente=$objPac->getInformacionPaciente($objCon, "", "", $pss[0]['cue_id']);
-  $tipoProducto=  $objTip_pro->listarTipoProducto($objCon);
+  $tipoProducto=  $objTip_pro->listarTipoProducto($objCon,'nombre');
   $detallePSS   = $objPss->verDetallePss($objCon);
   $objCon=null;
 

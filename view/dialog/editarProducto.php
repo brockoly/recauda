@@ -8,7 +8,7 @@
 	require_once('../../class/Valores.class.php');$objVal = new Valores();
 	//LLAMADA DE METODOS.
 	$objCon->db_connect();
-	$productos = $objTipoPro->listarTipoProducto($objCon);
+	$productos = $objTipoPro->listarTipoProducto($objCon,'nombre');
 	$valores = $objPrev->obtenerPrevisionesActivas($objCon);
 	$objPro->setProducto($_POST['pro_id'],'','');
 	$productoActual = $objPro->buscarProducto($objCon);
