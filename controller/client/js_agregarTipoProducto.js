@@ -1,5 +1,4 @@
 $(document).ready(function(){
-	validar('tip_descripcion', 'id' ,'letras')
 	tablaMinima('tblTipoProducto');
 	tablaMinima('tblTipoProductoEliminado');
 	validar('tip_prod_id','id','numero');
@@ -56,6 +55,8 @@ $(document).ready(function(){
 
 
 	$("#tip_descripcion").blur(function(){
+		var valor = eliminarEspacio($(this).val());
+		$(this).val(valor);
 		if($("#tip_descripcion").val()==""){
 			$(this).removeClass("cajabuena").addClass("cajamala");	
 			muestraError("errtip_descripcion", "Ingrese un nombre.");

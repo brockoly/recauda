@@ -17,7 +17,7 @@
 <script type="text/javascript" src="controller/client/js_agregarPaciente.js"></script>
 <script type="text/javascript">calendario('txtFechaNac', '<?=$fecha?>')</script>
 <form id="frmDatosPaciente" name="frmDatosPaciente">
-<fieldset style="width: 450px;"><legend>Datos Paciente</legend>
+<fieldset style="width: 500px;"><legend>Datos Paciente</legend>
 <center>
 <table><tr>
 			<td>País *</td>
