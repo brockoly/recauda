@@ -7,7 +7,7 @@ class Producto{
 	 
 	function setProducto($pro_id,$pro_nom,$pro_estado){
  		$this->pro_id=trim($pro_id);
- 		$this->pro_nom=trim($pro_nom);
+ 		$this->pro_nom=utf8_decode(trim($pro_nom));
  		$this->pro_estado=trim($pro_estado);
 	}
 	function actualizarProducto($conexion){

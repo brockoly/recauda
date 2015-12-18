@@ -7,7 +7,7 @@ class Unidad_Medida{
 	
 	function setUnidadMedida($uni_id,$uni_nombre,$uni_estado){
  		$this->uni_id=trim($uni_id);
- 		$this->uni_nombre=trim($uni_nombre);
+ 		$this->uni_nombre=utf8_decode(trim($uni_nombre));
  		$this->uni_estado=trim($uni_estado);
 	}
 	function buscarMaximoIdUM($objCon){//

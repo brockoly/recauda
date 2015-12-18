@@ -43,7 +43,7 @@
 
 		function setNacionalidad($nac_id,$nac_nombre){
 		 	$this->nac_id=$nac_id;
-		 	$this->nac_nombre=trim($nac_nombre);
+		 	$this->nac_nombre=utf8_decode(trim($nac_nombre));
 		}
 
 		function buscaNacionalidad($objCon){//

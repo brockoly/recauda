@@ -6,7 +6,7 @@
 
 		function setPrevision($pre_id,$pre_nombre){
 			$this->pre_id=trim($pre_id);
-			$this->pre_nombre=trim($pre_nombre);
+			$this->pre_nombre=utf8_decode(trim($pre_nombre));
 		}
 		function actualizarPrevision($conexion){
 

@@ -9,19 +9,28 @@
 	 		$this->pac_id=$pac_id;
 	 }
 
-	 function insertarPaciente($objCon, $pre_id, $per_id, $ins_id){
-	 	$sql ="INSERT INTO paciente 
-	 					   (pac_id, pre_id, per_id, ins_id)
-			   VALUES ('$this->pac_id', '$pre_id','$per_id','$ins_id')";		
-		$rs =$objCon->ejecutarSQL($sql, 'ERROR AL insertarPaciente');
-	 	return $rs;
+	 function insertarPaciente($objCon, $pre_id, $per_id, $ins_id,$opcion){
+	 	if(empty($opcion)==false){
+			$sql ="INSERT INTO paciente 
+			 					   (pac_id, pre_id, per_id, ins_id, pac_recien_nacido)
+				   VALUES ('$this->pac_id', '$pre_id','$per_id','$ins_id', '1')";		
+			$rs =$objCon->ejecutarSQL($sql, 'ERROR AL insertarPaciente');
+		 	return $rs;
+		}else{
+			$sql ="INSERT INTO paciente 
+			 					   (pac_id, pre_id, per_id, ins_id)
+					   VALUES ('$this->pac_id', '$pre_id','$per_id','$ins_id')";		
+			$rs =$objCon->ejecutarSQL($sql, 'ERROR AL insertarPaciente');
+		 	return $rs;
+		}
 	 }
 
 	 function actualizarPaciente($objCon, $pre_id, $per_id, $ins_id){
 	 	$sql ="UPDATE paciente 
 	 		   SET pre_id = '$pre_id', 
-		 			per_id = '$per_id', 
-		 			ins_id = '$ins_id'
+		 		   per_id = '$per_id', 
+		 		   ins_id = '$ins_id',
+		 		   pac_recien_nacido = '0'
 	 		   WHERE per_id = '$per_id'";		
 		$rs = $objCon->ejecutarSQL($sql, 'ERROR actualizarPaciente');
 	 	return $rs;
@@ -34,21 +43,21 @@
 
 	function buscarPaciente($objCon, $per_id){
 		$sql=" SELECT
-					REPLACE(paciente.per_id, ' ', '') as per_id
+					paciente.per_id as id
 				FROM
-				paciente
+					paciente
 				WHERE paciente.per_id = '$per_id'";
-		$datos = array();
+		$datos;
 		foreach ($objCon->consultaSQL($sql,'ERROR buscarPaciente') as $v) {
-			$datos['per_id'] = $v['per_id'];
+			$datos = $v['id'];
 		}
 		//print_r($datos);
-		if(is_null($datos['per_id'])==false){
-			$datos = 1;
+		if(is_null($datos)==false){
+			return 1;
 		}else{
-			$datos = 0;
+			return 0;
 		}
-		return $datos;
+		
 	}
 	function desplegarPacientes($objCon){
 		$sql="SELECT
@@ -60,7 +69,8 @@
 			nacionalidad.nac_nombre AS Nacionalidad,
 			paciente.pac_id,
 			persona.per_sexo,
-			persona.per_direccion
+			persona.per_direccion,
+			nacionalidad.nac_id
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -75,6 +85,7 @@
 			$datos[$i][Apellido_Materno]= $v['Apellido_Materno'];
 			$datos[$i][fecha_nac]= $v['fecha_nac'];
 			$datos[$i][Nacionalidad]= $v['Nacionalidad'];
+			$datos[$i][nac_id]= $v['nac_id'];
 			$datos[$i][pac_id]= $v['pac_id'];
 			if($v['per_sexo']=='m'){
 				$datos[$i][sexo]= 'Masculino';
@@ -122,9 +133,9 @@
 		}
 		return $datos;
 	}
-	 function nuevoPac_id($objCon){
+	function nuevoPac_id($objCon){
 	 	$sql="SELECT
-				COUNT(paciente.pac_id)+1 AS MAX
+				MAX(paciente.pac_id)+1 AS MAX
 				FROM
 				paciente";
 				foreach ($objCon->consultaSQL($sql,'ERROR nuevoPac_id') as $v) {
@@ -134,9 +145,27 @@
 			 		
 			 	}
 	 	return $datos;
-	 }
+	}
+	function ultimoRN($objCon){
+		$datos = array();
+		$i=0;
+	 	$sql="  SELECT
+					persona.per_id
+				FROM
+					persona
+				LEFT JOIN paciente ON persona.per_id = paciente.per_id
+				WHERE paciente.pac_recien_nacido = 1
+				";
+				foreach ($objCon->consultaSQL($sql,'ERROR ultimoRN') as $v) {
+			 		$datos[$i]['rn']=$v['per_id'];
+			 		$i++;
+			 	}
+	 	return $datos;
+	}
 
-	 function getInformacionPaciente($objCon, $per_id, $pac_nombre, $cue_id){
+	
+
+	function getInformacionPaciente($objCon, $per_id, $pac_nombre, $cue_id){
 	 	$datos = array();
 		$i=0;
 	 	$sql ="SELECT
@@ -154,7 +183,8 @@
 			persona.per_sexo,
 			persona.per_direccion,
 			prevision.pre_nombre,
-			institucion.ins_nombre
+			institucion.ins_nombre,
+			paciente.pac_recien_nacido
 			FROM
 			persona
 			INNER JOIN paciente ON persona.per_id = paciente.per_id
@@ -192,6 +222,7 @@
 				$datos[$i]['per_direccion']=$v['per_direccion'];
 				$datos[$i]['pre_nombre']=$v['pre_nombre'];
 				$datos[$i]['ins_nombre']=$v['ins_nombre'];
+				$datos[$i]['rn']=$v['pac_recien_nacido'];
 				$i++;
 		}
 	 	return $datos;
