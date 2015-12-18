@@ -121,28 +121,23 @@
 </fieldset><br/>
 <table width="100%">
   <tr>
-    <td width="30%">
+    <td width="40%">
       <fieldset class="cabezeraDatos">
         <br/>
-        <legend class="cuerpoDatos">Bonos  <img width="20" height="20" id="btnMasBono" style="cursor: pointer;" src="./include/img/plus.png"></legend>
+        <legend class="cuerpoDatos">Bonos  <img width="20" height="20" id="btnMasBono" style="cursor: pointer;" src="./include/img/plus.png"><table id="tblBonos" border="0"></table></legend>
         <center>
-          <table width="90%" id="tblBonos" border="0">
-            <tr align="center" class="cuerpoDatosTablas">
-              <td>ID</td>
-              <td>NOMBRE</td>
-              <td>VALOR</td>
-            </tr>
-            <tr align="center">
-              <td></td>
-              <td></td>
-              <td></td>
+          <table id="tblBonosAdded" width="80%">
+            <tr class="cuerpoDatosTablas">
+              <td width="20%">Numero</td>
+              <td width="60%">Tipo</td>
+              <td width="20%">Monto</td>
             </tr>
           </table>
         <center>
         <br/>
       </fieldset>
     </td>
-    <td width="70%">
+    <td width="60%">
       <fieldset class="cabezeraDatos">
         <br/>
         <legend class="cuerpoDatos">Datos pago</legend>

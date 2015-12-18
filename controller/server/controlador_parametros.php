@@ -16,8 +16,8 @@ case 'cmbUnidadM':	 		$objCon->db_connect();
 							echo json_encode($unidadMedida);
 							break;
 case 'cmbBonos':	 		$objCon->db_connect();
-							$unidadMedida = $objUnidadM->buscarUnidadMedidaProducto($objCon,$_POST['tip_prod_id']);
-							echo json_encode($unidadMedida);
+							$bonos = $objBono->buscarTiposBonos($objCon);
+							echo json_encode($bonos);
 							break;							
 }
 ?>

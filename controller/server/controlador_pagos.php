@@ -16,6 +16,9 @@
 			$cont = 0;
 			//echo count($datos);
 			for($i=0;$i<count($datos);$i++){
+				if($datos[0]!=''){
+
+				}
 				$nuevoArr[$cont]['tip_pag_id'] = $datos[$i]; 
 				$nuevoArr[$cont]['valor'] = $datos[$i+1];
 				$nuevoArr[$cont]['txtCodT'] = $datos[$i+2];
@@ -25,6 +28,10 @@
 				$i=$i+5;
 				$cont++;
 			}
+
+			$datosBonos = $_POST['datosBonos'];
+			$datosBonos = explode(',', $datosBonos);
+			print_r($datosBonos);
 			try{
 		 		$objCon->beginTransaction();
 		 		$bol_id = $objBol->buscarMaximoId($objCon);

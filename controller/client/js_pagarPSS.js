@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	validar('numero', 'class' ,'numero');
 	validar('todo', 'class' ,'todo');
-	var a=0,b=0,c=0;
+	var a=0,b=0,c=0,d=0;
 	$('#bntAgregarPago').click(function(){
 		var valor = $('#txtMontoPago').val();
 		var tipo_pago = $('#cmbTipoPago option:selected').text();
@@ -69,7 +69,7 @@ $(document).ready(function(){
 		}
 	});
 	$('#btnPagarPSS').button().click(function(){		
-		if(a==1 || b==1 || c==1){
+		if(a==1 || b==1 || c==1 || d==1){
 			var facturado = $('#txtTotal').val();
 			var pagoActual = $('#txtTotalPag').val();
 			if(pagoActual>facturado){
@@ -93,15 +93,34 @@ $(document).ready(function(){
 		            datosEnviar[z]=datos;
 		            z++;
 				});
-				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+facturado+'&pagoActual='+pagoActual+'&frmPagos='+$('#frmPagos').serialize());
-				var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=abonarPSS');
+
+				var datosBonos = [];
+				var i = 0;
+				var z=0;
+				$('#tblBonosAdded tr').each(function(){
+					if(z>0){
+						var numero = $(this).find('[name="idBon"]').text();
+						var tipo = $(this).find('[name="tipoBon"]').attr('id');
+						var monto = $(this).find('[name="valorBon"]').text()
+						var datosBon = [3];
+			            datosBon[0]=numero;
+			            datosBon[1]=tipo;
+			            datosBon[2]= monto;
+			            datosBonos[z]=datosBon;
+					}	
+					z++;				
+				});	
+				//alert(datosBonos);
+				var bol_id = validarProcesos('./controller/server/controlador_pagos.php','op=pagar'+'&datos='+datosEnviar+'&cue_id='+$('#cue_id').val()+'&pss_id='+$('#pss_id').val()+'&facturado='+facturado+'&pagoActual='+pagoActual+'&frmPagos='+$('#frmPagos').serialize()+'&datosBonos='+datosBonos);
+				alert(bol_id);
+				/*var cambiarEstado = validarProcesos('./controller/server/controlador_pss.php','pss_id='+$('#pss_id').val()+'&op=abonarPSS');
 				var paciente=$("#Paciente").val();
 				var ctaCorriente=$("#CtaCorriente").val();
 				var identificador=$("#Identificador").val();
 				var id = $('#cue_id').val();
 				cargarContenido('view/interface/busquedaPssCtaCte.php','cue_id='+id+'&Paciente='+paciente+'&CtaCorriente='+ctaCorriente+'&Identificador='+identificador,'#contenidoBuscado');
 				ventanaModal('./view/dialog/consultaBoleta.php','bol_id='+bol_id,'auto','auto','Boleta','modalImprimirPss');
-				$('#modalPagarPss').dialog('destroy').remove();
+				$('#modalPagarPss').dialog('destroy').remove();*/
 			}
 			else{ // PAGO TOTAL
 				var datosEnviar = [];
@@ -179,8 +198,51 @@ $(document).ready(function(){
 		$("#txtBanco").val('');
 		$("#txtMontoPago").val('');
 	}
+	var x=0;
+
 	$('#btnMasBono').click(function(){
-		$('<tr><td><input type="text" name="txtBonId" style="width:100px;" /></td><td><select id="cmbBonos"><option>....</option></select></td><td></td><td><img width="20" height="20" style="cursor: pointer;" id="" src="./include/img/eraser.png"></td></tr>').appendTo('#tblBonos');
-		cargarComboAjax('controller/server/controlador_parametros.php','op=cmbBonos','#cmbBonos');
+		if(x==0){
+			$('<tr name="trBon"><td>Numero</td><td>Tipo</td><td>Monto</td></tr><tr name="trBon"><td><input type="text" name="datosBono" id="txtBonId" style="width:80px;" /></td><td><select name="datosBono" id="cmbBonos"><option value="0">Seleccione..</option></select></td><td><input type="text" name="datosBono" id="txtMontoBono" style="width:100px;" /></td><td><img width="20" height="20" style="cursor: pointer;" id="bntAgregarBono" src="./include/img/Check.png"></td></tr>').appendTo('#tblBonos');
+			cargarComboAjax('controller/server/controlador_parametros.php','op=cmbBonos','#cmbBonos');
+			$('#bntAgregarBono').click(function(){
+				d=1;
+				x=0;
+				var datos=[];
+				var i = 0;
+				$('#tblBonos [name="datosBono"]').each(function(){
+					if(i==1){
+						datos[i] = $('#cmbBonos option:selected').text(); 
+					}else{
+						datos[i] = $(this).val(); 
+					}
+       				i++;
+				});
+				var datosID=[];
+				$('#tblBonosAdded tr').each(function(){
+					datosID[0] = $('#cmbBonos option:selected').val();
+				});
+				var valLbl = $('#txtTotalPag').val();
+				$('#txtTotalPag').val(parseInt(datos[2])+parseInt(valLbl));
+				$('<tr name="trBonoAdded'+datos[0]+'"><td name="idBon">'+datos[0]+'</td><td name="tipoBon" id="'+datosID[0]+'">'+datos[1]+'</td><td name="valorBon" id="valorBon'+datos[0]+'">'+datos[2]+'</td><td align="center"><img width="20" style="cursor: pointer;" height="20" id="bntEliminarBono'+datos[0]+'" src="./include/img/eraser.png"></td></tr>').appendTo('#tblBonosAdded');
+				$('#bntEliminarBono'+datos[0]).click(function(){
+					var total = $('#txtTotalPag').val();
+					$('#txtTotalPag').val(parseInt(total)-parseInt($('#valorBon'+datos[0]).text()));
+
+					var totalTblBon=0;
+					var i = 0;
+					$('#tblBonosAdded tr').each(function(){
+						totalTblBon = totalTblBon + i;
+						i++;
+					});
+					if(totalTblBon==1){
+						d=0;
+					}
+					$('[name="trBonoAdded'+datos[0]+'"]').remove();
+				});
+				$('[name="trBon"]').remove();
+			});
+			x=1;
+		}
 	});
+	
 });
