@@ -6,7 +6,7 @@
 	}, 1500);
 
 </script><br><br><br><br><br><br><br>
-<div id="end"class="title" style="float:none !important">
+<div id="end"class="title" style="float:none !important; height:270px">
 	<center><strong>
 		MUCHAS GRACIAS</strong>
 	</center>
