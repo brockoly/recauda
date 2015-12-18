@@ -76,5 +76,31 @@ class Arqueo{
 	    }
 		return $datos;
 	}
+	function buscarArqueosRendidox($objCon, $usu_nombre){
+
+		$sql="	SELECT 	arqueo.arq_id,
+						arqueo.usu_nombre,
+						arqueo.arq_fecha,
+						arqueo.arq_hora,
+					  CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ',persona.per_apellidoMaterno) as nombre
+from arqueo						
+						INNER JOIN usuario ON usuario.usu_nombre = arqueo.usu_nombre
+						INNER JOIN persona ON persona.per_id = usuario.per_id";			
+		$datos = array();
+		$i=0;
+		foreach ($objCon->consultaSQL($sql, 'ERROR buscarArqueo') as $v) {
+			$datos[$i][arq_id]=$v['arq_id'];
+			$datos[$i][usu_nombre]=$v['usu_nombre'];
+			$datos[$i][arq_fecha]=$v['arq_fecha'];
+			$datos[$i][arq_hora]=$v['arq_hora'];
+			$datos[$i][nombre]=$v['nombre'];
+			$i++;
+	    }
+		return $datos;
+	}
+
+
+
+	
 }
 ?>

@@ -16,8 +16,8 @@ $(document).ready(function(){
 		var valor = eliminarEspacio($("#tip_descripcion").val());
 		$("#tip_descripcion").val(valor);
 		if($("#tip_descripcion").val()!=""){
-			var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#tip_descripcion").val()+"&op=agregarTipo"+'&datos='+arrDatosUM);
-			if(res=="existe"){
+			//var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#tip_descripcion").val()+"&op=agregarTipo"+'&datos='+arrDatosUM);
+			//if(res=="existe"){
 				//alert(arrDatosUM); 
 				if(q!=0 && w!=0){
 					var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#tip_descripcion").val()+"&op=agregarTipo"+'&datos='+arrDatosUM+'&tip_prod_id='+$("#tip_prod_id").val());
@@ -35,7 +35,7 @@ $(document).ready(function(){
 					$("#tip_prod_id").blur();
 					$("#tip_descripcion").blur();
 				}
-			}
+			//}
 		}
 	});
 

@@ -172,8 +172,8 @@ class Pss{
 			$valorizar='<img class="valorizar opcionPss" id="'.$pss_id.'" src="./include/img/calculator.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$pagar='<img class="pagar opcionPss" id="'.$pss_id.'" src="./include/img/pagar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
 			$abonar='<img class="abonar opcionPss" id="'.$pss_id.'" src="./include/img/abonar.png" width="'.$ancho.'" height="'.$alto.'" style="cursor: pointer;">';
-			$ordenAtencion='<img class="ordenAtencion opcionPss" id="'.$pss_id.'" src="./include/img/ordenAtencion.png" width="'.$ancho.'" height="$alto" style="cursor: pointer;">';
-		 	
+			//$ordenAtencion='<img class="ordenAtencion opcionPss" id="'.$pss_id.'" src="./include/img/ordenAtencion.png" width="'.$ancho.'" height="$alto" style="cursor: pointer;">';
+		 	$ordenAtencion='';
 		 	if(in_array($estado, $rulesAbierto)){
 		 		$botones.=$abrir;
 			}

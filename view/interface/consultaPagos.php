@@ -10,9 +10,7 @@
               <select name="opcionesBusquedaPagos" id="opcionesBusquedaPagos">
                   <optgroup label="Tipos de Busqueda">
                     <option value="0">Seleccione</option>
-                    <option value="CtaCorriente">Buscar Cuenta Corriente</option>
                     <option value="Boleta">Folio Boleta</option>
-                    <option value="Identificador">N° Identificador</option>
                   </optgroup>
               </select>
           </td>

@@ -12,9 +12,12 @@ $(document).ready(function(){
    		var valor = eliminarEspacio($("#txtNombreTipoProducto").val());
 		$("#txtNombreTipoProducto").val(valor);
 		if($("#txtNombreTipoProducto").val()!=""){
-			var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#txtNombreTipoProducto").val()+'&tip_prod_id='+$("#tip_prod_id").val()+"&op=editarTipo"+'&datosE='+datosEnviar);
-			if(res=="existe"){
+			//var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#txtNombreTipoProducto").val()+'&tip_prod_id='+$("#tip_prod_id").val()+"&op=editarTipo"+'&datosE='+datosEnviar);
+			//var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#txtNombreTipoProducto").val()+'&tip_prod_id='+$("#txtCodigoTipoProducto").val()+"&op=editarTipo"+'&datosE='+datosEnviar+'&idoriginal='+$("#tip_prod_idOriginal").val()+'&desoriginal='+$("#tip_descripcionOriginal").val());
+			
+			//if(res=="existe"){
 				if(q!=0 && w!=0){
+					//alert($("#txtCodigoTipoProducto").val());
 					var res = validarProcesos('./controller/server/controlador_tipoProducto.php','tip_descripcion='+$("#txtNombreTipoProducto").val()+'&tip_prod_id='+$("#txtCodigoTipoProducto").val()+"&op=editarTipo"+'&datosE='+datosEnviar+'&idoriginal='+$("#tip_prod_idOriginal").val()+'&desoriginal='+$("#tip_descripcionOriginal").val());
 					if(res=="nombreExiste"){
 						$("#txtNombreTipoProducto").addClass("cajamala");
@@ -36,7 +39,7 @@ $(document).ready(function(){
 					$("#txtCodigoTipoProducto").blur();
 					$("#txtNombreTipoProducto").blur();
 				}
-			}
+			//}
 		}
 	});	
 

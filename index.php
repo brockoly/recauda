@@ -68,7 +68,7 @@ if ( $_SESSION['usuario'] == null ) {
 				<ul class="sub-menu">									
 					<li class="change"><a href="#" onclick="cargarContenido('view/interface/consultaPagos.php','','#contenidoCargado')">PAGOS</a></li>									
 					<li class="change"><a href="#">PAGARÉ</a></li>
-					<li class="change"><a href="#">ARQUEO ESPONTANEO</a></li>
+					<li class="change"><a href="#" onclick="cargarContenido('view/interface/arqueosEspontaneos.php','','#contenidoCargado')">ARQUEO ESPONTANEO</a></li>
 				</ul>
 			</li>
 			<li><a href="#"><i class="icon-print"></i>REPORTES</a>

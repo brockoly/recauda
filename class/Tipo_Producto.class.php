@@ -65,7 +65,7 @@ class Tipo_Producto{
 		$rs=$objCon->ejecutarSQL($sql,'ERROR AL restaurarTipoProducto');
 	 	return $rs;
 	}
-	function buscarTipoProducto($objCon){//
+	function buscarTipoProducto($objCon){
 	 	if(is_null($this->tip_prod_id)==false){
 	 		$cadena_id = " AND tip_prod_id NOT IN ('$this->tip_prod_id') ";
 	 	}
