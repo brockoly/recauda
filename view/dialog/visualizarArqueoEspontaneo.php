@@ -1,5 +1,6 @@
 <? 
 //session_start();
+
 ?>
 <iframe id="pss" width="1100" height="900" src="./view/reportes/generarArqueo_PDF.php?pss_id<?=$_POST['pss_id'];?>&tipoArqueo=vista_previa"> </iframe>
 <?

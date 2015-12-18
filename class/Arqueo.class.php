@@ -1,60 +1,80 @@
 <?php 
 
 class Arqueo{
-	 private $pag_id;
-	 private $pag_monto;
+	 private $arq_id;
+	 private $usu_nombre;
+	 private $arq_fecha;
+	 private $arq_hora;
 
-
-	function setPagos($pag_id, $pag_monto){
-	 		$this->pag_id=trim($pag_id);
-	 		$this->pag_monto=trim($pag_monto);
-	}
-	function listarPagosPSS($objCon, $pss_id, $bol_id){ //Cambiar en todos los lados que se llama
-		$sql="SELECT
-				pagos.cue_id,
-				pagos.pss_id,
-				pagos.pag_monto,
-				boleta.bol_fecha,
-				tipo_pago.tip_pag_descripcion,
-				boleta.bol_tipo,
-				boleta.bol_id,
-				boleta.bol_hora,
-				boleta.usu_nombre,				
-				CONCAT(persona.per_nombre,' ',persona.per_apellidoPaterno,' ',persona.per_apellidoMaterno) AS 'nombre'
-			 FROM
-				pagos
-			 INNER JOIN boleta ON pagos.pag_id = boleta.pag_id
-			 INNER JOIN tipo_pago ON pagos.tip_pag_id = tipo_pago.tip_pag_id
-			 INNER JOIN usuario ON usuario.usu_nombre = boleta.usu_nombre
-			 INNER JOIN persona ON persona.per_id = usuario.per_id
-			 ";
-
-
-			if(empty($bol_id)==false){
-				$sql.=" WHERE boleta.bol_id = '$bol_id'";
-			}else{
-				if(empty($pss_id)==false){
-					$sql.=" WHERE boleta.pss_id = '$pss_id'";
-				}
-			}
-			
-			$datos = array();
+	function arqueoMax($objCon){
+		$sql="SELECT MAX(arq_id)+1 as CONT
+				  FROM arqueo";
 			$i=0;
-			foreach ($objCon->consultaSQL($sql, 'ERROR listarPagosPSS') as $v) {
-				$datos[$i][cue_id]=$v['cue_id'];
-				$datos[$i][pss_id]=$v['pss_id'];
-				$datos[$i][pag_monto]=$v['pag_monto'];
-				$datos[$i][bol_fecha]=$v['bol_fecha'];
-				$datos[$i][tip_pag_descripcion]=$v['tip_pag_descripcion'];
-				$datos[$i][bol_id]=$v['bol_id'];
-				$datos[$i][bol_hora]=$v['bol_hora'];
-				$datos[$i][bol_tipo]=$v['bol_tipo'];
-				$datos[$i][usu_nombre]=$v['usu_nombre'];
-				$datos[$i][nombre]=$v['nombre'];
-				$i++;
+			$datos;
+			foreach ($objCon->consultaSQL($sql, 'ERROR maxArqueo') as $v) {
+				$datos=$v['CONT'];
 		    }
+		    if($datos==""){
+		    	$datos=1;
+		    }
+			return $datos;	
+	}
+	function setArqueo($arq_id, $arq_fecha, $arq_hora, $usu_nombre){
+	 		$this->arq_id=trim($arq_id);
+	 		$this->arq_fecha=trim($arq_fecha);
+	 		$this->arq_hora=trim($arq_hora);
+	 		$this->usu_nombre=trim($usu_nombre);
+	}
+	function rendirArqueo($objCon){
+
+		$sql="	INSERT INTO arqueo (arq_id, usu_nombre, arq_fecha, arq_hora) 
+							VALUES ($this->arq_id, '$this->usu_nombre', '$this->arq_fecha', '$this->arq_hora')";
+		$rs=$objCon->ejecutarSQL($sql,'ERROR AL rendirArqueo');
+	 	return $rs;
+	}
+	function buscarArqueo($objCon, $arq_id, $usu_nombre){
+
+		$sql="	SELECT 	arqueo.arq_id,
+						arqueo.usu_nombre,
+						arqueo.arq_fecha,
+						arqueo.arq_hora
+						from arqueo";
+
+				if($arq_id!=''){
+					$sql.=" WHERE arqueo.arq_id='".$arq_id."'";
+				}else if($usu_nombre!=''){
+					$sql.=" WHERE arqueo.usu_nombre='".$usu_nombre."'";
+				}
+
+		$datos = array();
+		$i=0;
+		foreach ($objCon->consultaSQL($sql, 'ERROR buscarArqueo') as $v) {
+			$datos[$i][arq_id]=$v['arq_id'];
+			$datos[$i][usu_nombre]=$v['usu_nombre'];
+			$datos[$i][arq_fecha]=$v['arq_fecha'];
+			$datos[$i][arq_hora]=$v['arq_hora'];
+			$i++;
+	    }
 		return $datos;
 	}
-	
+	function buscarArqueosRendidos($objCon, $usu_nombre){
+
+		$sql="	SELECT 	arqueo.arq_id,
+						arqueo.usu_nombre,
+						arqueo.arq_fecha,
+						arqueo.arq_hora
+						from arqueo						
+						 WHERE arqueo.usu_nombre='".strtolower($usu_nombre)."'";			
+		$datos = array();
+		$i=0;
+		foreach ($objCon->consultaSQL($sql, 'ERROR buscarArqueo') as $v) {
+			$datos[$i][arq_id]=$v['arq_id'];
+			$datos[$i][usu_nombre]=$v['usu_nombre'];
+			$datos[$i][arq_fecha]=$v['arq_fecha'];
+			$datos[$i][arq_hora]=$v['arq_hora'];
+			$i++;
+	    }
+		return $datos;
+	}
 }
 ?>

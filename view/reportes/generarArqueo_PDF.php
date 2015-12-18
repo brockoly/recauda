@@ -41,7 +41,7 @@ $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 $pdf->SetMargins(4, 5, 5, 1);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(0);
-$pdf->SetAutoPageBreak(FALSE, 0);
+$pdf->SetAutoPageBreak(TRUE, 0);
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->setLanguageArray($l);
 $pdf->setFontSubsetting(true);
@@ -50,20 +50,10 @@ $pdf->setPrintFooter(false);
 //CREA UNA PAGINA
 $pdf->AddPage('L', 'A4');
 
-
-
-
-
-
-
-
-
-
-
-
 //CARGA DE CLASES Y METODOS
 
 require_once('../../class/Tipo_Producto.class.php'); $objTipPro = new Tipo_Producto;
+require_once('../../class/Nota_Credito.class.php');  $objNot = new Nota_Credito();
 require_once('../../class/Conectar.class.php');  $objCon = new Conectar();
 require_once('../../class/Arqueo.class.php'); $objArq = new Arqueo;
 require_once('../../class/Boleta.class.php'); $objBol = new Boleta;
@@ -77,9 +67,26 @@ require_once('../../class/Pss.class.php'); $objPss = new Pss;
 $objCon->db_connect();
 $usu_nombre = $_SESSION['usuario'][1]['nombre_usuario'];
 $tipos_productos = $objTipPro->listarTipoProducto($objCon,'codigo');
-
+$arq_id = $_GET['arq_id'];
+$tipoArqueo = $_GET['tipoArqueo'];
+$boletas = Array();
+$boletasE = Array();
+$anuladas= Array();
 //$boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre);
-$boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre,'');
+if($tipoArqueo == 'vista_previa'){
+	$boletas = $objBol->buscarBoletasArqueo($objCon, $usu_nombre,'');
+	$boletasE = $objBol->buscarBoletasArqueo($objCon, $usu_nombre,'0');	
+	$anuladas=$objBol->buscarBoletasArqueadasNulas($objCon, $usu_nombre);
+	$notasCredito=$objNot->buscarNota($objCon, '', $usu_nombre, 'si');
+}else{
+	$notasCredito=$objNot->buscarNotaArqueadas($objCon, $arq_id);
+	$anuladas=$objBol->buscarBoletasArqueoNulas($objCon, $arq_id);
+	$boletas = $objBol->buscarBoletasArqueadas($objCon, $arq_id,'');
+	$boletasE = $objBol->buscarBoletasArqueadas($objCon, $arq_id,'0');	
+}
+
+
+
 
 
 
@@ -119,7 +126,7 @@ switch($tipoArqueo){
 							break;
 
 	case 'generar_arqueo':  //$id_rendicion 		= 	$objArqueo->InsertarRendicion($link, $usuario);
-							$nro_arq 			=   'N° ';
+							$nro_arq 			=   'N° '.$arq_id;
 							$mensajeTitulo 		=   '<strong>ARQUEO ESPONTANEO <br> '.$nro_arq.'</strong>';
 							$mensajeDoc 		=   '<label style="color:green;">Documento válido para rendir</label>';
 							/*$updateRend			=	$objArqueo->updateArqueoEspontaneoNormal($link, $id_rendicion, $usuario);
@@ -179,7 +186,7 @@ $html .='
 
 
 $html .='
-	<table width="100%"border="1">
+	<table width="100%"border="0">
 		<tr>
 			<td>
 				<strong>BOLETAS DE RECAUDACIÓN</strong>
@@ -246,7 +253,7 @@ for($i=0; $i<count($boletas);$i++){
 					<table align="center">
 						<tr>
 							<td colspan="13">
-								<table  border="1">										<!-- DATOS BOLETA -->
+								<table  border="0">										<!-- DATOS BOLETA -->
 									<tr>
 										<td width="5%">'.$boletas[$i]['bol_id'].'</td>
 										<td width="12.5%" align="left">'.$boletas[$i]['paciente'].'</td>';
@@ -289,7 +296,7 @@ for($i=0; $i<count($boletas);$i++){
 			if($totalBoleta>$boletas[$i]['total']){
 				$totalBoleta=$totalBoleta-($totalBoleta-$boletas[$i]['total']);
 			}else if($totalBoleta<$boletas[$i]['total']){
-				$totalBoleta=$totalBoleta+($totalBoleta-$boletas[$i]['total']);
+				$totalBoleta=$totalBoleta+$boletas[$i]['total']-($totalBoleta);
 			}
 		}
 		$totalBot+=$totalBoleta;
@@ -336,14 +343,18 @@ for($i=0; $i<count($boletas);$i++){
 				<table align="center">							<!-- TOTALES -->
 					<tr>
 						<td colspan="13">
-							<table border="1">
+							<table border="0">
 								<tr>
 									<td width="5%"></td>
 									<td width="12.5%"></td>
 									';
+										if(count($arrTotalesBot)!=0){
 										for($i=0;$i<count($arrTotalesBot);$i++){
 											$html.='<td width="'.$tamañox.'%">'.$arrTotalesBot[$i].'</td>';
 										}
+									}else{
+										$html.='<td colspan="10" width="'.($tamañox*10).'%"></td>';
+									}
 
 										$html.='
 									
@@ -362,33 +373,47 @@ for($i=0; $i<count($boletas);$i++){
 			</td>
 		</tr>
 		<br/>
-	</table>';
-
-
-/*
+	';
 
 
 
+		//									EXENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		//									EXENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		//									EXENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		//									EXENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		//									EXENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		//									EXENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-		$html.='<tr>
+
+
+
+
+
+$arrTotalesBotE= Array();
+
+$html .='
+	
+		<tr>
 			<td>
 				<strong>BOLETAS EXENTAS</strong>
 			</td>
 		</tr>
+
 		<tr>
-			<td>
+			<td>													<!-- LISTADO DE HEADERS-->
 				<table align="center">
 					<tr>
 						<td colspan="13">
 							<table border="1">
-								<tr>
-									<td width="5%">Boleta</td>
-									<td width="12.5%">Paciente</td>
+								<tr >
+									<td style="line-height:8px;" width="5%">Boleta</td>
+									<td style="line-height:8px;" width="12.5%">Paciente</td>
 									';
+									$tamañox=(72.5/count($tipos_productos));
 									for($i=0; $i<count($tipos_productos); $i++){
-										$html.='<td>'.$tipos_productos[$i]['tip_prod_id'].'</td>';
+										$html.='<td style="line-height:8px;" width="'.$tamañox.'%">'.$tipos_productos[$i]['tip_prod_id'].'</td>';
 									}	
-									$html.='<td>TOTAL</td>
+									$html.='<td style="line-height:8px;" width="10%">TOTAL</td>
 								</tr>
 							</table>
 						</td>
@@ -396,73 +421,150 @@ for($i=0; $i<count($boletas);$i++){
 				</table>
 			</td>
 		</tr>';
+
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+$totalBotE=0;
+$totalBoletaE=0;
+for($i=0; $i<count($boletasE);$i++){
+	$objPss->setPss_id($boletasE[$i]['pss_id']);
+	$detallesProductos = $objPss->verDetallePss($objCon);
+
+	$arrTiposPSS = Array();
+	for($a=0; $a<count($detallesProductos);$a++){
+	    $arrTiposPSS[$a] = $detallesProductos[$a]['tip_prod_id']; 
+	}
+	$totalBoletaEAux=0;
+	for($d=0; $d<count($tipos_productos); $d++){
+	$totalCategoriaEAux=0;
+
+		for($e=0; $e<count($detallesProductos); $e++){
+			if($tipos_productos[$d]['tip_prod_id'] == $detallesProductos[$e]['tip_prod_id']){				
+				$totalCategoriaEAux+=$detallesProductos[$e]['total'];
+			}			
+		}
+		$totalBoletaEAux+=$totalCategoriaEAux;
+		$totalCategoriaEAux=0;
+	}
+	$porcentajeE=(($boletasE[$i]['total']*100)/$totalBoletaEAux)/100;
+
+
+			$html .='
+			<tr>
+				<td>
+					<table align="center">
+						<tr>
+							<td colspan="13">
+								<table  border="0">										<!-- DATOS BOLETA -->
+									<tr>
+										<td width="5%">'.$boletasE[$i]['bol_id'].'</td>
+										<td width="12.5%" align="left">'.$boletasE[$i]['paciente'].'</td>';
+
+
+
+										// IMPRESIN CATEGORÍAS
+	for($b=0; $b<count($tipos_productos); $b++){
+		$totalCategoriaE=0;
+		$totalCateE=0;
+
+
+		for($c=0; $c<count($detallesProductos); $c++){
+			if($tipos_productos[$b]['tip_prod_id'] == $detallesProductos[$c]['tip_prod_id']){				
+				$totalCateEgoriaE+=$detallesProductos[$c]['total'];
+			}
+		}
+
+
+		$totalCateE=round($totalCateEgoriaE*$porcentajeE);
+
+		/*if($totalCateE!=0){
+			if($totalCateE<$boletasE[$i]['total']){
+				$totalCateE=$totalCateE-($totalCateE-$boletasE[$i]['total']);
+			}else if($totalCateE>$boletasE[$i]['total']){
+				$totalCateE=$totalCateE+($totalCateE-$boletasE[$i]['total']);
+			}
+		}*/
+
+
+
+		$html.='<td width="'.$tamañox.'%">'.$totalCateE.'</td>';
+		$arrTotalesBotE[$b]+=$totalCateE;
+		$totalBoletaE+=$totalCateE;		
+		$totalCateEgoriaE=0;
+		$totalCate=0;
 		
-		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-		//									EDITAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+	}
+	if($totalBoletaE!=0){
+			if($totalBoletaE>$boletasE[$i]['total']){
+				$totalBoletaE=$totalBoletaE-($totalBoletaE-$boletasE[$i]['total']);
+			}else if($totalBoletaE<$boletasE[$i]['total']){
+				$totalBoletaE=$totalBoletaE+$boletasE[$i]['total']-($totalBoletaE);
+			}
+		}
+		$totalBotE+=$totalBoletaE;
+	$html.='<td align="right" width="10%">'.$totalBoletaE.'</td>';
+			
+			$html.='							
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			';
+			$totalBoletaE=0;
+			
+}
+		/* TOTALES
+		$total_diaCamaBen +=$diaCamaBen;
+		$total_diaCama +=$diaCama;
+		$total_InterBen +=$interBen;
+		$total_Inter +=$inter;
+		$total_exaBen +=$exaBen;
+		$total_exa +=$exa;
+		$total_consuBen +=$consu_ben;
+		$total_consu +=$consu;
+		$total_mediBen +=$medi_ben;
+		$total_medi +=$medi;
+		$total_pro +=$pro;
+		$total_tra +=$tra;
+		$total_dent +=$dent;
+		$total_otro +=$otro;
+		$total_umi +=$umi;
+		*/
 
+		$total_boletasE =0;			//MONTO TOTAL
+		for($i=0;$i<count($arrTotalesBotE);$i++){
+			$total_boletasE+=$arrTotalesBotE[$i];
+		}
 
-
-
-
-		$html .='
-		<tr>
-			<td>
-				<table align="center">
-					<tr>
-						<td colspan="13">
-							<table>
-								<tr>
-									<td width="5%">FOLIO</td>
-									<td width="12.5%" align="left">NOMBRE PACIENTE</td>
-									<td width="10%">	
-										<table align="center">
-											<tr>TOTAL CATEGORIA</tr>
-										</table>
-									</td>
-									<td align="right">TOTAL BOLETA</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		';
-
-
-		$total_diaCamaE =0;
-		$total_InterE =0;
-		$total_exaE =0;
-		$total_consuE =0;
-		$total_mediE =0;
-		$total_proE =0;
-		$total_traE =0;
-		$total_dentE =0;
-		$total_otroE =0;
-		$total_umiE =0;
-		
-		$total_boletasE =($total_diaCamaE+$total_InterE+$total_exaE+$total_consuE+$total_mediE+$total_proE+$total_traE+$total_dentE+$total_otroE+$total_umiE);
-		
-		
-		$total = $total_boletasE + $total_boletas;
 		$html.='
 		<tr>
 			<td>
-				<table align="center">
+				<table align="center">							<!-- TOTALES -->
 					<tr>
 						<td colspan="13">
-							<table>
+							<table border="0">
 								<tr>
 									<td width="5%"></td>
 									<td width="12.5%"></td>
-									<td width="10%">
-										'.$total_diaCamaE.'												
-									</td>
-									<td align="right"><strong>'.$objUti->formatDinero($total_boletasE).'</strong></td>
+									';
+									if(count($arrTotalesBotE)!=0){
+										for($i=0;$i<count($arrTotalesBotE);$i++){
+											$html.='<td width="'.$tamañox.'%">'.$arrTotalesBotE[$i].'</td>';
+										}
+									}else{
+										$html.='<td colspan="10" width="'.($tamañox*10).'%"></td>';
+									}
+										$html.='
+									
+									
+									<td align="right" width="10%"><strong>'.$objUti->formatDinero($totalBotE).'</strong></td>
 								</tr>
 							</table>
 						</td>
@@ -470,14 +572,12 @@ for($i=0; $i<count($boletas);$i++){
 				</table>
 			</td>
 		</tr>
+
+
 		<tr>
 			<td style="border-bottom-width:1px;">
 			</td>
 		</tr>
-		<br/>
-
-
-
 		<tr>
 			<td style="border-top-width:1px;" align="right" width="80%">
 			</td>
@@ -485,7 +585,7 @@ for($i=0; $i<count($boletas);$i++){
 				<table align="right">
 						<tr>
 							<td style="font-size:45px;"><strong>TOTAL:</strong></td>
-							<td style="font-size:45px;"><strong>'.$objUti->formatDinero($total).'</strong></td>
+							<td style="font-size:45px;"><strong>'.$objUti->formatDinero($totalBot+$totalBotE).'</strong></td>
 						</tr>
 				</table>
 			</td>
@@ -495,28 +595,9 @@ for($i=0; $i<count($boletas);$i++){
 ';		
 
 
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
 $html .='
 <br/><br/><br/><br/>
-	<table width="70%">
+	<table width="70%" border="0">
 		<tr>
 			<td><strong>NOTA DE CRÉDITO</strong></td>
 		</tr>
@@ -524,7 +605,7 @@ $html .='
 	<table width="70%" border="1">
 		<tr>
 			<td>
-				<table width="100%">	
+				<table width="100%" border="0">	
 					<tr>
 						<td width="15%">N°Boleta</td>
 						<td width="15%">PSS</td>
@@ -535,35 +616,55 @@ $html .='
 			</td>
 		</tr>
 	</table>';
-	
-	while($RSnotaC = mysql_fetch_array($QRnotaC)){
-	$motivoN = $RSnotaC['motivo'];
-	if($motivoN==null){
-		$motivoN = 'SIN ESPECIFICAR';
-	}
-	else{
-		$motivoN = $motivoN;	
-	}
-	$total_nota += $RSnotaC['monto'];
-	$html .='<table width="70%">	
+	$total_nota=0;	
+	$html .='<table width="70%" border="0">	';
+	for($i=0;$i<count($notasCredito);$i++){
+		$html .='
 			<tr>
-				<td width="15%">'.$RSnotaC['numero'].'</td>
-				<td width="15%">'.$RSnotaC['pss'].'</td>
-				<td width="55%">'.$motivoN.'</td>
-				<td width="15%" align="right">'.$RSnotaC['monto'].'</td>
-			</tr>
-			';
+				<td width="15%">'.$notasCredito[$i]['not_id'].'</td>
+				<td width="15%">'.$notasCredito[$i]['pss_id'].'</td>';
+		if($notasCredito[$i]['not_motivo'] != NULL){
+			$html.='<td width="55%">'.$notasCredito[$i]['not_motivo'].'</td>';
+		}else{
+			$html.='<td width="55%">SIN ESPECIFICAR</td>';
+		}
+		$html.='<td width="15%" align="right">'.$notasCredito[$i]['not_monto'].'</td>
+		</tr>';
+		$total_nota+=$notasCredito[$i]['not_monto'];
 	}
 $html .='
 			<tr>
 				<td width="15%">&nbsp;</td>
 				<td width="70%">&nbsp;</td>
-				<td width="15%" align="right"><strong>TOTAL:	'.$objUti->formatearNumero($total_nota).'</strong></td>
+				<td width="15%" align="right"><strong>TOTAL:	'.$objUti->formatDinero($total_nota).'</strong></td>
 			</tr>
 			</table>
 
-	<br/><br/><br/><br/>
-	<table width="70%">
+	<br/><br/><br/><br/>';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$html.='	<table width="70%">
 		<tr>
 			<td><strong>NULA</strong></td>
 		</tr>
@@ -581,25 +682,35 @@ $html .='
 			</td>
 		</tr>
 	</table>';
+	$total_anuladas=0;
 	
-	while($RSrendNula = mysql_fetch_array($QRrendNula)){
-	$total_nul += $RSrendNula['BOLmonto'];
-	$html .='<table width="70%">	
+	$html .='<table width="70%" border="0">	';
+	for($i=0;$i<count($anuladas);$i++){
+		$html .='
 			<tr>
-				<td width="15%">'.$RSrendNula['BOLfolio'].'</td>
-				<td width="70%">'.$RSrendNula['BOLmotivonula'].'</td>
-				<td width="15%" align="right">'.$RSrendNula['BOLmonto'].'</td>
-			</tr>
-			';
+				<td width="15%">'.$anuladas[$i]['bol_id'].'</td>';
+
+		if($anuladas[$i]['bol_motivo'] != NULL){
+			$html.='<td width="70%">'.$anuladas[$i]['bol_motivo'].'</td>';
+		}else{
+			$html.='<td width="70%">SIN ESPECIFICAR</td>';
+		}
+		$html.='<td width="15%" align="right">'.$anuladas[$i]['total'].'</td>
+		</tr>';
+		$total_anuladas+=$anuladas[$i]['total'];
 	}
+	
 $html .='
 			<tr>
 				<td width="15%">&nbsp;</td>
 				<td width="70%">&nbsp;</td>
-				<td width="15%" align="right"><strong>TOTAL:	'.$objUti->formatearNumero($total_nul).'</strong></td>
+				<td width="15%" align="right"><strong>TOTAL:	'.$objUti->formatDinero($total_anuladas).'</strong></td>
 			</tr>
 			</table>
 <br/><br/><br/><br/>';
+
+/*
+
 $html .='
 	<table width="70%">
 		<tr>
@@ -620,26 +731,25 @@ $html .='
 			</td>
 		</tr>
 	</table>';
+	$total_trans=0;
 	
-	while($RStrans = mysql_fetch_array($QRtrans)){
-	$total_trans += $RStrans['BOLmonto'];
 	$html .='<table width="70%">	
 			<tr>
-				<td width="15%">'.$RStrans['BOLfolio'].'</td>
-				<td width="20%">'.$RStrans['PAGDEToperacion'].'</td>
-				<td width="20%">'.$RStrans['PAGDETautorizacion'].'</td>
-				<td width="45%" align="right">'.$RStrans['BOLmonto'].'</td>
+				<td width="15%">FOLIO</td>
+				<td width="20%">COD TRANSACCION</td>
+				<td width="20%">COD AUTORIZACION</td>
+				<td width="45%" align="right">MONTO</td>
 			</tr>
 			<tr>
 				<td width="15%">&nbsp;</td>
 				<td width="20%">&nbsp;</td>
 				<td width="20%">&nbsp;</td>
-				<td width="45%" align="right"><strong>TOTAL:	'.$objUti->formatearNumero($total_trans).'</strong></td>
+				<td width="45%" align="right"><strong>TOTAL:	'.$objUti->formatDinero($total_trans).'</strong></td>
 			</tr>
 			</table>
 			';
-	}	
 	
+	/*
 $html .='
 <br/><br/><br/><br/>
 	<table width="70%">
@@ -684,14 +794,15 @@ $html .='
 
 	*/
 	//$efectivo = ($total_boletas + $total_boletasE) - ($total_cheque + $total_trans + $total_dev);
-
+/*
 	$html .='
 				<table align="right">
 					<tr>
 						<td style="font-size:45px;" width="91%"><strong>TOTAL EFECTIVO:</strong></td>
 						<td style="font-size:45px;" width="9%"><strong>'.$objUti->formatDinero($total).'</strong></td>
 					</tr>
-				</table>
+				</table>*/
+				$html.='
 				<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 				<table align="center">
 					<tr>
@@ -707,12 +818,11 @@ $html .='
 							</table>
 						</td>
 					</tr>
-				</table>
-				
+				</table>				
 	';
 
 $pdf->writeHTML($html, true, false, true, false, '');
-$pdf->Output($nombreUser.'_'.'ArqueoEspontaneo_'.$id_rendicion.'.pdf',$tipoDoc);
+$pdf->Output($nombreUser.'_'.'arqueoEspontaneo_'.$arq_id.'.pdf',$tipoDoc);
 
 DEFINE ('FTP_USER','recaudacion'); 
 DEFINE ('FTP_PASS','recaudacion');
@@ -741,6 +851,6 @@ $path = date('Y')."/boleta/";
 $ftp_server = "10.2.21.108";
 $conn_id = ftp_connect($ftp_server, 21,1) or die("N");
 $login_result = ftp_login($conn_id, "recaudacion", "recaudacion");
-ftp_put($conn_id, date('Y').'/ARQUEO/'.$nombreUser.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf', '.'.$nombreUser.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf', FTP_BINARY);
-unlink('.'.$nombreUser.'_'.'ArqueoEspontaneo_'.date('d-m-Y').'.pdf');
+ftp_put($conn_id, date('Y').'/ARQUEO/'.$nombreUser.'_'.'arqueoEspontaneo_'.date('d-m-Y').'.pdf', '.'.$nombreUser.'_'.'arqueoEspontaneo_'.date('d-m-Y').'.pdf', FTP_BINARY);
+unlink('.'.$nombreUser.'_'.'arqueoEspontaneo_'.date('d-m-Y').'.pdf');
 ?>

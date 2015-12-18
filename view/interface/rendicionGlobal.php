@@ -10,8 +10,7 @@ session_start();
 	$objCon->db_connect();
 	$usu_nombre = $_SESSION['usuario'][1]['nombre_usuario'];
 	$arqueo = $objArq->buscarArqueosRendidos($objCon, $usu_nombre);
-	$objCon=null;
-	//var_dump($datos);
+	$objCon=null;	
 ?>
 <style> 
 #tabArqueos_wrapper{
@@ -28,10 +27,9 @@ session_start();
 .arqueos{
 	cursor:pointer;
 }
-
 </style>
 <script type="text/javascript" src="controller/client/js_rendicionEspontanea.js"></script>
-<center><h3 style="margin-bottom:30px;">Arqueo Espontáneo</h3></center>
+<center><h3 style="margin-bottom:30px;">Arqueo Global</h3></center>
 <fieldset style="float:left;width:250px !important; padding:10px !important;" class="cabezeraDatos"><legend class="cuerpoDatos">Opciones de Arqueo</legend>
 	<center>
 	<div class="btnVisualizar" id="btnVisualizar" ><img class="imgVisualizar" id="imgVisualizar" src="./include/img/preview2.png" width="40" height="40"> 	
