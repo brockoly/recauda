@@ -52,6 +52,7 @@ $("#enviarDatos").button().click(function(){
 	   		}
 	   		$.unblockUI();	   		
 	   		$("#totalRS").html("Se agrego un total de <b>"+rs[i-1].totalIns+" paciente(s)</b> a la base de datos.");
+	   		cargarContenido('view/interface/busquedaPaciente.php','','#contenidoCargado');
 	   		   		
 	   }
     }; 	
