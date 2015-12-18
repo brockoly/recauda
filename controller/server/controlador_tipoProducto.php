@@ -3,7 +3,7 @@
 	require_once('../../class/Tipo_Producto.class.php');$objTipoPro = new Tipo_Producto();
 	require_once('../../class/Unidad_Medida.class.php');$objUnidadM = new Unidad_Medida();
 	require_once('../../class/Util.class.php');$objUti = new Util();
-	require_once('../../class/Producto.class.php');$objProd = new Producto();
+	require_once('../../class/Producto.class.php');$objProd = new Producto(); 
 
 	switch($_POST['op']) {
 		case "editarTipo":
